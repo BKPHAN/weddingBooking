@@ -1,0 +1,97 @@
+/* Slider */
+.slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slides img {
+    width: 100%;
+    height: 75vh;
+    display: block;
+}
+
+/* Phần giới thiệu */
+#about {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+#about h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+#about p {
+    font-size: 18px;
+    color: #666;
+    opacity: 0.8;
+}
+
+/* Dịch vụ */
+#services {
+    background-color: transparent;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+#services p {
+    opacity: 0.5;
+    margin: 5px 0;
+}
+
+.service-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.service-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Thư viện ảnh */
+#gallery {
+    background-color: transparent;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+
+.wrapper {
+    display: flex;
+    gap: 15px; /* Khoảng cách giữa các phần tử */
+    justify-content: center;
+}
+
+.service-item {
+    width: 30%;
+}
+
+.service__item {
+    height: 70vh;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    background-size: cover; /* Hình ảnh phủ đầy phần tử */
+    background-position: center; /* Căn giữa hình ảnh trong phần tử */
+    font-size: 24px;
+    color: #ffffff;
+    /*font-weight: bold;*/
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Bóng đổ với độ mờ */
+}
+

@@ -1,0 +1,91 @@
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.intro p {
+    font-size: 1.2em;
+    max-width: 50%;
+    text-align: justify;
+    display: flex;
+    margin: 10px 0;
+}
+
+
+.slider {
+    position: relative;
+    max-width: 50%;
+    margin: auto;
+    overflow: hidden;
+    padding: 40px 0;
+}
+
+.slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slides img {
+    width: 100%; /* Đặt 100% để ảnh tự động theo chiều rộng của container */
+    height: 400px; /* Chiều cao cố định */
+    object-fit: cover; /* Cắt ảnh để lấp đầy toàn bộ container */
+    display: none;
+}
+
+.slides img.active {
+    display: block;
+    width: 100%; /* Đặt 100% để ảnh tự động theo chiều rộng của container */
+    height: 400px; /* Chiều cao cố định */
+    object-fit: cover; /* Cắt ảnh để lấp đầy toàn bộ container */
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 30px;
+    font-size: 30px;
+}
+
+button.prev {
+    left: 0;
+}
+
+button.next {
+    right: 0;
+}
+
+h1{
+    margin-top: 30px;
+    font-family:  Script , cursive;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.post-title {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    display: none; /* Ẩn tất cả tiêu đề mặc định */
+}
+
+.post-title.active {
+    display: block; /* Hiển thị tiêu đề khi có class active */
+}
