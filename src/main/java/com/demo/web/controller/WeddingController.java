@@ -1,16 +1,21 @@
 package com.demo.web.controller;
 
-import com.demo.web.model.Contact;
 import com.demo.web.model.Booking;
-import com.demo.web.service.ContactService;
+import com.demo.web.model.Contact;
+import com.demo.web.model.User;
 import com.demo.web.service.BookingService;
+import com.demo.web.service.ContactService;
+import com.demo.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,12 +25,21 @@ import java.util.List;
 @Controller
 public class WeddingController {
     @Autowired
+    private UserService userService;
+    @Autowired
     private BookingService bookingService;
 
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    @GetMapping({"/", "/wedding"})
+    @GetMapping({"/", "/login"})
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping({"/wedding"})
     public String homePage() {
         return "home";
     }
@@ -49,6 +63,26 @@ public class WeddingController {
     @GetMapping("/contact")
     public String contactPage() {
         return "contact";  // Chuyển tới trang contact.html
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity.ok("Login successful");
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody User request) {
+        try {
+            userService.registerUser(request.getUsername(), request.getEmail(), request.getPassword());
+            return ResponseEntity.ok("Registration successful");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // POST method để nhận và lưu thông tin liên hệ, chỉ trả về true/false

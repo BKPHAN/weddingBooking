@@ -3,8 +3,6 @@ package com.demo.web.service;
 import com.demo.web.model.Contact;
 import com.demo.web.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
