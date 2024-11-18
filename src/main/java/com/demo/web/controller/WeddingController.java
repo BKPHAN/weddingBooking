@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +29,13 @@ public class WeddingController {
     @Autowired
     private UserService userService;
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;  // Inject BCryptPasswordEncoder
+    @Autowired
     private BookingService bookingService;
 
     @Autowired
     private ContactService contactService;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -65,17 +70,34 @@ public class WeddingController {
         return "contact";  // Chuyển tới trang contact.html
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-        );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok("Login successful");
+    @PostMapping("/api/login")
+    public ResponseEntity<?> login(@RequestBody User loginRequest) {
+        try {
+            // Tìm người dùng theo email
+            User user = userService.findByEmail(loginRequest.getEmail());
+
+            // Kiểm tra xem người dùng có tồn tại không
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            }
+
+            // Kiểm tra mật khẩu (so sánh mật khẩu đã mã hóa)
+            if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                // Nếu mật khẩu đúng, trả về phản hồi thành công
+                return ResponseEntity.ok("Login successful");
+            } else {
+                // Nếu mật khẩu sai, trả về lỗi
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            }
+        } catch (Exception ex) {
+            // Xử lý lỗi chung
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
+        }
     }
 
-    @PostMapping("/register")
+    @PostMapping("/api/register")
     public ResponseEntity<String> register(@RequestBody User request) {
         try {
             userService.registerUser(request.getUsername(), request.getEmail(), request.getPassword());

@@ -23,14 +23,15 @@ public class SecurityConfig {
                 // Cấu hình các yêu cầu bảo mật
                 .authorizeRequests()
                 // Cho phép truy cập không cần đăng nhập đối với các trang sau
-                .requestMatchers("/", "/login", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh và trang login
+                .requestMatchers("/", "/login", "api/register", "api/login", "/wedding", "/about", "/booking", "/services", "/contact", "/api/feedbacks","/api/booking", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()  // Cho phép tài nguyên tĩnh và trang login
                 // Các yêu cầu còn lại phải đăng nhập
                 .anyRequest().authenticated()
                 .and()
                 // Cấu hình trang đăng nhập tùy chỉnh
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/login")  // Địa chỉ trang đăng nhập
-                        .permitAll()  // Cho phép truy cập trang đăng nhập mà không cần đăng nhập
+                                .loginPage("/login")  // Địa chỉ trang đăng nhập
+                                .permitAll() // Cho phép truy cập trang đăng nhập mà không cần đăng nhập
+//                        .defaultSuccessUrl("/wedding", true)
                 );
 
         return http.build();

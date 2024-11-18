@@ -36,4 +36,9 @@ public class UserService {
         newUser.setPassword(encodedPassword);
         return userRepository.save(newUser);
     }
+
+    // Tìm người dùng theo email
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);  // Trả về người dùng nếu tồn tại, null nếu không
+    }
 }

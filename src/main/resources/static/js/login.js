@@ -34,9 +34,10 @@ document.getElementById('login-form').addEventListener('submit', async function 
     event.preventDefault(); // Ngăn không cho form submit mặc định
 
     // Lấy giá trị từ form
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('emailLogin').value;
+    const password = document.getElementById('passwordLogin').value;
 
+    let data = { email, password }
     try {
         // Gửi yêu cầu POST tới API đăng nhập
         const response = await fetch('/api/login', {
@@ -44,7 +45,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify(data),
         });
 
         // Xử lý kết quả
@@ -66,11 +67,12 @@ document.getElementById('signup-form').addEventListener('submit', async function
     event.preventDefault(); // Ngăn không cho form submit mặc định
 
     // Lấy giá trị từ form
-    const name = document.getElementById('name').value;
+    const username = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const isPolicyChecked = document.getElementById('policy').checked;
 
+    let data = { username, email, password };
     if (!isPolicyChecked) {
         alert("You must agree to the Terms & Conditions.");
         return;
@@ -83,7 +85,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify(data),
         });
 
         // Xử lý kết quả
@@ -99,3 +101,14 @@ document.getElementById('signup-form').addEventListener('submit', async function
         alert('An error occurred. Please try again.');
     }
 });
+
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const passwordType = passwordInput.getAttribute('type');
+
+    if (passwordType === 'password') {
+        passwordInput.setAttribute('type', 'text');
+    } else {
+        passwordInput.setAttribute('type', 'password');
+    }
+}
