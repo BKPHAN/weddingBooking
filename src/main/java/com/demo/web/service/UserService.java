@@ -70,8 +70,4 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Tìm người dùng theo email
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);  // Trả về người dùng nếu tồn tại, null nếu không
-    }
 }

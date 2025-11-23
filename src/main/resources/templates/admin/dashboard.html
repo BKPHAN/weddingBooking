@@ -7,16 +7,59 @@
     <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
-<header class="admin-header">
-    <h1>Trung Tâm Tiệc Cưới - Quản trị</h1>
-    <nav>
-        <a href="/admin/dashboard">Tổng quan</a>
-        <a href="/admin/content">Nội dung</a>
-        <a href="/wedding">Trang công khai</a>
-    </nav>
-</header>
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">Wedding Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/admin/dashboard" class="sidebar-link active">
+                <span class="sidebar-icon" aria-hidden="true">🏠</span>
+                <span class="sidebar-label">Tổng quan</span>
+            </a>
+            <a href="/admin/content" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">🗂</span>
+                <span class="sidebar-label">Nội dung</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/wedding" class="sidebar-link sidebar-public">
+                <span class="sidebar-icon" aria-hidden="true">↗</span>
+                <span class="sidebar-label">Trang công khai</span>
+            </a>
+        </div>
+    </aside>
 
-<main class="admin-container">
+    <div class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="hamburger" id="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div>
+                    <h1>Trung Tâm Tiệc Cưới - Quản trị</h1>
+                    <p class="admin-subtitle">Theo dõi số liệu đặt tiệc và liên hệ</p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="user-menu">
+                    <button class="user-menu-toggle" id="user-menu-toggle" type="button" aria-expanded="false">
+                        <span class="user-menu-name" th:text="${currentUserDisplayName}">Quản trị viên</span>
+                        <span class="user-menu-caret" aria-hidden="true">▾</span>
+                    </button>
+                    <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
+                        <a href="#" role="menuitem" data-profile-trigger>Xem thông tin</a>
+                        <form th:action="@{/logout}" method="post" class="user-menu-logout">
+                            <button type="submit" role="menuitem">Đăng xuất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="admin-container">
     <div id="dashboard-error" class="error-banner"></div>
 
     <section class="cards">
@@ -82,8 +125,12 @@
             </tbody>
         </table>
     </section>
-</main>
+        </main>
+    </div>
+</div>
 
+<script th:src="@{/js/admin-layout.js}" defer></script>
 <script th:src="@{/js/admin-dashboard.js}" defer></script>
+<div th:replace="~{admin/fragments/profile-modal :: profile-modal}"></div>
 </body>
 </html>

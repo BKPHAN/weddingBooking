@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div id="profile-modal" class="profile-modal" aria-hidden="true" th:fragment="profile-modal">
+    <div class="profile-modal__backdrop" data-profile-close></div>
+    <div class="profile-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+        <div class="profile-modal__header">
+            <div>
+                <p class="profile-modal__eyebrow">Tài khoản quản trị</p>
+                <h2 id="profile-modal-title">Thông tin cá nhân</h2>
+            </div>
+            <button type="button" class="profile-modal__close" aria-label="Đóng" data-profile-close>&times;</button>
+        </div>
+        <div class="profile-modal__body">
+            <div class="profile-modal__state" data-profile-loading>
+                <span class="profile-modal__spinner" aria-hidden="true"></span>
+                <p>Đang tải thông tin người dùng...</p>
+            </div>
+            <div class="profile-modal__state profile-modal__error" data-profile-error hidden></div>
+            <div class="profile-modal__content" data-profile-content hidden>
+                <dl class="profile-modal__grid">
+                    <div class="profile-modal__grid-item" data-icon="👤" data-tint="primary">
+                        <dt>Họ và tên</dt>
+                        <dd data-profile-field="fullName"></dd>
+                    </div>
+                    <div class="profile-modal__grid-item" data-icon="🆔" data-tint="indigo">
+                        <dt>Tên đăng nhập</dt>
+                        <dd data-profile-field="username"></dd>
+                    </div>
+                    <div class="profile-modal__grid-item" data-icon="✉️" data-tint="teal">
+                        <dt>Email</dt>
+                        <dd data-profile-field="email"></dd>
+                    </div>
+                    <div class="profile-modal__grid-item" data-icon="🛡️" data-tint="amber">
+                        <dt>Vai trò chính</dt>
+                        <dd class="profile-modal__pill profile-modal__pill--soft" data-profile-field="primaryRole"></dd>
+                    </div>
+                    <div class="profile-modal__grid-item" data-icon="🔔" data-tint="purple">
+                        <dt>Trạng thái</dt>
+                        <dd class="profile-modal__pill" data-profile-field="status"></dd>
+                    </div>
+                    <div class="profile-modal__grid-item" data-icon="📅" data-tint="slate">
+                        <dt>Ngày tạo</dt>
+                        <dd data-profile-field="createdAt"></dd>
+                    </div>
+                    <div class="profile-modal__grid-item" data-icon="⏱️" data-tint="slate">
+                        <dt>Cập nhật cuối</dt>
+                        <dd data-profile-field="updatedAt"></dd>
+                    </div>
+                </dl>
+                <div class="profile-modal__meta">
+                    <div class="profile-modal__section">
+                        <div class="profile-modal__section-heading">
+                            <span class="profile-modal__section-icon profile-modal__section-icon--roles" aria-hidden="true">⚙️</span>
+                            <h3>Quyền vai trò</h3>
+                        </div>
+                        <div class="profile-modal__chips" data-profile-list="roles"></div>
+                    </div>
+                    <div class="profile-modal__section">
+                        <div class="profile-modal__section-heading">
+                            <span class="profile-modal__section-icon profile-modal__section-icon--permissions" aria-hidden="true">🔐</span>
+                            <h3>Phân quyền chi tiết</h3>
+                        </div>
+                        <div class="profile-modal__chips" data-profile-list="permissions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

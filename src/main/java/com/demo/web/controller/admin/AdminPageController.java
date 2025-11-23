@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminPageController {
 
+    @GetMapping
+    public String rootRedirect() {
+        return "redirect:/admin/dashboard";
+    }
+
     @GetMapping("/dashboard")
     public String dashboard() {
         return "admin/dashboard";

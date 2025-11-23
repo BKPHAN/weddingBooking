@@ -7,273 +7,319 @@
     <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
-<header class="admin-header">
-    <h1>Trung Tâm Tiệc Cưới - Quản lý nội dung</h1>
-    <nav>
-        <a href="/admin/dashboard">Tổng quan</a>
-        <a href="/admin/content">Nội dung</a>
-        <a href="/wedding">Trang công khai</a>
-    </nav>
-</header>
-
-<main class="admin-container">
-    <div id="content-error" class="error-banner"></div>
-
-    <section class="form-wrapper">
-        <h2 class="section-title">Thêm sảnh</h2>
-        <form id="hall-form">
-            <div class="form-grid">
-                <div>
-                    <label for="hall-code">Mã</label>
-                    <input id="hall-code" name="code" required>
-                </div>
-                <div>
-                    <label for="hall-name">Tên</label>
-                    <input id="hall-name" name="name" required>
-                </div>
-                <div>
-                    <label for="hall-capacity">Sức chứa</label>
-                    <input type="number" id="hall-capacity" name="capacity" min="1" required>
-                </div>
-                <div>
-                    <label for="hall-base-price">Giá cơ bản</label>
-                    <input type="number" id="hall-base-price" name="basePrice" min="0" required>
-                </div>
-                <div>
-                    <label for="hall-amenities">Tiện ích (mảng JSON)</label>
-                    <input id="hall-amenities" name="amenities" placeholder='["Màn LED","Trang trí"]'>
-                </div>
-                <div>
-                    <label for="hall-image">Đường dẫn ảnh</label>
-                    <input id="hall-image" name="imageUrl">
-                </div>
-                <div>
-                    <label for="hall-order">Thứ tự hiển thị</label>
-                    <input type="number" id="hall-order" name="displayOrder" min="0">
-                </div>
-            </div>
-            <div style="margin-top:16px;">
-                <button type="submit">Tạo sảnh</button>
-            </div>
-        </form>
-    </section>
-
-    <section>
-        <h2 class="section-title">Danh sách sảnh</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Mã</th>
-                <th>Tên</th>
-                <th>Sức chứa</th>
-                <th>Giá cơ bản</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
-            </tr>
-            </thead>
-            <tbody id="hall-table-body"></tbody>
-        </table>
-    </section>
-
-    <section id="hall-edit-wrapper" class="form-wrapper" style="display:none;">
-        <h2 class="section-title">Chỉnh sửa sảnh</h2>
-        <form id="hall-edit-form">
-            <input type="hidden" id="hall-edit-id">
-            <div class="form-grid">
-                <div>
-                    <label for="hall-edit-code">Mã</label>
-                    <input id="hall-edit-code" name="code" required>
-                </div>
-                <div>
-                    <label for="hall-edit-name">Tên</label>
-                    <input id="hall-edit-name" name="name" required>
-                </div>
-                <div>
-                    <label for="hall-edit-capacity">Sức chứa</label>
-                    <input type="number" id="hall-edit-capacity" name="capacity" min="1" required>
-                </div>
-                <div>
-                    <label for="hall-edit-base-price">Giá cơ bản</label>
-                    <input type="number" id="hall-edit-base-price" name="basePrice" min="0" required>
-                </div>
-                <div>
-                    <label for="hall-edit-amenities">Tiện ích (JSON)</label>
-                    <input id="hall-edit-amenities" name="amenities">
-                </div>
-                <div>
-                    <label for="hall-edit-image">Đường dẫn ảnh</label>
-                    <input id="hall-edit-image" name="imageUrl">
-                </div>
-                <div>
-                    <label for="hall-edit-order">Thứ tự hiển thị</label>
-                    <input type="number" id="hall-edit-order" name="displayOrder" min="0">
-                </div>
-                <div>
-                    <label for="hall-edit-active">Kích hoạt</label>
-                    <select id="hall-edit-active" name="active">
-                        <option value="true">Đang bật</option>
-                        <option value="false">Đã tắt</option>
-                    </select>
-                </div>
-            </div>
-            <div style="margin-top:16px;">
-                <button type="submit">Lưu sảnh</button>
-                <button type="button" id="hall-edit-cancel" style="margin-left:8px;">Hủy</button>
-            </div>
-        </form>
-    </section>
-
-    <section class="form-wrapper">
-        <h2 class="section-title">Thêm thực đơn</h2>
-        <form id="menu-form">
-            <div class="form-grid">
-                <div>
-                    <label for="menu-name">Tên</label>
-                    <input id="menu-name" name="name" required>
-                </div>
-                <div>
-                    <label for="menu-price">Giá</label>
-                    <input type="number" id="menu-price" name="price" min="0" required>
-                </div>
-                <div>
-                    <label for="menu-category">Phân loại</label>
-                    <input id="menu-category" name="category" required>
-                </div>
-                <div>
-                    <label for="menu-description">Mô tả</label>
-                    <textarea id="menu-description" name="description" rows="3"></textarea>
-                </div>
-                <div>
-                    <label for="menu-image">Đường dẫn ảnh</label>
-                    <input id="menu-image" name="imageUrl">
-                </div>
-            </div>
-            <div style="margin-top:16px;">
-                <label><input type="checkbox" id="menu-featured" name="featured"> Nổi bật</label>
-                <button type="submit" style="margin-left:16px;">Tạo thực đơn</button>
-            </div>
-        </form>
-    </section>
-
-    <section>
-        <h2 class="section-title">Danh sách thực đơn</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Tên</th>
-                <th>Phân loại</th>
-                <th>Giá</th>
-                <th>Nổi bật</th>
-                <th>Thao tác</th>
-            </tr>
-            </thead>
-            <tbody id="menu-table-body"></tbody>
-        </table>
-    </section>
-
-    <section id="menu-edit-wrapper" class="form-wrapper" style="display:none;">
-        <h2 class="section-title">Chỉnh sửa thực đơn</h2>
-        <form id="menu-edit-form">
-            <input type="hidden" id="menu-edit-id">
-            <div class="form-grid">
-                <div>
-                    <label for="menu-edit-name">Tên</label>
-                    <input id="menu-edit-name" name="name" required>
-                </div>
-                <div>
-                    <label for="menu-edit-price">Giá</label>
-                    <input type="number" id="menu-edit-price" name="price" min="0" required>
-                </div>
-                <div>
-                    <label for="menu-edit-category">Phân loại</label>
-                    <input id="menu-edit-category" name="category" required>
-                </div>
-                <div>
-                    <label for="menu-edit-description">Mô tả</label>
-                    <textarea id="menu-edit-description" name="description" rows="3"></textarea>
-                </div>
-                <div>
-                    <label for="menu-edit-image">Đường dẫn ảnh</label>
-                    <input id="menu-edit-image" name="imageUrl">
-                </div>
-                <div>
-                    <label for="menu-edit-featured">Nổi bật</label>
-                    <select id="menu-edit-featured" name="featured">
-                        <option value="true">Có</option>
-                        <option value="false">Không</option>
-                    </select>
-                </div>
-            </div>
-            <div style="margin-top:16px;">
-                <button type="submit">Lưu thực đơn</button>
-                <button type="button" id="menu-edit-cancel" style="margin-left:8px;">Hủy</button>
-            </div>
-        </form>
-    </section>
-
-    <section class="form-wrapper">
-        <h2 class="section-title">Thư viện media</h2>
-        <div class="form-grid" style="margin-bottom: 16px;">
-            <div>
-                <label for="album-select">Album</label>
-                <select id="album-select">
-                    <option value="">-- Chọn album --</option>
-                </select>
-            </div>
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">Wedding Admin</span>
         </div>
-        <form id="media-item-form">
-            <div class="form-grid">
+        <nav class="sidebar-nav">
+            <a href="/admin/dashboard" class="sidebar-link">
+                <span class="sidebar-icon" aria-hidden="true">🏠</span>
+                <span class="sidebar-label">Tổng quan</span>
+            </a>
+            <a href="/admin/content" class="sidebar-link active">
+                <span class="sidebar-icon" aria-hidden="true">🗂</span>
+                <span class="sidebar-label">Nội dung</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/wedding" class="sidebar-link sidebar-public">
+                <span class="sidebar-icon" aria-hidden="true">↗</span>
+                <span class="sidebar-label">Trang công khai</span>
+            </a>
+        </div>
+    </aside>
+
+    <div class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button class="hamburger" id="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <div>
-                    <label for="media-title">Tiêu đề</label>
-                    <input id="media-title" name="title" required>
-                </div>
-                <div>
-                    <label for="media-type">Loại</label>
-                    <select id="media-type" name="type" required>
-                        <option value="IMAGE">HÌNH ẢNH</option>
-                        <option value="VIDEO">VIDEO</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="media-url">Đường dẫn</label>
-                    <input id="media-url" name="url" required>
-                </div>
-                <div>
-                    <label for="media-file">Tải tệp</label>
-                    <input type="file" id="media-file" accept="image/*,video/*">
-                    <button type="button" id="media-upload-btn" style="margin-top:8px;">Tải lên &amp; điền URL</button>
-                </div>
-                <div>
-                    <label for="media-thumb">Đường dẫn thumbnail</label>
-                    <input id="media-thumb" name="thumbnailUrl">
-                </div>
-                <div>
-                    <label for="media-order">Thứ tự hiển thị</label>
-                    <input type="number" id="media-order" name="displayOrder" min="0">
+                    <h1>Trung Tâm Tiệc Cưới - Quản lý nội dung</h1>
+                    <p class="admin-subtitle">Tùy chỉnh sảnh, thực đơn và thư viện media</p>
                 </div>
             </div>
-            <div style="margin-top:16px;">
-                <button type="submit">Thêm media</button>
+            <div class="topbar-right">
+                <div class="user-menu">
+                    <button class="user-menu-toggle" id="user-menu-toggle" type="button" aria-expanded="false">
+                        <span class="user-menu-name" th:text="${currentUserDisplayName}">Quản trị viên</span>
+                        <span class="user-menu-caret" aria-hidden="true">▾</span>
+                    </button>
+                    <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
+                        <a href="#" role="menuitem" data-profile-trigger>Xem thông tin</a>
+                        <form th:action="@{/logout}" method="post" class="user-menu-logout">
+                            <button type="submit" role="menuitem">Đăng xuất</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
-    </section>
+        </header>
+        <main class="admin-container">
+            <div id="content-error" class="error-banner"></div>
+        
+            <section class="form-wrapper">
+                <h2 class="section-title">Thêm sảnh</h2>
+                <form id="hall-form">
+                    <div class="form-grid">
+                        <div>
+                            <label for="hall-code">Mã</label>
+                            <input id="hall-code" name="code" required>
+                        </div>
+                        <div>
+                            <label for="hall-name">Tên</label>
+                            <input id="hall-name" name="name" required>
+                        </div>
+                        <div>
+                            <label for="hall-capacity">Sức chứa</label>
+                            <input type="number" id="hall-capacity" name="capacity" min="1" required>
+                        </div>
+                        <div>
+                            <label for="hall-base-price">Giá cơ bản</label>
+                            <input type="number" id="hall-base-price" name="basePrice" min="0" required>
+                        </div>
+                        <div>
+                            <label for="hall-amenities">Tiện ích (mảng JSON)</label>
+                            <input id="hall-amenities" name="amenities" placeholder='["Màn LED","Trang trí"]'>
+                        </div>
+                        <div>
+                            <label for="hall-image">Đường dẫn ảnh</label>
+                            <input id="hall-image" name="imageUrl">
+                        </div>
+                        <div>
+                            <label for="hall-order">Thứ tự hiển thị</label>
+                            <input type="number" id="hall-order" name="displayOrder" min="0">
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <button type="submit">Tạo sảnh</button>
+                    </div>
+                </form>
+            </section>
+        
+            <section>
+                <h2 class="section-title">Danh sách sảnh</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Sức chứa</th>
+                        <th>Giá cơ bản</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody id="hall-table-body"></tbody>
+                </table>
+            </section>
+        
+            <section id="hall-edit-wrapper" class="form-wrapper" style="display:none;">
+                <h2 class="section-title">Chỉnh sửa sảnh</h2>
+                <form id="hall-edit-form">
+                    <input type="hidden" id="hall-edit-id">
+                    <div class="form-grid">
+                        <div>
+                            <label for="hall-edit-code">Mã</label>
+                            <input id="hall-edit-code" name="code" required>
+                        </div>
+                        <div>
+                            <label for="hall-edit-name">Tên</label>
+                            <input id="hall-edit-name" name="name" required>
+                        </div>
+                        <div>
+                            <label for="hall-edit-capacity">Sức chứa</label>
+                            <input type="number" id="hall-edit-capacity" name="capacity" min="1" required>
+                        </div>
+                        <div>
+                            <label for="hall-edit-base-price">Giá cơ bản</label>
+                            <input type="number" id="hall-edit-base-price" name="basePrice" min="0" required>
+                        </div>
+                        <div>
+                            <label for="hall-edit-amenities">Tiện ích (JSON)</label>
+                            <input id="hall-edit-amenities" name="amenities">
+                        </div>
+                        <div>
+                            <label for="hall-edit-image">Đường dẫn ảnh</label>
+                            <input id="hall-edit-image" name="imageUrl">
+                        </div>
+                        <div>
+                            <label for="hall-edit-order">Thứ tự hiển thị</label>
+                            <input type="number" id="hall-edit-order" name="displayOrder" min="0">
+                        </div>
+                        <div>
+                            <label for="hall-edit-active">Kích hoạt</label>
+                            <select id="hall-edit-active" name="active">
+                                <option value="true">Đang bật</option>
+                                <option value="false">Đã tắt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <button type="submit">Lưu sảnh</button>
+                        <button type="button" id="hall-edit-cancel" style="margin-left:8px;">Hủy</button>
+                    </div>
+                </form>
+            </section>
+        
+            <section class="form-wrapper">
+                <h2 class="section-title">Thêm thực đơn</h2>
+                <form id="menu-form">
+                    <div class="form-grid">
+                        <div>
+                            <label for="menu-name">Tên</label>
+                            <input id="menu-name" name="name" required>
+                        </div>
+                        <div>
+                            <label for="menu-price">Giá</label>
+                            <input type="number" id="menu-price" name="price" min="0" required>
+                        </div>
+                        <div>
+                            <label for="menu-category">Phân loại</label>
+                            <input id="menu-category" name="category" required>
+                        </div>
+                        <div>
+                            <label for="menu-description">Mô tả</label>
+                            <textarea id="menu-description" name="description" rows="3"></textarea>
+                        </div>
+                        <div>
+                            <label for="menu-image">Đường dẫn ảnh</label>
+                            <input id="menu-image" name="imageUrl">
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <label><input type="checkbox" id="menu-featured" name="featured"> Nổi bật</label>
+                        <button type="submit" style="margin-left:16px;">Tạo thực đơn</button>
+                    </div>
+                </form>
+            </section>
+        
+            <section>
+                <h2 class="section-title">Danh sách thực đơn</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Tên</th>
+                        <th>Phân loại</th>
+                        <th>Giá</th>
+                        <th>Nổi bật</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody id="menu-table-body"></tbody>
+                </table>
+            </section>
+        
+            <section id="menu-edit-wrapper" class="form-wrapper" style="display:none;">
+                <h2 class="section-title">Chỉnh sửa thực đơn</h2>
+                <form id="menu-edit-form">
+                    <input type="hidden" id="menu-edit-id">
+                    <div class="form-grid">
+                        <div>
+                            <label for="menu-edit-name">Tên</label>
+                            <input id="menu-edit-name" name="name" required>
+                        </div>
+                        <div>
+                            <label for="menu-edit-price">Giá</label>
+                            <input type="number" id="menu-edit-price" name="price" min="0" required>
+                        </div>
+                        <div>
+                            <label for="menu-edit-category">Phân loại</label>
+                            <input id="menu-edit-category" name="category" required>
+                        </div>
+                        <div>
+                            <label for="menu-edit-description">Mô tả</label>
+                            <textarea id="menu-edit-description" name="description" rows="3"></textarea>
+                        </div>
+                        <div>
+                            <label for="menu-edit-image">Đường dẫn ảnh</label>
+                            <input id="menu-edit-image" name="imageUrl">
+                        </div>
+                        <div>
+                            <label for="menu-edit-featured">Nổi bật</label>
+                            <select id="menu-edit-featured" name="featured">
+                                <option value="true">Có</option>
+                                <option value="false">Không</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <button type="submit">Lưu thực đơn</button>
+                        <button type="button" id="menu-edit-cancel" style="margin-left:8px;">Hủy</button>
+                    </div>
+                </form>
+            </section>
+        
+            <section class="form-wrapper">
+                <h2 class="section-title">Thư viện media</h2>
+                <div class="form-grid" style="margin-bottom: 16px;">
+                    <div>
+                        <label for="album-select">Album</label>
+                        <select id="album-select">
+                            <option value="">-- Chọn album --</option>
+                        </select>
+                    </div>
+                </div>
+                <form id="media-item-form">
+                    <div class="form-grid">
+                        <div>
+                            <label for="media-title">Tiêu đề</label>
+                            <input id="media-title" name="title" required>
+                        </div>
+                        <div>
+                            <label for="media-type">Loại</label>
+                            <select id="media-type" name="type" required>
+                                <option value="IMAGE">HÌNH ẢNH</option>
+                                <option value="VIDEO">VIDEO</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="media-url">Đường dẫn</label>
+                            <input id="media-url" name="url" required>
+                        </div>
+                        <div>
+                            <label for="media-file">Tải tệp</label>
+                            <input type="file" id="media-file" accept="image/*,video/*">
+                            <button type="button" id="media-upload-btn" style="margin-top:8px;">Tải lên &amp; điền URL</button>
+                        </div>
+                        <div>
+                            <label for="media-thumb">Đường dẫn thumbnail</label>
+                            <input id="media-thumb" name="thumbnailUrl">
+                        </div>
+                        <div>
+                            <label for="media-order">Thứ tự hiển thị</label>
+                            <input type="number" id="media-order" name="displayOrder" min="0">
+                        </div>
+                    </div>
+                    <div style="margin-top:16px;">
+                        <button type="submit">Thêm media</button>
+                    </div>
+                </form>
+            </section>
+        
+            <section>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Loại</th>
+                        <th>Liên kết</th>
+                        <th>Thứ tự</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody id="media-table-body"></tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</div>
 
-    <section>
-        <table>
-            <thead>
-            <tr>
-                <th>Tiêu đề</th>
-                <th>Loại</th>
-                <th>Liên kết</th>
-                <th>Thứ tự</th>
-                <th>Thao tác</th>
-            </tr>
-            </thead>
-            <tbody id="media-table-body"></tbody>
-        </table>
-    </section>
-</main>
-
+<script th:src="@{/js/admin-layout.js}" defer></script>
 <script th:src="@{/js/admin-content.js}" defer></script>
+<div th:replace="~{admin/fragments/profile-modal :: profile-modal}"></div>
 </body>
 </html>
