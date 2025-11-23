@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,9 @@
             <li><a href="/services">Dịch Vụ</a></li>
             <li><a href="/contact">Liên Hệ</a></li>
             <li><a href="/booking">Đặt Tiệc</a></li>
+        
+        
+            <li sec:authorize="hasRole('ADMIN')"><a href="/admin/dashboard">Quay lại quản lý</a></li>
         </ul>
     </nav>
 </header>

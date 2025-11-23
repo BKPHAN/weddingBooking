@@ -1,0 +1,191 @@
+
+# 💍 KẾ HOẠCH XÂY DỰNG WEBSITE TRUNG TÂM TỔ CHỨC TIỆC CƯỚI
+
+---
+
+## 🎯 MỤC TIÊU
+
+Xây dựng **website giới thiệu trung tâm tiệc cưới**, cho phép:
+
+* Giới thiệu dịch vụ, không gian, thực đơn, phong cách cưới.
+* Khách hàng đăng ký tiệc cưới / lễ đính hôn trực tuyến.
+* Quản trị viên quản lý thông tin, lịch đặt, doanh thu, bài viết.
+
+---
+
+## 🏗️ KIẾN TRÚC HỆ THỐNG
+
+### 🔹 Frontend (ReactJS)
+
+* **Framework:** React + Vite / CRA
+* **UI:** TailwindCSS hoặc Material UI / Ant Design
+* **Router:** React Router DOM
+* **State Management:** Redux Toolkit / Zustand
+* **API:** Axios
+* **Form Validation:** React Hook Form + Yup
+
+### 🔹 Backend (ExpressJS)
+
+* **Framework:** NodeJS + Express
+* **Database:** MySQL / PostgreSQL
+* **ORM:** Prisma hoặc Sequelize
+* **Auth:** JWT (JSON Web Token)
+* **File Upload:** Multer + Cloudinary / S3
+* **Validation:** Joi / Zod
+* **Email Service:** Nodemailer
+
+### 🔹 Triển khai
+
+* Frontend: Vercel / Netlify
+* Backend: Render / Railway / VPS
+* Database: PlanetScale / Supabase / RDS
+
+---
+
+## 🧩 CẤU TRÚC WEBSITE
+
+### 🏠 1. Trang công khai (Public)
+
+| Trang                                 | Mô tả                                               | Tính năng nổi bật                                                                                           |
+| ------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Trang chủ**                         | Giới thiệu tổng quan trung tâm, banner, CTA đăng ký | Slider ảnh, video, link nhanh đến trang “Đăng ký”                                                           |
+| **Giới thiệu**                        | Lịch sử, tầm nhìn, quy mô trung tâm                 | Ảnh sảnh, đội ngũ, video giới thiệu                                                                         |
+| **Không gian & Mẫu tiệc cưới**        | Bộ sưu tập các mẫu tiệc thật và demo                | Bộ lọc theo phong cách (cổ điển / hiện đại / ngoài trời...), mô tả chi tiết từng mẫu, ảnh 3D hoặc video     |
+| **Thực đơn**                          | Danh sách món ăn và combo                           | Xem chi tiết món, lọc theo loại món / giá / gói dịch vụ                                                     |
+| **Ước tính chi phí (Cost Estimator)** | Cho phép khách tự dự toán chi phí                   | Chọn loại tiệc, số bàn, dịch vụ thêm (rạp, sân khấu, MC, quay phim...), tính tổng tự động, xuất báo giá PDF |
+| **Album khách hàng đã tổ chức**       | Các sự kiện cưới thật tại trung tâm                 | Ảnh, video, lời chia sẻ của cặp đôi                                                                         |
+| **Tin tức & Ưu đãi**                  | Bài viết, khuyến mãi, kinh nghiệm cưới              | CRUD qua admin, SEO tốt                                                                                     |
+| **Đặt lịch xem sảnh**                 | Đặt lịch tham quan trung tâm                        | Chọn ngày, giờ, gửi thông báo qua email                                                                     |
+| **Liên hệ**                           | Form liên hệ + bản đồ Google Maps                   | Gửi yêu cầu / tư vấn nhanh                                                                                  |
+| **Chat & tư vấn**                     | Hỗ trợ trực tuyến                                   | Tích hợp Messenger / Zalo / LiveChat                                                                        |
+
+---
+
+### 🧑‍💼 2. Trang quản trị (Admin Panel)
+
+| Trang                                 | Mô tả                                         | Tính năng                    |
+| ------------------------------------- | --------------------------------------------- | ---------------------------- |
+| **Đăng nhập**                         | Admin login                                   | JWT Authentication           |
+| **Dashboard tổng quan**               | Số lượng đặt tiệc, doanh thu, thống kê tháng  | Biểu đồ Recharts             |
+| **Quản lý khách hàng / Đơn đặt tiệc** | Danh sách đơn đăng ký, lọc theo trạng thái    | Duyệt / hủy / xem chi tiết   |
+| **Quản lý thực đơn**                  | CRUD món ăn, gói combo                        | Upload ảnh, mô tả            |
+| **Quản lý mẫu tiệc & sảnh cưới**      | CRUD mẫu cưới, ảnh, thông tin chi phí         | Cho phép hiển thị public     |
+| **Quản lý tin tức / ưu đãi**          | CRUD bài viết, tag, hình thumbnail            | Rich text editor             |
+| **Quản lý tài khoản admin**           | Phân quyền, thêm/sửa admin                    | Vai trò: Super Admin / Staff |
+| **Báo cáo doanh thu**                 | Tổng hợp doanh thu, khách hàng, lượt truy cập | Xuất file CSV / Excel        |
+
+---
+
+## 💡 CÁC TÍNH NĂNG CHUYÊN BIỆT
+
+### A. Dành cho khách hàng
+
+* Xem mẫu tiệc, gallery ảnh / video 360°.
+* Tính chi phí tự động theo lựa chọn.
+* Gửi yêu cầu / đặt lịch tư vấn / xem sảnh.
+* Nhận email xác nhận sau khi gửi form.
+
+### B. Dành cho quản trị viên
+
+* Duyệt yêu cầu đặt tiệc, lên lịch tránh trùng.
+* Quản lý nội dung (thực đơn, sảnh, bài viết).
+* Xem thống kê doanh thu theo tháng / năm.
+* Quản lý tài khoản, phân quyền nhân viên.
+
+### C. Hệ thống
+
+* JWT Authentication + Role-based Authorization.
+* Upload ảnh (Multer + Cloudinary).
+* Gửi email tự động khi khách gửi form.
+* Backup database định kỳ.
+
+---
+
+## 🧱 CẤU TRÚC THƯ MỤC GỢI Ý
+
+### Frontend (`/client`)
+
+```
+src/
+  ├─ components/
+  ├─ pages/
+  │   ├─ Home/
+  │   ├─ About/
+  │   ├─ Menu/
+  │   ├─ WeddingThemes/
+  │   ├─ CostEstimator/
+  │   ├─ Booking/
+  │   ├─ News/
+  │   ├─ Contact/
+  │   ├─ Admin/
+  │   └─ Login/
+  ├─ redux/
+  ├─ services/
+  ├─ utils/
+  ├─ App.jsx
+```
+
+### Backend (`/server`)
+
+```
+src/
+  ├─ routes/
+  │   ├─ auth.js
+  │   ├─ booking.js
+  │   ├─ menu.js
+  │   ├─ theme.js
+  │   ├─ hall.js
+  │   ├─ news.js
+  │   ├─ admin.js
+  ├─ controllers/
+  ├─ models/
+  ├─ middleware/
+  ├─ utils/
+  ├─ app.js
+```
+
+---
+
+## 📅 LỘ TRÌNH PHÁT TRIỂN DỰ ÁN
+
+| Giai đoạn                         | Công việc                                                      | Thời gian |
+| --------------------------------- | -------------------------------------------------------------- | --------- |
+| **1. Phân tích & Thiết kế UI/UX** | Sitemap, wireframe, chọn màu thương hiệu, phong cách giao diện | 3 ngày    |
+| **2. Backend API**                | Thiết kế DB, JWT Auth, CRUD API, upload ảnh, gửi mail          | 7 ngày    |
+| **3. Frontend Public**            | Trang chủ, giới thiệu, mẫu cưới, ước tính chi phí, thực đơn    | 10 ngày   |
+| **4. Trang Admin**                | Dashboard, CRUD nội dung, báo cáo, phân quyền                  | 7 ngày    |
+| **5. Test & Deploy**              | Kiểm thử toàn hệ thống, deploy lên môi trường thật             | 3 ngày    |
+
+🕐 **Tổng thời gian dự kiến:** ~30 ngày làm việc.
+
+---
+
+## 🚀 HƯỚNG MỞ RỘNG TƯƠNG LAI
+
+* Thanh toán online (VNPay / Momo).
+* Chat realtime với nhân viên tư vấn.
+* Lịch hẹn xem sảnh đồng bộ Google Calendar.
+* Ứng dụng mobile (React Native / Expo).
+* Wedding Planner cá nhân: khách hàng đăng nhập, lưu kế hoạch cưới, checklist.
+* Blog chia sẻ kinh nghiệm cưới, SEO organic traffic.
+* AR/3D Preview sảnh cưới trực quan.
+
+---
+
+## 🧭 GỢI Ý SITEMAP (SEO-friendly URLs)
+
+```
+/ (Trang chủ)
+/gioi-thieu
+/khong-gian-va-mau-cuoi
+/thuc-don
+/uoc-tinh-chi-phi
+/album-khach-hang
+/tin-tuc
+/uu-dai
+/dat-lich-xem-sanh
+/lien-he
+/admin
+```
+
+---

@@ -1,38 +1,104 @@
 package com.demo.web.model;
 
+import com.demo.web.model.common.BaseEntity;
+import com.demo.web.model.enums.BookingStatus;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class Booking {
+@Table(name = "bookings")
+public class Booking extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String customerName;
+    @NotBlank
+    @Column(name = "bride_name", nullable = false, length = 150)
+    private String brideName;
+
+    @NotBlank
+    @Column(name = "groom_name", nullable = false, length = 150)
+    private String groomName;
+
+    @Email
+    @NotBlank
+    @Column(name = "email", nullable = false, length = 150)
     private String email;
+
+    @NotBlank
+    @Column(name = "phone", nullable = false, length = 30)
     private String phone;
-    private String location;
-    private Date weddingDate;
-    private int guestCount;
-    private Date createDate;
-    private Date updateDate;
+
+    @NotNull
+    @Column(name = "event_date", nullable = false)
+    private LocalDate eventDate;
+
+    @NotBlank
+    @Column(name = "time_slot", nullable = false, length = 50)
+    private String timeSlot;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hall_id")
+    private Hall hall;
+
+    @Positive
+    @Column(name = "guest_count")
+    private Integer guestCount;
+
+    @Column(name = "budget_min")
+    private BigDecimal budgetMin;
+
+    @Column(name = "budget_max")
+    private BigDecimal budgetMax;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 20)
+    private BookingStatus status = BookingStatus.PENDING;
+
+    @Size(max = 500)
+    @Column(name = "notes", length = 500)
+    private String notes;
+
+    @Column(name = "flag", length = 20)
     private String flag;
 
-    public Booking() {
+    @ElementCollection
+    @CollectionTable(
+            name = "booking_services",
+            joinColumns = @JoinColumn(name = "booking_id")
+    )
+    @Column(name = "service_code", length = 100)
+    private Set<String> services = new HashSet<>();
+
+    public String getBrideName() {
+        return brideName;
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setBrideName(String brideName) {
+        this.brideName = brideName;
     }
 
-    public Long getId() {
-        return id;
+    public String getGroomName() {
+        return groomName;
+    }
+
+    public void setGroomName(String groomName) {
+        this.groomName = groomName;
     }
 
     public String getEmail() {
@@ -51,44 +117,68 @@ public class Booking {
         this.phone = phone;
     }
 
-    public String getLocation() {
-        return location;
+    public LocalDate getEventDate() {
+        return eventDate;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setEventDate(LocalDate eventDate) {
+        this.eventDate = eventDate;
     }
 
-    public Date getWeddingDate() {
-        return weddingDate;
+    public String getTimeSlot() {
+        return timeSlot;
     }
 
-    public void setWeddingDate(Date weddingDate) {
-        this.weddingDate = weddingDate;
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
-    public int getGuestCount() {
+    public Hall getHall() {
+        return hall;
+    }
+
+    public void setHall(Hall hall) {
+        this.hall = hall;
+    }
+
+    public Integer getGuestCount() {
         return guestCount;
     }
 
-    public void setGuestCount(int guestCount) {
+    public void setGuestCount(Integer guestCount) {
         this.guestCount = guestCount;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public BigDecimal getBudgetMin() {
+        return budgetMin;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setBudgetMin(BigDecimal budgetMin) {
+        this.budgetMin = budgetMin;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public BigDecimal getBudgetMax() {
+        return budgetMax;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setBudgetMax(BigDecimal budgetMax) {
+        this.budgetMax = budgetMax;
+    }
+
+    public BookingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getFlag() {
@@ -99,12 +189,11 @@ public class Booking {
         this.flag = flag;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public Set<String> getServices() {
+        return services;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setServices(Set<String> services) {
+        this.services = services;
     }
-
 }

@@ -1,186 +1,220 @@
-
-.contacts {
+main.contacts {
     background-color: #52797c;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    max-width: 1080px;
     margin: 4% auto 40px;
+    color: #fff;
 }
 
-.contacts h2 {
+.contact-info h2 {
     text-align: center;
+    margin-bottom: 12px;
+    color: #f2d936;
+    font-size: 36px;
+}
+
+.contact-info p {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: 18px;
+}
+
+.branches {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.branches article {
+    flex: 1;
+    min-width: 240px;
+    background-color: rgba(16, 50, 56, 0.75);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.branches h3 {
+    color: #f2d936;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.branches p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+.message-area {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.message-wrapper {
+    flex: 2;
+    min-width: 320px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.message-wrapper h3 {
     margin-bottom: 20px;
     color: #f2d936;
 }
 
-.navbar {
+#feedbackForm {
     display: flex;
-    justify-content: space-around;
-    height: 18vh;
+    flex-direction: column;
+    gap: 18px;
 }
 
-.branch {
-    cursor: pointer;
-    color: #f2d936;
-    font-size: 18px;
-    font-weight: bold;
-    margin: 10px 0;
+.form-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
 }
 
-.contacts-info {
-    display: none; /* Ẩn thông tin chi nhánh mặc định */
-    padding: 10px;
-    background-color: white;
-    border: 1px solid #ccc;
+.form-group {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px;
     border-radius: 8px;
-    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #1a1a1a;
+    transition: border-color 0.2s ease;
 }
 
-.contacts-info p {
-    margin: 5px 0;
-    font-size: 14px;
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #f2d936;
+    box-shadow: 0 0 0 3px rgba(242, 217, 54, 0.25);
 }
 
-.contacts-info a {
-    color: #000000;
-    text-decoration: none;
-}
-
-.contacts-info a:hover {
-    text-decoration: underline;
-}
-
-
-.contacts form {
-    display: grid;
-    gap: 15px;
-}
-
-.contacts label {
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.contacts input, .contacts textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.contacts textarea {
-    height: 150px;
+.form-group textarea {
+    min-height: 150px;
     resize: vertical;
-}
-
-.contacts button {
-    width: 25%;
-    height: 45px;
-    background-color: #f2d936;
-    color: #000000;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-.contacts button:hover {
-    background-color: #f3e96a;
-}
-
-.map {
-    text-align: center;
-    margin-top: 30px;
 }
 
 .button-summit {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
 }
 
-.message-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #f2d936;
-    padding: 10px 0;
+.button-summit button {
+    padding: 12px 36px;
+    background-color: #f2d936;
+    color: #1a1a1a;
+    border-radius: 999px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/*feedback*/
-/* Thiết lập cho thanh chứa slider */
+.button-summit button:hover {
+    background-color: #f5e979;
+    transform: translateY(-2px);
+}
+
 .feedback {
-    width: 47%;
-    overflow: hidden;
-    background-color: rgba(232, 207, 172, 0.76);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    flex: 1;
+    min-width: 260px;
+    background-color: rgba(247, 246, 239, 0.95);
+    border-radius: 16px;
+    padding: 20px;
+    color: #103238;
+    box-shadow: inset 0 0 0 1px rgba(16, 50, 56, 0.08);
 }
 
-/* Căn chỉnh các slide dưới dạng khối chữ nhật */
+.feedback h3 {
+    margin-bottom: 16px;
+    text-align: center;
+}
+
 .feedback .slider {
     display: flex;
-    gap: 15px; /* Khoảng cách giữa các khối */
-    animation: slideShow 3s ease-in-out;
-    width: 100%;
-}
-
-/* Thiết lập cho từng slide */
-.feedback .slide {
-    width: 300px;
-    min-height: 150px;
-    min-width: 250px;
-    background-color: #dcd14fba;
-    border: 2px solid #bebbbb;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    text-align: left;
-    opacity: 0; /* Bắt đầu ở trạng thái mờ */
-    transform: translateX(50px); /* Bắt đầu ở vị trí dịch sang trái */
-    transition: opacity 1s ease, transform 3s ease;
+    gap: 16px;
+    max-height: 320px;
+    overflow: hidden;
 }
 
-/* Tiêu đề là tên khách hàng */
+.feedback .slide {
+    background-color: rgba(242, 217, 54, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(16, 50, 56, 0.1);
+    box-shadow: 0 4px 8px rgba(16, 50, 56, 0.08);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.feedback .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .feedback .slide h4 {
-    font-size: 1.1em;
-    color: #333;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-/* Nội dung phản hồi */
-.feedback .slide p {
     font-size: 1em;
-    color: #666;
-    line-height: 1.4em;
+    color: #0a3d3f;
+    margin-bottom: 8px;
+    font-weight: 700;
 }
 
-/* Hiệu ứng chuyển động cho slider */
-@keyframes slideShow {
-    /*0% { transform: translateX(0%); }*/
-    /*33% { transform: translateX(-100%); }*/
-    /*66% { transform: translateX(-200%); }*/
-    /*100% { transform: translateX(0%); }*/
-    0% {
-        opacity: 1;
-        transform: translateX(0);
+.feedback .slide p {
+    font-size: 0.95em;
+    color: #2f4749;
+    line-height: 1.5;
+}
+
+.footer-content {
+    text-align: center;
+    padding: 20px 0;
+    color: #fff;
+    background: #103238;
+    margin-top: 40px;
+    border-radius: 0 0 16px 16px;
+}
+
+@media (max-width: 992px) {
+    main.contacts {
+        padding: 30px 20px;
     }
-    50%{
-        opacity: 0.5;
-        transform: translateX(50px);
+
+    .branches {
+        flex-direction: column;
     }
-    100% {
-        opacity: 0;
-        transform: translateX(50px);
+
+    .message-area {
+        flex-direction: column;
+    }
+
+    .button-summit {
+        justify-content: center;
+    }
+
+    .feedback {
+        width: 100%;
     }
 }

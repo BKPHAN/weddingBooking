@@ -6,74 +6,157 @@ body {
 }
 
 .container {
-    width: 60%;
+    width: 70%;
     margin: 40px auto;
     background-color: #52797c;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 58px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    padding: 48px 40px;
     min-height: 83vh;
+    color: #fff;
 }
 
 .title {
     text-align: center;
     color: #f2d936;
-    font-size: 45px;
+    font-size: 40px;
+    margin-bottom: 12px;
 }
 
-form {
+.subtitle {
+    text-align: center;
+    color: #f7f6ef;
+    margin-bottom: 36px;
+    font-size: 18px;
+}
+
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label,
+fieldset legend {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+input,
+select,
+textarea {
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #1a1a1a;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #f2d936;
+    box-shadow: 0 0 0 3px rgba(242, 217, 54, 0.3);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.services {
+    border: 1px dashed rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-label {
-    font-weight: bold;
-}
-
-input, select, button {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-}
-
-textarea {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    resize: vertical;
-}
-
-button {
-    width: 25%;
-    height: 45px;
-    background-color: #f2d936;
-    color: #000000;
-    cursor: pointer;
+.services label {
     display: flex;
-    justify-content: center;
     align-items: center;
-    border-radius: 10px;
-    font-weight: bold;
+    gap: 10px;
+    font-weight: 500;
 }
 
-button:hover {
-    background-color: #f3e96a;
-}
-
-.confirmation {
-    display: none;
-    margin-top: 30px;
-    padding: 15px;
-    background-color: #e0f7e0;
-    border: 1px solid #f2d936;
-    border-radius: 8px;
+.services input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #f2d936;
 }
 
 .button-summit {
     display: flex;
     justify-content: center;
-    align-items: center;
+}
+
+.button-summit button {
+    width: auto;
+    padding: 14px 40px;
+    background-color: #f2d936;
+    color: #1a1a1a;
+    cursor: pointer;
+    border-radius: 999px;
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.button-summit button:hover {
+    background-color: #f6e671;
+    transform: translateY(-2px);
+}
+
+.confirmation {
+    margin-top: 30px;
+    padding: 24px;
+    background-color: rgba(224, 247, 224, 0.9);
+    border: 1px solid #f2d936;
+    border-radius: 12px;
+    color: #0a3d3f;
+}
+
+.confirmation[hidden] {
+    display: none;
+}
+
+.footer-content {
+    text-align: center;
+    padding: 24px 0;
+    color: #fff;
+    background: #103238;
+}
+
+@media (max-width: 992px) {
+    .container {
+        width: 90%;
+        padding: 36px 24px;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        width: 100%;
+    }
 }

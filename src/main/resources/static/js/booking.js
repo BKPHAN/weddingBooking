@@ -1,50 +1,74 @@
-document.getElementById('bookingForm').addEventListener('submit', async function (event) {
+const bookingForm = document.getElementById('bookingForm');
+const confirmationBox = document.getElementById('confirmation');
+const confirmationText = document.getElementById('confirmationText');
+
+bookingForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    // Lấy thông tin từ form
-    const customerName = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
-    const weddingDate = document.getElementById('date').value;
-    const guestCount = document.getElementById('guests').value;
-    const offer = document.getElementById('offer').value;
+    const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(
+        (item) => item.value
+    );
 
-    // Tạo dữ liệu gửi đến API
-    const bookingData = {customerName, phone, email, weddingDate, guestCount, offer};
+    const payload = {
+        brideName: document.getElementById('brideName').value.trim(),
+        groomName: document.getElementById('groomName').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        eventDate: document.getElementById('eventDate').value,
+        timeSlot: document.getElementById('timeSlot').value,
+        hallId: document.getElementById('hallId').value
+            ? Number(document.getElementById('hallId').value)
+            : null,
+        guestCount: Number(document.getElementById('guestCount').value),
+        budgetMin: document.getElementById('budgetMin').value
+            ? Number(document.getElementById('budgetMin').value)
+            : null,
+        budgetMax: document.getElementById('budgetMax').value
+            ? Number(document.getElementById('budgetMax').value)
+            : null,
+        notes: document.getElementById('notes').value.trim(),
+        services
+    };
 
     try {
-        // Gửi dữ liệu tới API
         const response = await fetch('/api/booking', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(bookingData),
+            body: JSON.stringify(payload)
         });
-
-        // Kiểm tra phản hồi từ API
-        if (!response.ok) {
-            alert('Gửi thông tin đặt tiệc thất bại! Vui lòng kiểm tra lại thông tin');
-        }
 
         const result = await response.json();
 
-        // Kiểm tra phản hồi từ API (true/false)
-        if (result === true) {
-            if(confirm("Thông tin đặt tiệc đã được gửi thành công! Chúng tôi xin cảm ơn đã tin tưởng sử dụng dịch vụ của chúng tôi!"))
-                // Sau khi gửi thành công, gọi lại GET để lấy các phản hồi mới nhất
-                location.reload();
-        } else {
-            alert('Failed to submit feedback');
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || 'Không thể gửi yêu cầu đặt tiệc');
         }
+
+        bookingForm.reset();
+        document.querySelectorAll('input[name="services"]').forEach((item) => (item.checked = false));
+
+        const summary = result.data || {};
+        const hallInfo = summary.hallName ? `Sảnh: ${summary.hallName}` : 'Sảnh: Đang được tư vấn';
+        const servicesInfo =
+            summary.services && summary.services.length > 0
+                ? `Dịch vụ bổ sung: ${summary.services.join(', ')}`
+                : 'Dịch vụ bổ sung: chưa chọn';
+
+        confirmationText.innerHTML = `
+            <strong>${result.message}</strong><br>
+            Người liên hệ: ${summary.brideName ?? ''} & ${summary.groomName ?? ''}<br>
+            Ngày tổ chức: ${summary.eventDate ?? ''} (${summary.timeSlot ?? ''})<br>
+            ${hallInfo}<br>
+            ${servicesInfo}
+        `;
+        confirmationBox.hidden = false;
     } catch (error) {
-        console.error('Lỗi khi gửi thông tin đặt tiệc:', error);
+        console.error('Lỗi khi gửi yêu cầu đặt tiệc:', error);
+        alert(error.message);
     }
-    // Xóa dữ liệu trong form
-    document.getElementById('bookingForm').reset();
 });
 
-
-document.getElementById('phone').addEventListener('input', function (e) {
-    this.value = this.value.replace(/[^0-9]/g, ''); // Loại bỏ tất cả các ký tự không phải số
+document.getElementById('phone').addEventListener('input', function () {
+    this.value = this.value.replace(/[^0-9]/g, '');
 });

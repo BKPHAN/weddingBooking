@@ -1,101 +1,145 @@
-const navbarMenu = document.querySelector(".navbar .links");
-const hamburgerBtn = document.querySelector(".hamburger-btn");
-const hideMenuBtn = navbarMenu.querySelector(".close-btn");
-const showPopupBtn = document.querySelector(".login-btn");
-const formPopup = document.querySelector(".form-popup");
-const hidePopupBtn = formPopup.querySelector(".close-btn");
-const signupLoginLink = formPopup.querySelectorAll(".bottom-link a");
+document.addEventListener('DOMContentLoaded', () => {
+    const navbarMenu = document.querySelector('.navbar .links');
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    const hideMenuBtn = navbarMenu?.querySelector('.close-btn');
+    const showPopupBtn = document.querySelector('.login-btn');
+    const formPopup = document.querySelector('.form-popup');
+    const hidePopupBtn = formPopup?.querySelector('.close-btn');
+    const signupLoginLinks = formPopup ? formPopup.querySelectorAll('.bottom-link a') : [];
 
-// Show mobile menu
-hamburgerBtn.addEventListener("click", () => {
-    navbarMenu.classList.toggle("show-menu");
-});
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
 
-// Hide mobile menu
-hideMenuBtn.addEventListener("click", () =>  hamburgerBtn.click());
+    if (formPopup) {
+        document.body.classList.add('show-popup');
+    }
 
-// Show login popup
-showPopupBtn.addEventListener("click", () => {
-    document.body.classList.toggle("show-popup");
-});
+    if (hamburgerBtn && navbarMenu) {
+        hamburgerBtn.addEventListener('click', () => {
+            navbarMenu.classList.toggle('show-menu');
+        });
+    }
 
-// Hide login popup
-hidePopupBtn.addEventListener("click", () => showPopupBtn.click());
+    if (hideMenuBtn && hamburgerBtn) {
+        hideMenuBtn.addEventListener('click', () => hamburgerBtn.click());
+    }
 
-// Show or hide signup form
-signupLoginLink.forEach(link => {
-    link.addEventListener("click", (e) => {
-        e.preventDefault();
-        formPopup.classList[link.id === 'signup-link' ? 'add' : 'remove']("show-signup");
+    if (showPopupBtn) {
+        showPopupBtn.addEventListener('click', () => {
+            document.body.classList.toggle('show-popup');
+        });
+    }
+
+    if (hidePopupBtn && showPopupBtn) {
+        hidePopupBtn.addEventListener('click', () => showPopupBtn.click());
+    }
+
+    signupLoginLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (!formPopup) {
+                return;
+            }
+            formPopup.classList[link.id === 'signup-link' ? 'add' : 'remove']('show-signup');
+        });
     });
-});
 
-document.getElementById('login-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Ngăn không cho form submit mặc định
+    loginForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    // Lấy giá trị từ form
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+        const identifier = document.getElementById('login-identifier')?.value.trim();
+        const password = document.getElementById('login-password')?.value ?? '';
 
-    try {
-        // Gửi yêu cầu POST tới API đăng nhập
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        // Xử lý kết quả
-        if (response.ok) {
-                // Nếu đăng nhập thành công, chuyển hướng sang '/wedding'
-                window.location.href = '/wedding'; // Chuyển hướng trang
-        } else {
-            // Nếu thất bại, hiển thị thông báo lỗi
-            const errorMessage = await response.text();
-            alert(errorMessage || 'Login failed');
+        if (!identifier || !password) {
+            alert('Please enter username/email and password.');
+            return;
         }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
-    }
-});
 
-document.getElementById('signup-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Ngăn không cho form submit mặc định
+        try {
+            const response = await fetch('/api/v1/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    usernameOrEmail: identifier,
+                    password
+                })
+            });
 
-    // Lấy giá trị từ form
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const isPolicyChecked = document.getElementById('policy').checked;
+            if (!response.ok) {
+                const errorPayload = await response.json().catch(() => null);
+                throw new Error(errorPayload?.message || 'Login failed');
+            }
 
-    if (!isPolicyChecked) {
-        alert("You must agree to the Terms & Conditions.");
-        return;
-    }
+            const auth = await response.json();
+            if (auth.accessToken) {
+                localStorage.setItem('accessToken', auth.accessToken);
+            }
+            if (auth.refreshToken) {
+                localStorage.setItem('refreshToken', auth.refreshToken);
+            }
 
-    try {
-        // Gửi yêu cầu POST tới API đăng ký
-        const response = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, password }),
-        });
+            if (auth.primaryRole) {
+                localStorage.setItem('primaryRole', auth.primaryRole);
+            }
 
-        // Xử lý kết quả
-        if (response.ok) {
-            alert('Registration successful');
-            window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
-        } else {
-            const errorMessage = await response.text();
-            alert(errorMessage || 'Registration failed');
+            const redirectUrl = auth.redirectUrl
+                || (auth.primaryRole === 'ADMIN' ? '/admin/dashboard' : '/user/dashboard');
+
+            window.location.href = redirectUrl;
+        } catch (error) {
+            console.error('Login error:', error);
+            alert(error.message || 'Unable to login. Please try again.');
         }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
-    }
+    });
+
+    signupForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const fullName = document.getElementById('signup-fullname')?.value.trim();
+        const username = document.getElementById('signup-username')?.value.trim();
+        const email = document.getElementById('signup-email')?.value.trim();
+        const password = document.getElementById('signup-password')?.value ?? '';
+        const policyChecked = document.getElementById('signup-policy')?.checked ?? false;
+
+        if (!policyChecked) {
+            alert('You must agree to the Terms & Conditions.');
+            return;
+        }
+
+        if (!fullName || !username || !email || !password) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/v1/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fullName,
+                    username,
+                    email,
+                    password
+                })
+            });
+
+            if (!response.ok) {
+                const errorPayload = await response.json().catch(() => null);
+                throw new Error(errorPayload?.message || 'Registration failed');
+            }
+
+            alert('Registration successful. Please log in.');
+            signupForm.reset();
+            if (formPopup?.classList.contains('show-signup')) {
+                formPopup.classList.remove('show-signup');
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert(error.message || 'Unable to register. Please try again.');
+        }
+    });
 });

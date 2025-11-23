@@ -1,51 +1,60 @@
 package com.demo.web.model;
 
+import com.demo.web.model.common.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
-public class Contact {
+@Table(name = "contacts")
+public class Contact extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @NotBlank
+    @Column(name = "full_name", nullable = false, length = 150)
+    private String fullName;
 
-    private String username;
+    @Email
+    @NotBlank
+    @Column(name = "email", nullable = false, length = 150)
     private String email;
+
+    @NotBlank
+    @Column(name = "phone", nullable = false, length = 30)
+    private String phone;
+
+    @Size(max = 200)
+    @Column(name = "subject", length = 200)
+    private String subject;
+
+    @NotBlank
+    @Size(max = 1000)
+    @Column(name = "message", nullable = false, length = 1000)
     private String message;
-    private Date createDate;
-    private Date updateDate;
+
+    @Column(name = "flag", length = 20)
     private String flag;
 
-    public Contact() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_to")
+    private User assignedTo;
+
+    @Column(name = "resolved_at")
+    private LocalDateTime resolvedAt;
+
+    public String getFullName() {
+        return fullName;
     }
 
-    public Contact(String username, String email, String message, Date createDate, Date updateDate, String flag) {
-        this.username = username;
-        this.email = email;
-        this.message = message;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-        this.flag = flag;
-    }
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -56,6 +65,22 @@ public class Contact {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -64,27 +89,27 @@ public class Contact {
         this.message = message;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
     public String getFlag() {
         return flag;
     }
 
     public void setFlag(String flag) {
         this.flag = flag;
+    }
+
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public LocalDateTime getResolvedAt() {
+        return resolvedAt;
+    }
+
+    public void setResolvedAt(LocalDateTime resolvedAt) {
+        this.resolvedAt = resolvedAt;
     }
 }

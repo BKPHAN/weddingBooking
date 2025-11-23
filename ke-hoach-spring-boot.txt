@@ -1,0 +1,97 @@
+# Kế hoạch phát triển website trung tâm tiệc cưới (Java Spring Boot)
+
+## 1. Mục tiêu & phạm vi
+- Xây dựng hệ thống giới thiệu, đặt lịch và quản lý dịch vụ cưới hỏi cho trung tâm.
+- Tối ưu trải nghiệm người dùng trên website công khai, đồng thời cung cấp công cụ quản trị nội bộ giàu tính năng.
+- Bảo đảm khả năng mở rộng trong tương lai (thanh toán trực tuyến, tích hợp CRM, báo cáo nâng cao).
+
+## 2. Nền tảng công nghệ chính
+- Backend: Java 17, Spring Boot 3.x, Spring MVC, Spring Data JPA (Hibernate), Spring Security, Validation API.
+- View layer: Thymeleaf + Spring Web, cấu hình `spring.thymeleaf.encoding=UTF-8`, meta `charset="UTF-8"` và font chữ hỗ trợ tiếng Việt (ví dụ: `Roboto`, `Open Sans`, `Inter`).
+- Database: MySQL 8+, Flyway quản lý schema (đồng bộ thư mục `database/`).
+- Build & CI: Maven Wrapper (`mvnw`), JUnit 5, Spring Test, Mockito, JaCoCo báo cáo coverage.
+- Triển khai: Docker (Spring Boot JAR + MySQL), môi trường staging trên VPS/Cloud; giám sát bằng Prometheus/Grafana ở giai đoạn sau.
+
+## 3. Kiến trúc hệ thống
+- Phân tách lớp theo package sẵn có: `controller`, `service`, `repository`, `model`, `config`.
+- DTO/Mapper: sử dụng MapStruct hoặc mapper thủ công cho API JSON để tách biệt Entity và payload.
+- Xác thực & phân quyền: Spring Security + JWT stateless (Bearer Token) cho API, access token hiệu lực 24 giờ, refresh token 7 ngày; lưu refresh token bảo mật (HTTP-only cookie hoặc bảng `refresh_tokens`) và hỗ trợ endpoint làm mới token.
+- Logging & giám sát: Spring Boot Actuator + Logback (rolling file), log audit cho thay đổi booking.
+- Quản lý migration: Flyway chạy tự động khi ứng dụng khởi động, áp dụng các script mới trong `database/migration/`, kiểm soát version và rollback phù hợp.
+- Cấu hình UTF-8 toàn ứng dụng: `server.servlet.encoding.charset=UTF-8`, `spring.datasource.url` kèm `useUnicode=true&characterEncoding=utf8`.
+
+## 4. Module chức năng
+- **Trang công khai**
+  - Home (`/wedding`): banner, gói dịch vụ, liên kết nhanh tới đặt lịch và ưu đãi.
+  - About (`/about`): nội dung giới thiệu, timeline, giá trị cốt lõi; quản trị viên cập nhật qua CMS nhỏ.
+  - Services (`/services`): danh sách gói tiệc, menu mẫu, dịch vụ bổ sung; lọc theo phong cách, ngân sách.
+  - Booking (`/booking` + API POST `/api/booking`): form đặt lịch đầy đủ thông tin cô dâu/chú rể, số khách, sảnh, thời gian, yêu cầu đặc biệt.
+  - Contact (`/contact` + API POST `/api/feedbacks`): tiếp nhận câu hỏi, phản hồi; gửi email thông báo cho quản trị viên.
+  - Thư viện media (`/album`): album ảnh/video, xem chi tiết; API `/api/galleries` phục vụ AJAX tải nội dung.
+- **Quản trị viên (Admin)**
+  - Xác thực: trang `/login`, API `/admin/auth/login` (JWT stateless, login một lần); vai trò `ADMIN`, `STAFF`; endpoint `/admin/auth/refresh` cấp access token mới trong 24h dựa trên refresh token 7 ngày.
+  - Dashboard: thống kê booking theo trạng thái, doanh thu dự kiến, phản hồi mới nhất.
+  - Quản lý booking: danh sách, lọc, thay đổi trạng thái (`PENDING/CONFIRMED/CANCELLED`), xuất CSV/PDF.
+  - Quản lý contact: gán người xử lý, theo dõi SLA, đánh dấu đã phản hồi.
+  - Quản lý nội dung: CRUD halls, menus, promotions, news/blog; upload ảnh lên S3/Cloudinary hoặc lưu trong `static/images`.
+- **Tính năng nổi bật đề xuất**
+  - Chatbot tư vấn AI: tích hợp LLM hỗ trợ gợi ý gói tiệc, thực đơn, timeline theo ngân sách; lưu lịch sử tư vấn cho nhân viên chăm sóc.
+  - Dashboard realtime: sử dụng WebSocket cập nhật lịch đặt, cảnh báo sảnh trống, nhắc hợp đồng cần ký và các sự kiện quan trọng.
+  - Công cụ ước tính chi phí động: cho phép kéo-thả gói dịch vụ, so sánh ngân sách, xuất báo giá PDF/email và lưu kịch bản tuỳ chỉnh.
+  - Bộ sưu tập 360°/AR: hiển thị mô phỏng sảnh cưới, trang trí đa phong cách, hỗ trợ trải nghiệm AR trên thiết bị di động.
+  - Loyalty & referral: quản lý điểm thưởng, mã giới thiệu, tự động gợi ý ưu đãi cá nhân hoá theo hành vi khách hàng.
+  - Tự động hoá lịch & checklist: đồng bộ Google Calendar/Outlook, gửi email/SMS nhắc việc, checklist chuẩn bị cho từng cặp đôi.
+- **Tích hợp mở rộng**
+  - Email/SMS thông báo (Spring Mail, Twilio).
+  - Lịch hẹn đồng bộ Google Calendar.
+  - Payment gateway (VNPay/MoMo) cho đặt cọc trực tuyến.
+
+## 5. Thiết kế dữ liệu (MySQL)
+- `users`: id (PK), username, email, password_hash (BCrypt), full_name, role (ENUM USER/ADMIN/STAFF), status, created_at, updated_at.
+- `roles` (tùy chọn): id, code, description; bảng phụ `user_roles`.
+- `bookings`: id, bride_name, groom_name, phone, email, event_date, time_slot, hall_id (FK), guest_count, budget_min, budget_max, services (JSON), status, notes, create_date, update_date, flag.
+- `contacts`: id, full_name, email, phone, subject, message, flag, create_date, update_date, assigned_to, resolved_at.
+- `halls`: id, code, name, capacity, base_price, description, amenities (JSON), image_url, display_order, is_active.
+- `menus`: id, name, price, description, category, image_url, is_featured.
+- `promotions`: id, title, slug, description, start_date, end_date, terms.
+- `media_items`: id, title, type (IMAGE/VIDEO), url, thumbnail_url, album_id, display_order.
+- Liên kết: booking tham chiếu hall; bảng phụ `booking_services` quản lý dịch vụ add-on; `media_albums` nếu cần nhóm ảnh.
+- Migration: xây dựng Flyway scripts `database/migration/V1__init.sql`, `V2__seed_data.sql` tương ứng.
+
+## 6. API & routing đề xuất
+- Prefix REST `/api/v1/**` cho giao tiếp JSON (AJAX từ admin hoặc SPA tương lai).
+- Endpoint mẫu:
+  - POST `/api/v1/auth/login`, POST `/api/v1/auth/register`.
+  - GET/POST `/api/v1/bookings`, PATCH `/api/v1/bookings/{id}/status`, GET `/api/v1/bookings/dashboard`.
+  - GET/POST `/api/v1/contacts`, PATCH `/api/v1/contacts/{id}` cập nhật trạng thái.
+  - CRUD `/api/v1/halls`, `/api/v1/menus`, `/api/v1/promotions`, `/api/v1/media`.
+- Tách `@RestController` cho API và giữ `WeddingController` trả về view Thymeleaf; đảm bảo response `Content-Type: application/json;charset=UTF-8`.
+
+## 7. Kiểm thử & đảm bảo chất lượng
+- Unit test cho lớp `service` (mock repository) bằng Mockito.
+- Integration test với `@SpringBootTest` + H2, kiểm tra đường dẫn booking/contact và xử lý UTF-8.
+- Kiểm thử giao diện: Spring MockMvc + Selenium cho các form tiếng Việt, xác nhận render đúng font.
+- Pipeline: `mvnw clean verify`, thất bại nếu coverage < 70%; xuất báo cáo JaCoCo.
+- QA checklist: UI responsive, xác thực đầu vào hai tầng (frontend + backend), thông báo lỗi tiếng Việt rõ ràng.
+
+## 8. Lộ trình thực hiện (30 ngày làm việc dự kiến)
+- Tuần 1: Phân tích yêu cầu chi tiết, thiết kế DB, setup Spring Boot (Java 17), cấu hình UTF-8, Spring Security cơ bản.
+- Tuần 2: Hoàn thiện module booking/contact (Entity, Repository, Service, API, form validation), viết unit test nền tảng.
+- Tuần 3: Xây dựng admin dashboard, module quản lý hall/menu/promotion, phát triển API JSON và giao diện Thymeleaf đa ngôn ngữ.
+- Tuần 4: Tích hợp email thông báo, hoàn thiện UI, viết test tích hợp, tối ưu triển khai Docker, chuẩn bị tài liệu bàn giao.
+- Buffer 2-3 ngày: sửa lỗi, rà soát hiệu năng, hoàn tất tài liệu hướng dẫn sử dụng.
+
+## 9. Deliverables
+- Source code Spring Boot theo cấu trúc `src/main/java/com/demo/web`, tuân thủ cấu hình UTF-8.
+- Bộ template Thymeleaf hỗ trợ tiếng Việt, định nghĩa font chữ thống nhất trong `static/css`.
+- Script Flyway + hướng dẫn import dữ liệu mẫu (`database/seed/`).
+- Tài liệu hướng dẫn admin (PDF/Markdown), tài liệu cài đặt (README cập nhật).
+- Báo cáo test + kết quả build (JUnit, JaCoCo), checklist kiểm thử giao diện tiếng Việt.
+- Tài liệu cấu hình bảo mật JWT (lưu refresh token an toàn, timeout access/refresh, quy trình làm mới) và quy trình Flyway migrate/rollback.
+
+## 10. Định hướng phát triển tương lai
+- Chuyển frontend sang SPA (React/Next.js) sử dụng API hiện có, vẫn giữ chuẩn UTF-8.
+- Tích hợp thanh toán, chatbot AI, hệ thống loyalty, quản lý ưu đãi theo thành viên.
+- Ứng dụng di động (Flutter/React Native) tái sử dụng API, hỗ trợ thông báo đẩy.
+- Mở rộng analytics: đồng bộ dữ liệu sang Power BI/Metabase, dashboard realtime cho ban điều hành.
+- Nâng cấp trải nghiệm thực tế ảo/tăng cường (VR/AR), cải tiến chatbot với tri thức nội bộ, mở rộng tự động hoá workflow và cross-channel marketing.

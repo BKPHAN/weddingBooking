@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng điều khiển Quản trị</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<header class="admin-header">
+    <h1>Trung Tâm Tiệc Cưới - Quản trị</h1>
+    <nav>
+        <a href="/admin/dashboard">Tổng quan</a>
+        <a href="/admin/content">Nội dung</a>
+        <a href="/wedding">Trang công khai</a>
+    </nav>
+</header>
+
+<main class="admin-container">
+    <div id="dashboard-error" class="error-banner"></div>
+
+    <section class="cards">
+        <div class="card">
+            <h3>Tổng số đặt tiệc</h3>
+            <p id="total-bookings">--</p>
+        </div>
+        <div class="card">
+            <h3>Doanh thu dự kiến</h3>
+            <p id="expected-revenue">--</p>
+        </div>
+        <div class="card">
+            <h3>Liên hệ chưa xử lý</h3>
+            <p id="pending-contacts">--</p>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Đặt tiệc theo trạng thái</h2>
+        <div id="booking-status-bars" class="cards" style="grid-template-columns: repeat(auto-fit,minmax(280px,1fr));"></div>
+    </section>
+
+    <section>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h2 class="section-title" style="margin-bottom:0;">Lịch đặt sắp diễn ra</h2>
+            <div>
+                <label for="booking-filter" style="margin-right:8px;">Khoảng thời gian</label>
+                <select id="booking-filter">
+                    <option value="7">7 ngày</option>
+                    <option value="30" selected>30 ngày</option>
+                    <option value="90">90 ngày</option>
+                </select>
+            </div>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>Cô dâu &amp; Chú rể</th>
+                <th>Ngày</th>
+                <th>Khung giờ</th>
+                <th>Sảnh</th>
+                <th>Khách</th>
+            </tr>
+            </thead>
+            <tbody id="upcoming-bookings-body">
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2 class="section-title">Liên hệ gần nhất</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Email</th>
+                <th>Chủ đề</th>
+                <th>Gắn cờ</th>
+                <th>Thời gian tạo</th>
+            </tr>
+            </thead>
+            <tbody id="recent-contacts-body">
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<script th:src="@{/js/admin-dashboard.js}" defer></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fb;
+    margin: 0;
+}
+
+.admin-header {
+    background: #103238;
+    color: #fff;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header a {
+    color: #f2d936;
+    margin-left: 16px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.admin-container {
+    padding: 24px 32px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.card h3 {
+    margin: 0 0 8px;
+    color: #103238;
+}
+
+.card p {
+    margin: 4px 0;
+    color: #51636d;
+}
+
+.section-title {
+    margin: 32px 0 12px;
+    font-size: 20px;
+    color: #103238;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e6ecf2;
+    text-align: left;
+}
+
+th {
+    background: #103238;
+    color: #fff;
+}
+
+.form-wrapper {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.form-grid > div {
+    min-width: 0; /* allow long placeholders to wrap instead of forcing overflow */
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    color: #103238;
+    margin-bottom: 6px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #c9d6de;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+button {
+    background: #f2d936;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background: #f5e572;
+}
+
+.error-banner {
+    background: #ffecec;
+    color: #a94442;
+    border: 1px solid #f5c6cb;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display: none;
+}
