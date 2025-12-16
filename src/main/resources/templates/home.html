@@ -13,11 +13,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        .hero-slider {
-            height: 90vh;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -25,9 +21,30 @@
     <!-- Header Fragment -->
     <div th:replace="~{fragments/header :: header}"></div>
 
-    <!-- Hero Section -->
-    <section class="hero-slider">
-        <img th:src="@{/images/slider/slider1.jpg}" class="hero-bg" alt="Hero Background">
+    <!-- Hero Section with Slideshow -->
+    <section class="hero-slider" id="heroSlider">
+        <!-- Background Slides -->
+        <div class="hero-slides-container">
+            <div class="hero-slide active">
+                <img th:src="@{/images/banner/slider1.jpg}" alt="Wedding Hall 1">
+            </div>
+            <div class="hero-slide">
+                <img th:src="@{/images/banner/slider2.jpg}" alt="Wedding Hall 2">
+            </div>
+            <div class="hero-slide">
+                <img th:src="@{/images/banner/slider3.jpg}" alt="Wedding Hall 3">
+            </div>
+        </div>
+
+        <!-- Slide Navigation Arrows -->
+        <button class="hero-slider-btn prev" onclick="moveHeroSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="hero-slider-btn next" onclick="moveHeroSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <!-- Hero Content (Overlaid) -->
         <div class="hero-content container">
             <p
                 style="font-family: var(--font-accent); font-size: 3rem; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
@@ -169,7 +186,7 @@
         <div class="container">
             <h2 class="text-center text-teal" style="margin-bottom: 50px;">Khoảnh Khắc Hạnh Phúc</h2>
 
-            <div class="carousel-container carousel-col-3" id="carousel-gallery" data-interval="3000">
+            <div class="carousel-container carousel-col-3 carousel-3d" id="carousel-gallery" data-interval="3000">
                 <div class="carousel-track">
                     <div class="carousel-slide">
                         <div class="card" style="padding: 0; overflow: hidden; height: 300px;">
@@ -199,6 +216,37 @@
                         <div class="card" style="padding: 0; overflow: hidden; height: 300px;">
                             <img src="https://tranganpalace.vn/wp-content/uploads/2023/12/630A8677.jpg"
                                 style="height: 100%; width: 100%; object-fit: cover;" alt="Gallery">
+                        </div>
+                    </div>
+                    <!-- Cloned Items -->
+                    <div class="carousel-slide">
+                        <div class="card" style="padding: 0; overflow: hidden; height: 300px;">
+                            <img src="https://tranganpalace.vn/wp-content/uploads/2023/12/630A8679.jpg"
+                                style="height: 100%; width: 100%; object-fit: cover;" alt="Gallery Copy 1">
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="card" style="padding: 0; overflow: hidden; height: 300px;">
+                            <img src="https://tranganpalace.vn/wp-content/uploads/2023/11/WDN25110.jpg"
+                                style="height: 100%; width: 100%; object-fit: cover;" alt="Gallery Copy 2">
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="card" style="padding: 0; overflow: hidden; height: 300px;">
+                            <img src="https://tranganpalace.vn/wp-content/uploads/2023/10/IMG_3575-scaled-e1696403334795.jpg"
+                                style="height: 100%; width: 100%; object-fit: cover;" alt="Gallery Copy 3">
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="card" style="padding: 0; overflow: hidden; height: 300px;">
+                            <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/trang-an-palace-42.jpg"
+                                style="height: 100%; width: 100%; object-fit: cover;" alt="Gallery Copy 4">
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="card" style="padding: 0; overflow: hidden; height: 300px;">
+                            <img src="https://tranganpalace.vn/wp-content/uploads/2023/12/630A8677.jpg"
+                                style="height: 100%; width: 100%; object-fit: cover;" alt="Gallery Copy 5">
                         </div>
                     </div>
                 </div>

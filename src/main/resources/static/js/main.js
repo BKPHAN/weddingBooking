@@ -5,6 +5,63 @@
 // =======================
 
 // =======================
+// HERO BANNER SLIDESHOW
+// =======================
+let heroSlideIndex = 0;
+let heroSlideTimer = null;
+
+function moveHeroSlide(direction) {
+    const container = document.querySelector('.hero-slides-container');
+    const slides = document.querySelectorAll('.hero-slide');
+    if (!container || slides.length === 0) return;
+
+    heroSlideIndex += direction;
+
+    // Loop around
+    if (heroSlideIndex >= slides.length) heroSlideIndex = 0;
+    if (heroSlideIndex < 0) heroSlideIndex = slides.length - 1;
+
+    updateHeroSlide();
+    resetHeroTimer();
+}
+
+function goToHeroSlide(index) {
+    heroSlideIndex = index;
+    updateHeroSlide();
+    resetHeroTimer();
+}
+
+function updateHeroSlide() {
+    const container = document.querySelector('.hero-slides-container');
+    if (!container) return;
+    const offset = heroSlideIndex * -33.333;
+    container.style.transform = `translateX(${offset}%)`;
+}
+
+function resetHeroTimer() {
+    clearInterval(heroSlideTimer);
+    startHeroTimer();
+}
+
+function startHeroTimer() {
+    heroSlideTimer = setInterval(() => {
+        moveHeroSlide(1);
+    }, 5000); // Change every 5 seconds
+}
+
+function initHeroSlider() {
+    const slider = document.getElementById('heroSlider');
+    if (!slider) return;
+
+    // Pause on hover
+    slider.addEventListener('mouseenter', () => clearInterval(heroSlideTimer));
+    slider.addEventListener('mouseleave', startHeroTimer);
+
+    // Start auto-slide
+    startHeroTimer();
+}
+
+// =======================
 // TOAST NOTIFICATIONS
 // =======================
 function showToast(type, message) {
@@ -52,32 +109,69 @@ function initCarousels() {
         const nextBtn = carousel.querySelector('.carousel-btn.next');
         const prevBtn = carousel.querySelector('.carousel-btn.prev');
         const intervalTime = parseInt(carousel.dataset.interval) || 5000;
+        const is3D = carousel.classList.contains('carousel-3d');
 
         let currentIndex = 0;
+        let slideCount = slides.length;
+
+        // STANDARD VARS
         let slideWidth = slides[0].getBoundingClientRect().width;
         let slidesPerView = Math.round(carousel.offsetWidth / slideWidth);
         let maxIndex = Math.max(0, slides.length - slidesPerView);
-        let autoSlideTimer;
+
+        // 3D CYLINDER VARS
+        let theta = 0;
+        let radius = 0;
+
+        if (is3D) {
+            theta = 360 / slideCount;
+            // Radius = (width / 2) / tan(PI / count)
+            // Use 560 (less than 600) to bring slides closer (slight overlap/tight fit)
+            radius = Math.round((560 / 2) / Math.tan(Math.PI / slideCount));
+
+            // Initial Positioning
+            slides.forEach((slide, index) => {
+                slide.style.transform = `rotateY(${index * theta}deg) translateZ(${radius}px)`;
+                if (index === 0) slide.classList.add('active');
+            });
+        }
 
         // Update dimensions on resize
         const updateDimensions = () => {
-            slideWidth = slides[0].getBoundingClientRect().width;
-            slidesPerView = Math.round(carousel.offsetWidth / slideWidth);
-            maxIndex = Math.max(0, slides.length - slidesPerView);
-            // Re-align track
-            moveToSlide(currentIndex);
+            if (!is3D) {
+                slideWidth = slides[0].getBoundingClientRect().width;
+                slidesPerView = Math.round(carousel.offsetWidth / slideWidth);
+                maxIndex = Math.max(0, slides.length - slidesPerView);
+                moveToSlide(currentIndex);
+            }
         };
 
         window.addEventListener('resize', updateDimensions);
 
         const moveToSlide = (index) => {
-            // BOUNDARY CHECKS
-            if (index < 0) index = maxIndex;
-            if (index > maxIndex) index = 0;
+            if (is3D) {
+                // CYLINDER LOGIC
+                currentIndex = index;
+                const angle = theta * currentIndex * -1;
+                track.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
 
-            currentIndex = index;
-            const amountToMove = -(slideWidth * currentIndex);
-            track.style.transform = `translateX(${amountToMove}px)`;
+                // Calculate Active Index (circular)
+                let activeIndex = currentIndex % slideCount;
+                if (activeIndex < 0) activeIndex += slideCount;
+
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    if (i === activeIndex) slide.classList.add('active');
+                });
+            } else {
+                // STANDARD LOGIC
+                if (index < 0) index = maxIndex;
+                if (index > maxIndex) index = 0;
+
+                currentIndex = index;
+                const amountToMove = -(slideWidth * currentIndex);
+                track.style.transform = `translateX(${amountToMove}px)`;
+            }
         };
 
         // Navigation
@@ -112,18 +206,16 @@ function initCarousels() {
         carousel.addEventListener('mouseleave', startTimer);
 
         // Init
-        // Wait a bit for layout to settle
-        requestAnimationFrame(() => {
+        setTimeout(() => {
             updateDimensions();
+            if (is3D) moveToSlide(0);
             startTimer();
-        });
+        }, 100);
     });
 }
 
 // Initialize on Load
 document.addEventListener('DOMContentLoaded', () => {
-    // ... existing init code if any
-
     // Check for Session Messages
     if (sessionStorage.getItem('loginSuccess')) {
         showToast('success', 'Đăng nhập thành công!');
@@ -131,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initCarousels();
+    initHeroSlider(); // Hero Banner Slideshow
 });
 
 async function handleLogin(event) {
@@ -301,7 +394,6 @@ window.addEventListener('scroll', function () {
     }
 });
 
-// Catalog Tab Switching
 // Catalog Tab Switching Logic
 function switchCatalogTab(tabName) {
     // Remove active class from all tabs
@@ -323,7 +415,6 @@ function switchCatalogTab(tabName) {
     }
 }
 
-// Logout Handler
 // Logout Handler (Handled by Server & Cookies)
 function handleClientLogout() {
     // No need to clear localStorage as we don't store tokens there anymore.

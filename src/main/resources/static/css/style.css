@@ -696,10 +696,139 @@ img {
     /* (Existing styles...) */
 }
 
+/* ======================================================================
+   3D CAROUSEL (COVERFLOW)
+====================================================================== */
+.carousel-3d {
+    perspective: 1000px;
+    padding-top: 40px;
+    /* Space for scaling up */
+    padding-bottom: 40px;
+}
+
+.carousel-3d .carousel-track {
+    align-items: center;
+    /* Center items vertically */
+}
+
+.carousel-3d .carousel-slide {
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0.4;
+    transform: scale(0.8) translateY(0);
+    transform-origin: center center;
+    filter: blur(2px);
+    z-index: 1;
+}
+
+.carousel-3d .carousel-slide.active {
+    opacity: 1;
+    transform: scale(1.15);
+    /* Make it pop */
+    filter: blur(0);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+}
+
+.carousel-3d .carousel-slide.active img {
+    border-radius: var(--border-radius);
+}
+
+/* Tablet adjustments */
+@media (max-width: 991px) {
+    .carousel-3d .carousel-slide.active {
+        transform: scale(1.05);
+        /* Less scale on smaller screens */
+    }
+}
+
 
 /* ======================================================================
    HOMEPAGE SPECIFIC STYLES
 ====================================================================== */
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    min-height: 600px;
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Slides Container - Flexbox for horizontal sliding */
+.hero-slides-container {
+    display: flex;
+    width: 300%;
+    /* 3 slides x 100% */
+    height: 100%;
+    transition: transform 0.8s ease-in-out;
+}
+
+.hero-slide {
+    flex: 0 0 33.333%;
+    /* Each slide takes 1/3 of container (100% of viewport) */
+    height: 100%;
+    position: relative;
+}
+
+.hero-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Slide Navigation Buttons */
+.hero-slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.hero-slider-btn:hover {
+    background: var(--color-gold);
+}
+
+.hero-slider-btn.prev {
+    left: 30px;
+}
+
+.hero-slider-btn.next {
+    right: 30px;
+}
+
+/* Hero Content - Overlaid on slides */
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    max-width: var(--container-width);
+}
+
+.hero-content p,
+.hero-content h1 {
+    position: relative;
+    z-index: 6;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
 
 /* Hero Search Box */
 .hero-search-box {
@@ -896,5 +1025,93 @@ img {
     .stats-container {
         flex-direction: column;
         gap: 30px;
+    }
+}
+
+
+/* ======================================================================
+   3D CAROUSEL (CYLINDER LOOP) - OVERRIDE
+====================================================================== */
+.carousel-3d {
+    perspective: 2000px;
+    /* Increased perspective for larger items */
+    padding-top: 60px;
+    padding-bottom: 60px;
+    overflow: visible;
+    /* CRITICAL: Allow 3D elements to stick out */
+    height: 600px;
+    /* Increased container height */
+    /* Adjust based on slide height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* Hide overflow-x of body if needed, but here we keep visible */
+}
+
+/* Container for rotation */
+.carousel-3d .carousel-track {
+    width: 600px;
+    /* Large Width */
+    /* Base slide width */
+    height: 400px;
+    /* Large Height */
+    /* Aspect 4:3 */
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    /* Ease Out Expo */
+}
+
+/* Individual Slide */
+.carousel-3d .carousel-slide {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    left: 0;
+    top: 0;
+    /* Transform handled by JS: rotateY(...) translateZ(...) */
+    backface-visibility: hidden;
+    /* Hide back face */
+    opacity: 0.85;
+    transition: opacity 0.5s, box-shadow 0.5s, transform 0.5s;
+    /* Reset previous transforms */
+    transform: none;
+    transform-origin: center center;
+    filter: none;
+}
+
+.carousel-3d .carousel-slide.active {
+    opacity: 1;
+    z-index: 100;
+    /* Optional glow */
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    transform: none !important;
+    /* JS will handle rotation, but we reset generic active scale */
+}
+
+.carousel-3d .carousel-slide img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Hide dots for 3D View as we have many items */
+.carousel-3d .carousel-dots {
+    display: none;
+}
+
+/* Tablet/Mobile Adjustments */
+@media (max-width: 991px) {
+    .carousel-3d .carousel-track {
+        width: 220px;
+        height: 220px;
+    }
+
+    .carousel-3d .carousel-slide {
+        width: 220px;
+        height: 220px;
     }
 }
