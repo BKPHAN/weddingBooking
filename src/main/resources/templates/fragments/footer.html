@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <footer th:fragment="footer" style="background: var(--color-teal); color: #fff; padding: 60px 0 20px;">
+        <div class="container">
+            <div class="grid-col-3">
+                <!-- About -->
+                <div>
+                    <h4 style="color: var(--color-gold);">Về Chúng Tôi</h4>
+                    <p style="opacity: 0.8; margin-bottom: 20px;">
+                        Tràng An Palace - Nơi ghi dấu những khoảnh khắc hạnh phúc nhất của bạn.
+                        Không gian sang trọng, dịch vụ đẳng cấp 5 sao.
+                    </p>
+                    <div class="social-links d-flex gap-20">
+                        <a href="#" style="color: var(--color-gold);">Facebook</a>
+                        <a href="#" style="color: var(--color-gold);">Instagram</a>
+                        <a href="#" style="color: var(--color-gold);">Youtube</a>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 style="color: var(--color-gold);">Liên Hệ</h4>
+                    <ul style="opacity: 0.8;">
+                        <li style="margin-bottom: 10px;">📍 461 Nguyễn Khang, Cầu Giấy, Hà Nội</li>
+                        <li style="margin-bottom: 10px;">📞 098.123.4567</li>
+                        <li style="margin-bottom: 10px;">✉️ info@tranganpalace.vn</li>
+                    </ul>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 style="color: var(--color-gold);">Liên Kết Nhanh</h4>
+                    <ul>
+                        <li><a href="/about" style="opacity: 0.8;">Về chúng tôi</a></li>
+                        <li><a href="/services" style="opacity: 0.8;">Dịch vụ tiệc cưới</a></li>
+                        <li><a href="/catalog" style="opacity: 0.8;">Thực đơn & Trang trí</a></li>
+                        <li><a href="/booking" style="opacity: 0.8;">Đặt tiệc ngay</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); opacity: 0.6; font-size: 0.9rem;">
+                &copy; 2024 Trang An Palace. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

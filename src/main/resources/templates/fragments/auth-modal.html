@@ -1,0 +1,93 @@
+<div th:fragment="auth-modal" id="authModal" class="modal-overlay">
+    <div class="modal-content">
+        <button type="button" class="modal-close" onclick="closeAuthModal()">&times;</button>
+
+        <!-- Modal Branding -->
+        <div style="text-align: center; padding: 30px 30px 0; background: var(--color-teal); color: #fff;">
+            <h3 style="color: #fff; margin-bottom: 10px;">Chào mừng bạn</h3>
+            <p style="opacity: 0.8; font-size: 0.9rem;">Đăng nhập để trải nghiệm dịch vụ tốt nhất từ Tràng An Palace</p>
+
+            <!-- Tabs -->
+            <div style="display: flex; margin-top: 20px;">
+                <button type="button" onclick="switchTab('login')" id="tab-login"
+                    style="flex: 1; padding: 12px; background: #fff; color: var(--color-teal); border: none; font-weight: bold; border-radius: 8px 8px 0 0; cursor: pointer;">
+                    Đăng Nhập
+                </button>
+                <button type="button" onclick="switchTab('register')" id="tab-register"
+                    style="flex: 1; padding: 12px; background: transparent; color: #fff; border: none; font-weight: bold; cursor: pointer;">
+                    Đăng Ký
+                </button>
+            </div>
+        </div>
+
+        <!-- Forms Container -->
+        <div style="padding: 30px;">
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Tên đăng nhập hoặc Email</label>
+                    <input type="text" class="form-control" name="usernameOrEmail" required placeholder="Nhập email...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-control" id="loginPassword" name="password" required
+                            placeholder="Nhập mật khẩu">
+                        <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', this)">
+                            <!-- Eye Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="text-align: right; margin-bottom: 20px;">
+                    <a href="#" style="font-size: 0.9rem; color: var(--color-text-muted);">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Đăng Nhập</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" onsubmit="handleRegister(event)" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Họ và tên</label>
+                    <input type="text" class="form-control" name="fullName" required placeholder="Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tên đăng nhập</label>
+                    <input type="text" class="form-control" name="username" required placeholder="username123">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu</label>
+                    <div class="password-wrapper">
+                        <input type="password" class="form-control" id="registerPassword" name="password" required
+                            placeholder="Nhập mật khẩu">
+                        <button type="button" class="toggle-password"
+                            onclick="togglePassword('registerPassword', this)">
+                            <!-- Eye Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Tạo Tài Khoản</button>
+            </form>
+
+        </div>
+    </div>
+</div>

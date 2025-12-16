@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+
+    <header th:fragment="header" class="header">
+        <div class="container-fluid">
+            <div class="header-inner">
+                <!-- Logo -->
+                <a href="/" class="logo">
+                    <img th:src="@{https://tranganpalace.vn/wp-content/uploads/2020/02/logo-trang-an-palace.png.webp}"
+                        alt="Trang An Palace" style="height: 60px;">
+                </a>
+
+                <!-- Navigation -->
+                <nav class="nav-menu d-flex gap-20 align-center">
+                    <a href="/" class="nav-link">Trang Chủ</a>
+                    <a href="/about" class="nav-link">Giới Thiệu</a>
+                    <a href="/services" class="nav-link">Dịch Vụ</a>
+                    <a href="/catalog" class="nav-link">Thực Đơn & Trang Trí</a>
+                    <a href="/contact" class="nav-link">Liên Hệ</a>
+                </nav>
+
+                <!-- User Actions -->
+                <div class="user-actions">
+                    <!-- Guest State -->
+                    <div sec:authorize="!isAuthenticated()">
+                        <button onclick="openAuthModal()" class="btn btn-outline">Đăng Nhập</button>
+                        <!-- <a href="/booking" class="btn btn-primary">Đặt Tiệc Ngay</a> -->
+                    </div>
+
+                    <!-- Logged In State -->
+                    <!-- Logged In State (Dropdown) -->
+                    <div sec:authorize="isAuthenticated()" class="user-dropdown">
+                        <div class="dropdown-toggle" onclick="toggleDropdown()">
+                            <!-- Avatar Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span style="font-size: 0.9rem;">Xin chào,</span>
+                            <strong sec:authentication="name"
+                                style="color: var(--color-teal); cursor: pointer;">User</strong>
+                            <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+
+                        <div class="dropdown-menu" id="userDropdownMenu">
+                            <!-- Admin Dashboard Link -->
+                            <a sec:authorize="hasRole('ADMIN')" href="/admin/dashboard" class="dropdown-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                                Quản Trị
+                            </a>
+
+                            <!-- User Dashboard Link -->
+                            <a sec:authorize="hasRole('USER')" href="/user/dashboard" class="dropdown-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Trang Cá Nhân
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a href="/logout" onclick="handleClientLogout()" class="dropdown-item text-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                                Đăng Xuất
+                            </a>
+                            <!-- Form is no longer needed for GET logout -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Auth Modal -->
+        <div th:replace="~{fragments/auth-modal :: auth-modal}"></div>
+    </header>
+
+</body>
+
+</html>
