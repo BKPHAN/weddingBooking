@@ -101,8 +101,18 @@ public class WeddingController {
     }
 
     @GetMapping("/services")
-    public String servicesPage() {
+    public String services() {
         return "services";
+    }
+
+    @GetMapping("/menu")
+    public String menu() {
+        return "menu";
+    }
+
+    @GetMapping("/gallery")
+    public String gallery() {
+        return "gallery";
     }
 
     @GetMapping("/contact")

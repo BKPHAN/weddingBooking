@@ -203,7 +203,7 @@
             <div id="menu-grid" class="item-grid active">
                 <div th:each="item : ${menuItems}" class="item-card" th:data-name="${item.name.toLowerCase()}"
                     th:data-cat="${item.category.toLowerCase()}">
-                    <img th:src="${item.image}" alt="Item Image" class="item-image">
+                    <img th:src="${item.imageUrl}" alt="Item Image" class="item-image">
                     <div class="item-details">
                         <span class="item-category" th:text="${item.category}">Category</span>
                         <h3 class="item-name" th:text="${item.name}">Item Name</h3>
@@ -222,7 +222,7 @@
             <div id="decor-grid" class="item-grid">
                 <div th:each="item : ${decorItems}" class="item-card" th:data-name="${item.name.toLowerCase()}"
                     th:data-cat="${item.category.toLowerCase()}">
-                    <img th:src="${item.image}" alt="Item Image" class="item-image">
+                    <img th:src="${item.imageUrl}" alt="Item Image" class="item-image">
                     <div class="item-details">
                         <span class="item-category" th:text="${item.category}">Category</span>
                         <h3 class="item-name" th:text="${item.name}">Item Name</h3>

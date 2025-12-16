@@ -5,92 +5,322 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giới Thiệu - Tràng An Palace</title>
+    <meta name="description"
+        content="Tràng An Palace - Trung tâm tiệc cưới và sự kiện hàng đầu với hơn 10 năm kinh nghiệm. Khám phá câu chuyện, đội ngũ và giá trị của chúng tôi.">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Great+Vibes&display=swap"
         rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
 
+    <!-- Header Fragment -->
     <div th:replace="~{fragments/header :: header}"></div>
 
     <!-- Hero Banner -->
-    <div class="section"
-        style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://tranganpalace.vn/wp-content/uploads/2019/12/trang-tri-tiec-cuoi-tai-nha-1.jpg.webp') center/cover; color: #fff; padding: 100px 0; text-align: center;">
-        <div class="container">
-            <h1 style="font-size: 3rem; margin-bottom: 20px;">Về Chúng Tôi</h1>
-            <p style="font-size: 1.2rem; font-family: var(--font-accent); color: var(--color-gold);">Nơi Hạnh Phúc Khởi
-                Nguồn</p>
+    <section class="about-hero">
+        <div class="about-hero-overlay"></div>
+        <img th:src="@{/images/about/about-hero.jpg}" alt="Tràng An Palace" class="about-hero-bg"
+            onerror="this.src='https://placehold.co/1920x600?text=Trang+An+Palace'">
+        <div class="about-hero-content">
+            <p style="font-family: var(--font-accent); font-size: 2.5rem; color: var(--color-gold);">Về Chúng Tôi</p>
+            <h1>Tràng An Palace</h1>
+            <p>Nơi Khởi Nguồn Hạnh Phúc</p>
         </div>
-    </div>
+    </section>
 
-    <!-- Story Section -->
-    <div class="section">
+    <!-- Our Story Section -->
+    <section class="section" id="story">
         <div class="container">
-            <div class="grid-col-2" style="align-items: center;">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <p style="font-family: var(--font-accent); font-size: 1.8rem; color: var(--color-gold);">Câu Chuyện</p>
+                <h2 class="text-teal">Hành Trình Của Chúng Tôi</h2>
+            </div>
+
+            <div class="grid-col-2" style="align-items: center; gap: 60px;">
                 <div>
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2023/12/630A8677.jpg" alt="Tràng An Story"
-                        style="border-radius: var(--border-radius); box-shadow: var(--shadow-card);">
+                    <p
+                        style="font-size: 1.1rem; line-height: 1.9; color: var(--color-text-light); margin-bottom: 20px;">
+                        <strong>Tràng An Palace</strong> được thành lập vào năm 2014 với mong muốn mang đến cho các cặp
+                        đôi
+                        một không gian tiệc cưới đẳng cấp, sang trọng nhưng vẫn ấm cúng và gần gũi.
+                    </p>
+                    <p
+                        style="font-size: 1.1rem; line-height: 1.9; color: var(--color-text-light); margin-bottom: 20px;">
+                        Trải qua hơn 10 năm phát triển, chúng tôi đã có vinh dự được đồng hành cùng hàng ngàn cặp đôi
+                        trong những ngày trọng đại nhất của cuộc đời. Mỗi tiệc cưới tại Tràng An Palace đều được
+                        chúng tôi chăm chút như chính đám cưới của mình.
+                    </p>
+                    <p style="font-size: 1.1rem; line-height: 1.9; color: var(--color-text-light);">
+                        Với kiến trúc mang phong cách cung điện Châu Âu, hệ thống ánh sáng hiện đại và thực đơn
+                        được chế biến bởi đội ngũ đầu bếp 5 sao, Tràng An Palace cam kết mang đến trải nghiệm
+                        hoàn hảo cho ngày vui của bạn.
+                    </p>
                 </div>
-                <div>
-                    <h2 class="text-teal">Câu Chuyện Của Tràng An Palace</h2>
-                    <p style="margin-bottom: 20px; line-height: 1.6;">
-                        Được thành lập với sứ mệnh mang đến những trải nghiệm tiệc cưới và sự kiện đẳng cấp nhất Hà Nội,
-                        Tràng An Palace không ngừng nỗ lực để khẳng định vị thế của mình. Chúng tôi hiểu rằng, mỗi sự
-                        kiện không chỉ là một bữa tiệc, mà là những khoảnh khắc vô giá của cuộc đời.
-                    </p>
-                    <p style="margin-bottom: 20px; line-height: 1.6;">
-                        Với lối kiến trúc Châu Âu sang trọng, hệ thống sảnh tiệc đa dạng và phong cách phục vụ chuyên
-                        nghiệp, chúng tôi tự tin đáp ứng mọi yêu cầu khắt khe nhất của quý khách hàng.
-                    </p>
+                <div style="position: relative;">
+                    <img th:src="@{/images/about/story.jpg}" alt="Our Story"
+                        style="width: 100%; border-radius: var(--border-radius); box-shadow: 0 20px 50px rgba(0,0,0,0.15);"
+                        onerror="this.src='https://placehold.co/600x400?text=Our+Story'">
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Values Section -->
-    <div class="section" style="background-color: var(--color-gold-light);">
-        <div class="container text-center">
-            <h2 class="text-teal">Giá Trị Cốt Lõi</h2>
-            <div class="grid-col-3" style="margin-top: 40px;">
-                <div class="card">
-                    <h3 style="color: var(--color-gold);">Tận Tâm</h3>
-                    <p>Đặt sự hài lòng của khách hàng lên hàng đầu trong mọi hành động.</p>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--color-gold);">Sáng Tạo</h3>
-                    <p>Luôn đổi mới trong phong cách trang trí và thực đơn ẩm thực.</p>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--color-gold);">Chuyên Nghiệp</h3>
-                    <p>Quy trình tổ chức bài bản, đội ngũ nhân sự được đào tạo kỹ lưỡng.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Team Gallery (Static Placeholder) -->
-    <div class="section">
-        <div class="container text-center">
-            <h2 class="text-teal">Đội Ngũ Đầu Bếp & Quản Lý</h2>
-            <p style="margin-bottom: 40px; color: var(--color-text-light);">Những người đứng sau thành công của hàng
-                ngàn sự kiện.</p>
-            <div class="grid-col-3">
-                <div class="card" style="padding: 0; overflow: hidden;">
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2021/04/thuc-don-tiec-cuoi-buffet-1.jpg"
-                        style="height: 300px; width: 100%; object-fit: cover;">
-                    <div style="padding: 20px;">
-                        <h3>Siêu Đầu Bếp A</h3>
-                        <p style="font-size: 0.9rem; color: var(--color-text-light);">Bếp Trưởng Điều Hành</p>
+            <!-- Timeline -->
+            <div class="timeline" style="margin-top: 80px;">
+                <div class="timeline-item">
+                    <div class="timeline-year">2014</div>
+                    <div class="timeline-content">
+                        <h4>Thành Lập</h4>
+                        <p>Khai trương sảnh tiệc đầu tiên với sức chứa 300 khách</p>
                     </div>
                 </div>
-                <!-- More team members... -->
+                <div class="timeline-item">
+                    <div class="timeline-year">2017</div>
+                    <div class="timeline-content">
+                        <h4>Mở Rộng</h4>
+                        <p>Ra mắt 2 sảnh mới: Royal và Diamond với sức chứa lên đến 800 khách</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2020</div>
+                    <div class="timeline-content">
+                        <h4>Đổi Mới</h4>
+                        <p>Nâng cấp toàn bộ hệ thống âm thanh, ánh sáng hiện đại nhất</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        <h4>Giải Thưởng</h4>
+                        <p>Đạt danh hiệu "Trung tâm tiệc cưới xuất sắc" do Hiệp hội Du lịch trao tặng</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <!-- Vision & Mission -->
+    <section class="section"
+        style="background: linear-gradient(135deg, var(--color-teal) 0%, var(--color-teal-light) 100%);">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <p style="font-family: var(--font-accent); font-size: 1.8rem; color: var(--color-gold);">Định Hướng</p>
+                <h2 style="color: #fff;">Tầm Nhìn & Sứ Mệnh</h2>
+            </div>
+
+            <div class="grid-col-2" style="gap: 40px;">
+                <div
+                    style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: var(--border-radius); backdrop-filter: blur(10px);">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">🎯</div>
+                    <h3 style="color: var(--color-gold); margin-bottom: 15px;">Tầm Nhìn</h3>
+                    <p style="color: rgba(255,255,255,0.9); line-height: 1.8;">
+                        Trở thành điểm đến hàng đầu cho tiệc cưới và sự kiện tại Việt Nam,
+                        nơi mỗi khoảnh khắc đều được nâng niu và trân trọng.
+                    </p>
+                </div>
+                <div
+                    style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: var(--border-radius); backdrop-filter: blur(10px);">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">💫</div>
+                    <h3 style="color: var(--color-gold); margin-bottom: 15px;">Sứ Mệnh</h3>
+                    <p style="color: rgba(255,255,255,0.9); line-height: 1.8;">
+                        Mang đến trải nghiệm hoàn hảo, ghi dấu những khoảnh khắc hạnh phúc vĩnh cửu
+                        trong lòng mỗi cặp đôi và gia đình.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Core Values -->
+            <div class="grid-col-4" style="margin-top: 60px; gap: 30px;">
+                <div class="text-center" style="color: #fff;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--color-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+                        💎</div>
+                    <h4 style="color: #fff; margin-bottom: 10px;">Chất Lượng</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">Cam kết chất lượng đỉnh cao trong mọi
+                        dịch vụ</p>
+                </div>
+                <div class="text-center" style="color: #fff;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--color-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+                        ❤️</div>
+                    <h4 style="color: #fff; margin-bottom: 10px;">Tận Tâm</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">Chăm sóc khách hàng như chính người
+                        thân</p>
+                </div>
+                <div class="text-center" style="color: #fff;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--color-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+                        ✨</div>
+                    <h4 style="color: #fff; margin-bottom: 10px;">Sáng Tạo</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">Luôn đổi mới để mang đến trải nghiệm
+                        mới mẻ</p>
+                </div>
+                <div class="text-center" style="color: #fff;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--color-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+                        🤝</div>
+                    <h4 style="color: #fff; margin-bottom: 10px;">Uy Tín</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">Xây dựng niềm tin bằng hành động thực
+                        tế</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Team -->
+    <section class="section" id="team">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <p style="font-family: var(--font-accent); font-size: 1.8rem; color: var(--color-gold);">Đội Ngũ</p>
+                <h2 class="text-teal">Chuyên Gia Của Chúng Tôi</h2>
+                <p style="color: var(--color-text-light); max-width: 600px; margin: 0 auto;">
+                    Đội ngũ chuyên nghiệp với nhiều năm kinh nghiệm, luôn sẵn sàng biến ước mơ của bạn thành hiện thực
+                </p>
+            </div>
+
+            <div class="grid-col-4" style="gap: 30px;">
+                <div class="team-card">
+                    <div class="team-img">
+                        <img th:src="@{/images/about/team-1.jpg}" alt="Nguyễn Văn An"
+                            onerror="this.src='https://placehold.co/300x350?text=CEO'">
+                    </div>
+                    <div class="team-info">
+                        <h4>Nguyễn Văn An</h4>
+                        <p class="team-role">Giám Đốc Điều Hành</p>
+                        <p class="team-exp">15 năm kinh nghiệm</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img th:src="@{/images/about/team-2.jpg}" alt="Trần Thị Bình"
+                            onerror="this.src='https://placehold.co/300x350?text=Event+Manager'">
+                    </div>
+                    <div class="team-info">
+                        <h4>Trần Thị Bình</h4>
+                        <p class="team-role">Quản Lý Sự Kiện</p>
+                        <p class="team-exp">10 năm kinh nghiệm</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img th:src="@{/images/about/team-3.jpg}" alt="Lê Minh Châu"
+                            onerror="this.src='https://placehold.co/300x350?text=Head+Chef'">
+                    </div>
+                    <div class="team-info">
+                        <h4>Lê Minh Châu</h4>
+                        <p class="team-role">Đầu Bếp Trưởng</p>
+                        <p class="team-exp">20 năm kinh nghiệm</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-img">
+                        <img th:src="@{/images/about/team-4.jpg}" alt="Phạm Thùy Dung"
+                            onerror="this.src='https://placehold.co/300x350?text=Wedding+Planner'">
+                    </div>
+                    <div class="team-info">
+                        <h4>Phạm Thùy Dung</h4>
+                        <p class="team-role">Wedding Planner</p>
+                        <p class="team-exp">8 năm kinh nghiệm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards & Partners -->
+    <section class="section" style="background-color: #f9f9f9;">
+        <div class="container">
+            <div class="grid-col-2" style="gap: 80px;">
+                <!-- Awards -->
+                <div>
+                    <div class="text-center" style="margin-bottom: 40px;">
+                        <p style="font-family: var(--font-accent); font-size: 1.5rem; color: var(--color-gold);">Thành
+                            Tựu</p>
+                        <h3 class="text-teal">Giải Thưởng</h3>
+                    </div>
+                    <div class="awards-list">
+                        <div class="award-item">
+                            <div class="award-icon">🏆</div>
+                            <div>
+                                <h4>Trung Tâm Tiệc Cưới Xuất Sắc 2023</h4>
+                                <p>Hiệp hội Du lịch Việt Nam</p>
+                            </div>
+                        </div>
+                        <div class="award-item">
+                            <div class="award-icon">⭐</div>
+                            <div>
+                                <h4>Top 10 Nhà Hàng Tốt Nhất 2022</h4>
+                                <p>Tạp chí Ẩm Thực Việt</p>
+                            </div>
+                        </div>
+                        <div class="award-item">
+                            <div class="award-icon">🎖️</div>
+                            <div>
+                                <h4>Chứng Nhận An Toàn Thực Phẩm</h4>
+                                <p>Bộ Y Tế</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Partners -->
+                <div>
+                    <div class="text-center" style="margin-bottom: 40px;">
+                        <p style="font-family: var(--font-accent); font-size: 1.5rem; color: var(--color-gold);">Hợp Tác
+                        </p>
+                        <h3 class="text-teal">Đối Tác Tin Cậy</h3>
+                    </div>
+                    <div class="partners-grid">
+                        <div class="partner-logo">
+                            <img src="https://placehold.co/150x80?text=Partner+1" alt="Partner 1">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="https://placehold.co/150x80?text=Partner+2" alt="Partner 2">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="https://placehold.co/150x80?text=Partner+3" alt="Partner 3">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="https://placehold.co/150x80?text=Partner+4" alt="Partner 4">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="https://placehold.co/150x80?text=Partner+5" alt="Partner 5">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="https://placehold.co/150x80?text=Partner+6" alt="Partner 6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="container text-center">
+            <p style="font-family: var(--font-accent); font-size: 2rem; color: var(--color-gold); margin-bottom: 15px;">
+                Sẵn Sàng?</p>
+            <h2 style="color: #fff; margin-bottom: 20px;">Hãy Để Chúng Tôi Đồng Hành Cùng Bạn</h2>
+            <p style="color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto 40px; font-size: 1.1rem;">
+                Liên hệ ngay để được tư vấn miễn phí và tham quan không gian sảnh tiệc của Tràng An Palace
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="/contact" class="btn btn-primary" style="padding: 15px 40px;">
+                    <i class="fas fa-phone-alt"></i> Liên Hệ Ngay
+                </a>
+                <a href="/catalog" class="btn btn-outline" style="padding: 15px 40px; border-color: #fff; color: #fff;">
+                    <i class="fas fa-eye"></i> Xem Sảnh Tiệc
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Fragment -->
     <div th:replace="~{fragments/footer :: footer}"></div>
+
     <script th:src="@{/js/main.js}"></script>
 </body>
 

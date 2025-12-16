@@ -5,80 +5,310 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dịch Vụ - Tràng An Palace</title>
+    <meta name="description"
+        content="Khám phá các dịch vụ tiệc cưới, hội nghị, sự kiện trọn gói đẳng cấp tại Tràng An Palace.">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Great+Vibes&display=swap"
         rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
 
+    <!-- Header Fragment -->
     <div th:replace="~{fragments/header :: header}"></div>
 
-    <div class="section" style="background: var(--color-teal); color: #fff; padding: 60px 0; text-align: center;">
-        <div class="container">
-            <h1>Dịch Vụ Của Chúng Tôi</h1>
-            <p style="opacity: 0.9;">Mang đến trải nghiệm đẳng cấp cho sự kiện của bạn</p>
+    <!-- Hero Banner -->
+    <section class="services-hero">
+        <div class="services-hero-overlay"></div>
+        <img th:src="@{/images/services/services-hero.jpg}" alt="Dịch Vụ Tràng An Palace" class="services-hero-bg"
+            onerror="this.src='https://placehold.co/1920x600?text=Premium+Services'">
+        <div class="services-hero-content">
+            <p style="font-family: var(--font-accent); font-size: 2.5rem; color: var(--color-gold);">Dịch Vụ Của Chúng
+                Tôi</p>
+            <h1>Trải Nghiệm Đẳng Cấp</h1>
+            <p>Giải pháp toàn diện cho ngày vui trọn vẹn của bạn</p>
         </div>
-    </div>
+    </section>
 
-    <main class="section">
+    <!-- Service Categories -->
+    <section class="section" id="categories">
         <div class="container">
-            <!-- Service 1 -->
-            <div class="d-flex align-center gap-20" style="margin-bottom: 60px; flex-wrap: wrap;">
-                <div style="flex: 1;">
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2020/06/bia-do-uong.jpg.webp" alt="Service 1"
-                        style="border-radius: var(--border-radius); box-shadow: var(--shadow-card);">
-                </div>
-                <div style="flex: 1;">
-                    <h2 class="text-teal">Chương Trình 1: Tiệc Cưới Vàng</h2>
-                    <p style="margin-bottom: 20px;">🍻 Tặng 100% đồ uống trên bàn tiệc. Áp dụng cho tiệc cưới có số
-                        lượng từ 200 khách trở lên.</p>
-                    <button class="btn btn-outline" onclick="openAuthModal()">Nhận Tư Vấn</button>
-                </div>
+            <div class="text-center" style="margin-bottom: 60px;">
+                <h2 class="text-teal">Dịch Vụ Chính</h2>
+                <div class="divider-gold"></div>
             </div>
 
-            <!-- Service 2 -->
-            <div class="d-flex align-center gap-20"
-                style="margin-bottom: 60px; flex-wrap: wrap; flex-direction: row-reverse;">
-                <div style="flex: 1;">
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2020/07/342064bba1a55cfb05b4-1-1536x1267.jpg.webp"
-                        alt="Service 2" style="border-radius: var(--border-radius); box-shadow: var(--shadow-card);">
+            <div class="grid-col-3" style="gap: 30px;">
+                <!-- Category 1 -->
+                <div class="service-card-v2">
+                    <div class="service-img-v2">
+                        <img th:src="@{/images/services/wedding.jpg}" alt="Tiệc Cưới Trọn Gói"
+                            onerror="this.src='https://placehold.co/400x300?text=Wedding'">
+                    </div>
+                    <div class="service-content-v2">
+                        <h3>Tiệc Cưới Trọn Gói</h3>
+                        <p>Dịch vụ tổ chức tiệc cưới chuyên nghiệp từ A-Z: trang trí sảnh tiệc, kịch bản chương trình,
+                            MC, ban nhạc, khánh tiết.</p>
+                        <a href="#wedding-packages" class="btn-text">Xem Chi Tiết <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <div style="flex: 1;">
-                    <h2 class="text-teal">Chương Trình 2: Ăn Hỏi Trọn Gói</h2>
-                    <p style="margin-bottom: 20px;">🌟 Tặng Voucher giảm 10% tiệc ăn hỏi phục vụ tại nhà. Dịch vụ chuyên
-                        nghiệp, tận tâm.</p>
-                    <button class="btn btn-outline" onclick="openAuthModal()">Nhận Tư Vấn</button>
-                </div>
-            </div>
 
-            <!-- Service 3 -->
-            <div class="d-flex align-center gap-20" style="margin-bottom: 60px; flex-wrap: wrap;">
-                <div style="flex: 1;">
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2020/10/0506_visaonhiepanhgiakhongduaanhgocchoban.jpg.webp"
-                        alt="Service 3" style="border-radius: var(--border-radius); box-shadow: var(--shadow-card);">
+                <!-- Category 2 -->
+                <div class="service-card-v2">
+                    <div class="service-img-v2">
+                        <img th:src="@{/images/services/event.jpg}" alt="Sự Kiện & Hội Nghị"
+                            onerror="this.src='https://placehold.co/400x300?text=Events'">
+                    </div>
+                    <div class="service-content-v2">
+                        <h3>Sự Kiện & Hội Nghị</h3>
+                        <p>Không gian hội trường đa năng với hệ thống âm thanh, ánh sáng, màn hình LED hiện đại, phù hợp
+                            mọi loại hình sự kiện.</p>
+                        <a href="/contact" class="btn-text">Liên Hệ Báo Giá <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <div style="flex: 1;">
-                    <h2 class="text-teal">Chương Trình 3: Quay Phim & Chụp Ảnh</h2>
-                    <p style="margin-bottom: 20px;">🎁 Tặng gói quay phim, dựng video tại sự kiện. Lưu giữ những khoảnh
-                        khắc đáng nhớ nhất.</p>
-                    <button class="btn btn-outline" onclick="openAuthModal()">Nhận Tư Vấn</button>
+
+                <!-- Category 3 -->
+                <div class="service-card-v2">
+                    <div class="service-img-v2">
+                        <img th:src="@{/images/services/catering.jpg}" alt="Tiệc Ngoài Trời"
+                            onerror="this.src='https://placehold.co/400x300?text=Catering'">
+                    </div>
+                    <div class="service-content-v2">
+                        <h3>Outside Catering</h3>
+                        <p>Mang hương vị ẩm thực 5 sao đến bất kỳ đâu bạn muốn. Phục vụ chuyên nghiệp, tận tâm tại tư
+                            gia hoặc địa điểm ngoài trời.</p>
+                        <a href="/contact" class="btn-text">Đăng Ký Tư Vấn <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <div class="section text-center" style="background-color: var(--color-gold-light);">
+    <!-- Why Choose Us -->
+    <section class="section bg-light">
         <div class="container">
-            <h2>Bạn Cần Tư Vấn Riêng?</h2>
-            <p style="margin-bottom: 30px;">Để lại thông tin, chúng tôi sẽ liên hệ trong vòng 24h.</p>
-            <a href="/contact" class="btn btn-primary">Liên Hệ Ngay</a>
-        </div>
-    </div>
+            <div class="grid-col-2" style="align-items: center; gap: 60px;">
+                <div>
+                    <h2 class="text-teal" style="margin-bottom: 20px;">Tại Sao Chọn Dịch Vụ Của Chúng Tôi?</h2>
+                    <p style="margin-bottom: 30px; color: var(--color-text-light);">
+                        Chúng tôi hiểu rằng mỗi sự kiện đều là duy nhất và quan trọng.
+                        Vì vậy, Tràng An Palace luôn nỗ lực để mang đến sự hoàn hảo trong từng chi tiết.
+                    </p>
 
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-gem"></i></div>
+                            <div>
+                                <h4>Đẳng Cấp 5 Sao</h4>
+                                <p>Không gian sang trọng, trang thiết bị hiện đại bậc nhất.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-utensils"></i></div>
+                            <div>
+                                <h4>Ẩm Thực Tinh Tế</h4>
+                                <p>Thực đơn đa dạng, an toàn vệ sinh thực phẩm tuyệt đối.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                            <div>
+                                <h4>Hỗ Trợ Tận Tâm</h4>
+                                <p>Đội ngũ tư vấn viên và điều phối sự kiện chuyên nghiệp 24/7.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="position: relative;">
+                    <img th:src="@{/images/services/why-choose.jpg}" alt="Why Choose Us"
+                        style="width: 100%; border-radius: var(--border-radius); box-shadow: var(--shadow-card);"
+                        onerror="this.src='https://placehold.co/600x600?text=Service+Excellence'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing / Packages -->
+    <section class="section" id="wedding-packages">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <p style="font-family: var(--font-accent); font-size: 1.5rem; color: var(--color-gold);">Lựa Chọn Của
+                    Bạn</p>
+                <h2 class="text-teal">Gói Dịch Vụ Tiệc Cưới</h2>
+            </div>
+
+            <div class="grid-col-3" style="gap: 30px;">
+                <!-- Package 1 -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Crystal</h3>
+                        <div class="package-price">Từ 3.500.000đ<span>/bàn</span></div>
+                    </div>
+                    <div class="package-body">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Thực đơn 8 món cơ bản</li>
+                            <li><i class="fas fa-check"></i> Trang trí hoa lụa tiêu chuẩn</li>
+                            <li><i class="fas fa-check"></i> Âm thanh, ánh sáng cơ bản</li>
+                            <li><i class="fas fa-check"></i> MC dẫn chương trình</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Ban nhạc hòa tấu</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Màn hình LED</li>
+                        </ul>
+                        <a href="/booking?package=crystal" class="btn btn-outline"
+                            style="width: 100%; display: block; text-align: center;">Chọn Gói Này</a>
+                    </div>
+                </div>
+
+                <!-- Package 2 -->
+                <div class="package-card popular">
+                    <div class="popular-tag">Phổ Biến Nhất</div>
+                    <div class="package-header">
+                        <h3>Sapphire</h3>
+                        <div class="package-price">Từ 4.500.000đ<span>/bàn</span></div>
+                    </div>
+                    <div class="package-body">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Thực đơn 10 món đặc sắc</li>
+                            <li><i class="fas fa-check"></i> Trang trí hoa tươi + hoa lụa</li>
+                            <li><i class="fas fa-check"></i> Âm thanh, ánh sáng hiện đại</li>
+                            <li><i class="fas fa-check"></i> MC & Vũ đoàn khai tiệc</li>
+                            <li><i class="fas fa-check"></i> Bánh kem & Tháp ly</li>
+                            <li class="disabled"><i class="fas fa-times"></i> Xe đưa đón dâu</li>
+                        </ul>
+                        <a href="/booking?package=sapphire" class="btn btn-primary"
+                            style="width: 100%; display: block; text-align: center;">Chọn Gói Này</a>
+                    </div>
+                </div>
+
+                <!-- Package 3 -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Diamond</h3>
+                        <div class="package-price">Từ 6.000.000đ<span>/bàn</span></div>
+                    </div>
+                    <div class="package-body">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Thực đơn 12 món cao cấp</li>
+                            <li><i class="fas fa-check"></i> 100% Trang trí hoa tươi</li>
+                            <li><i class="fas fa-check"></i> Hệ thống LED Matrix & Beam</li>
+                            <li><i class="fas fa-check"></i> Kịch bản cưới độc quyền</li>
+                            <li><i class="fas fa-check"></i> Ban nhạc & Ca sĩ nổi tiếng</li>
+                            <li><i class="fas fa-check"></i> Tặng xe đưa đón hạng sang</li>
+                        </ul>
+                        <a href="/booking?package=diamond" class="btn btn-outline"
+                            style="width: 100%; display: block; text-align: center;">Chọn Gói Này</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Working Process -->
+    <section class="section bg-light">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <h2 class="text-teal">Quy Trình Tổ Chức</h2>
+                <p>5 bước đơn giản để có một đám cưới hoàn hảo</p>
+            </div>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">01</div>
+                    <h4>Tư Vấn</h4>
+                    <p>Lắng nghe nhu cầu và khảo sát sảnh tiệc</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">02</div>
+                    <h4>Lên Ý Tưởng</h4>
+                    <p>Đề xuất concept và báo giá chi tiết</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">03</div>
+                    <h4>Ký Hợp Đồng</h4>
+                    <p>Chốt phương án và đặt cọc giữ chỗ</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">04</div>
+                    <h4>Chuẩn Bị</h4>
+                    <p>Duyệt menu, trang trí và tổng duyệt</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">05</div>
+                    <h4>Tổ Chức</h4>
+                    <p>Giám sát và vận hành sự kiện trọn vẹn</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+        <div class="container" style="max-width: 800px;">
+            <div class="text-center" style="margin-bottom: 50px;">
+                <h2 class="text-teal">Câu Hỏi Thường Gặp</h2>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Tôi cần đặt lịch trước bao lâu?
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Để đảm bảo chọn được sảnh tiệc ưng ý và có thời gian chuẩn bị tốt nhất, chúng tôi khuyên bạn
+                            nên đặt trước từ 6-12 tháng, đặc biệt là vào mùa cưới (tháng 9 - tháng 3 năm sau).</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Tràng An Palace có hỗ trợ trang trí theo yêu cầu không?
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Có. Ngoài các gói trang trí tiêu chuẩn, chúng tôi có đội ngũ thiết kế riêng sẵn sàng hiện
+                            thực hóa mọi ý tưởng concept độc đáo của bạn.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Tôi có thể nếm thử món ăn trước khi đặt tiệc không?
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Chắc chắn rồi. Sau khi ký hợp đồng, chúng tôi sẽ mời gia đình đến nếm thử thực đơn (Food
+                            Tasting) để điều chỉnh khẩu vị phù hợp nhất.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Fragment -->
     <div th:replace="~{fragments/footer :: footer}"></div>
     <script th:src="@{/js/main.js}"></script>
+
+    <!-- Simple script for FAQ toggle -->
+    <script>
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', event => {
+                const active = document.querySelector('.faq-question.active');
+                if (active && active !== item) {
+                    active.classList.remove('active');
+                    active.nextElementSibling.style.maxHeight = null;
+                }
+                item.classList.toggle('active');
+                const content = item.nextElementSibling;
+                if (item.classList.contains('active')) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                } else {
+                    content.style.maxHeight = null;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
