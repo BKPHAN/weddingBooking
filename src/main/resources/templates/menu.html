@@ -31,6 +31,24 @@
         </div>
     </section>
 
+    <!-- Search Section -->
+    <div class="container" style="position: relative; z-index: 10;">
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" id="menuSearch" class="search-input"
+                    placeholder="Tìm kiếm thực đơn... (hoặc nói 'Gà', 'Hải sản'...)">
+                <button id="menuMicBtn" class="search-mic" title="Tìm kiếm bằng giọng nói" style="display: none;">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+            <button class="search-btn" onclick="performSearch(document.getElementById('menuSearch').value)">
+                <i class="fas fa-search"></i> Tìm Kiếm
+            </button>
+        </div>
+        <p id="speechStatus" class="text-center"
+            style="margin-top: 5px; font-size: 0.9rem; min-height: 20px; color: var(--color-gold);"></p>
+    </div>
+
     <!-- Chef Introduction -->
     <section class="section">
         <div class="container">
@@ -89,138 +107,118 @@
                             <li>Tôm Chiên Hoàng Bào</li>
                             <li>Bò Sốt Tiêu Đen + Bánh Bao</li>
                             <li>Cá Lăng Nướng Riềng Mẻ</li>
-                            <li>Rau Củ Quả Luộc Kho Quẹt</li>
-                            <li>Xôi Chim Câu</li>
-                            <li>Canh Bóng Thả Cẩm</li>
-                            <li>Chè Hạt Sen Long Nhãn</li>
-                        </ul>
+                            <div class="grid-col-2">
+                                <div class="menu-card featured">
+                                    <span class="popular-badge">Phổ Biến Nhất</span>
+                                    <div class="menu-header">
+                                        <h3>Thực Đơn Như Ý</h3>
+                                        <div class="price">4.500.000 VNĐ / Bàn</div>
+                                    </div>
+                                    <ul class="menu-list">
+                                        <li>Súp Hải Sản Tuyết Nhĩ</li>
+                                        <li>Gà Quay Mật Ong Sốt Tiêu Đen</li>
+                                        <li>Tôm Sú Chiên Hoàng Bào</li>
+                                        <li>Cá Diêu Hồng Hấp Xì Dầu</li>
+                                        <li>Bò Sốt Vang Kèm Bánh Mì</li>
+                                        <li>Cải Chip Xào Nấm Đông Cô</li>
+                                        <li>Cơm Chiên Dương Châu</li>
+                                        <li>Tráng Miệng: Chè Sen Long Nhãn</li>
+                                    </ul>
+                                </div>
+                                <div class="menu-card">
+                                    <div class="menu-header">
+                                        <h3>Thực Đơn Cát Tường</h3>
+                                        <div class="price">5.200.000 VNĐ / Bàn</div>
+                                    </div>
+                                    <ul class="menu-list">
+                                        <li>Salad Rong Nho Trứng Cua</li>
+                                        <li>Súp Bào Ngư Vi Cá</li>
+                                        <li>Tôm Hùm Bỏ Lò Phô Mai (1/2 con)</li>
+                                        <li>Bò Fuji Áp Chảo Sốt Rượu Vang</li>
+                                        <li>Chim Câu Quay Ngũ Vị</li>
+                                        <li>Lẩu Thái Hải Sản Đặc Biệt</li>
+                                        <li>Tráng Miệng: Bánh Mousse Chanh Leo</li>
+                                    </ul>
+                                </div>
+                            </div>
                     </div>
-                    <!-- Menu Sapphire -->
-                    <div class="menu-card featured">
-                        <div class="popular-badge">Được Chọn Nhiều</div>
-                        <div class="menu-header">
-                            <h3>Thực Đơn Sapphire</h3>
-                            <p class="price">5.500.000đ/bàn</p>
-                        </div>
-                        <ul class="menu-list">
-                            <li>Gỏi Tiến Vua Tôm Thịt</li>
-                            <li>Súp Vi Cá Yến Sào</li>
-                            <li>Tôm Hùm Bỏ Lò Phô Mai</li>
-                            <li>Chim Câu Quay Mật Ong</li>
-                            <li>Thăn Bò Úc Sốt Rượu Vang</li>
-                            <li>Cải Chíp Xào Nấm Đông Cô</li>
-                            <li>Cơm Tám Thái Lan</li>
-                            <li>Canh Cua Bể Măng Tây</li>
-                            <li>Caramel Pudding</li>
-                        </ul>
+
+                    <!-- Other Panels (Placeholder) -->
+                    <div id="alacarte" class="menu-panel">
+                        <div class="alert alert-info text-center">Đang cập nhật danh sách món tự chọn...</div>
                     </div>
-                    <!-- Menu Diamond -->
-                    <div class="menu-card">
-                        <div class="menu-header">
-                            <h3>Thực Đơn Diamond</h3>
-                            <p class="price">7.500.000đ/bàn</p>
-                        </div>
-                        <ul class="menu-list">
-                            <li>Salad Cá Hồi Xông Khói</li>
-                            <li>Súp Yến Cua Bể</li>
-                            <li>Tu Hài Nướng Mỡ Hành</li>
-                            <li>Cua Hoàng Đế Hấp Bia</li>
-                            <li>Bò Kobe Áp Chảo</li>
-                            <li>Măng Tây Xào Tỏi</li>
-                            <li>Xôi Vò Hạt Sen</li>
-                            <li>Lẩu Thái Hải Sản</li>
-                            <li>Trái Cây Nhiệt Đới Theo Mùa</li>
-                        </ul>
+                    <div id="vegetarian" class="menu-panel">
+                        <div class="alert alert-info text-center">Đang cập nhật thực đơn chay...</div>
                     </div>
-                </div>
-            </div>
+                    <div id="drinks" class="menu-panel">
+                        <div class="alert alert-info text-center">Đang cập nhật danh sách đồ uống...</div>
+                    </div>
 
-            <!-- Alacarte Content (Placeholder) -->
-            <div id="alacarte" class="menu-panel">
-                <div class="text-center">
-                    <img src="https://placehold.co/800x400?text=Alacarte+Menu+Loading..." alt="Alacarte"
-                        style="max-width: 100%; border-radius: 10px;">
-                    <p style="margin-top: 20px;">Đang cập nhật danh sách món tự chọn...</p>
                 </div>
-            </div>
-
-            <!-- Vegetarian Content -->
-            <div id="vegetarian" class="menu-panel">
-                <div class="text-center">
-                    <img src="https://placehold.co/800x400?text=Vegetarian+Menu+Loading..." alt="Vegetarian"
-                        style="max-width: 100%; border-radius: 10px;">
-                    <p style="margin-top: 20px;">Đang cập nhật thực đơn chay...</p>
-                </div>
-            </div>
-
-            <!-- Drinks Content -->
-            <div id="drinks" class="menu-panel">
-                <div class="text-center">
-                    <img src="https://placehold.co/800x400?text=Drinks+Menu+Loading..." alt="Drinks"
-                        style="max-width: 100%; border-radius: 10px;">
-                    <p style="margin-top: 20px;">Đang cập nhật danh sách đồ uống...</p>
-                </div>
-            </div>
-        </div>
     </section>
 
-    <!-- Signature Dishes Slider -->
-    <section class="section">
+    <!-- Featured Dishes -->
+    <section class="section bg-light">
         <div class="container">
-            <h2 class="text-teal text-center" style="margin-bottom: 40px;">Món Ngon Đặc Sắc</h2>
+            <div class="section-header text-center">
+                <h2>Món Ngon Đặc Sắc</h2>
+                <div class="divider-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+            </div>
 
             <div class="dish-grid">
+                <!-- Dish 1 -->
                 <div class="dish-item">
-                    <img th:src="@{/images/menu/dish-1.jpg}"
-                        onerror="this.src='https://placehold.co/400x300?text=Signature+1'">
+                    <img th:src="@{/images/menu/dish-1.jpg}" alt="Dish 1">
                     <div class="dish-info">
-                        <h4>Tôm Hùm Bỏ Lò</h4>
-                        <p>Hương vị biển cả hòa quyện cùng phô mai béo ngậy</p>
+                        <h4>Bò Wagyu Sốt Tiêu</h4>
+                        <p>Thịt bò thượng hạng mềm tan trong miệng</p>
                     </div>
                 </div>
+                <!-- Dish 2 -->
                 <div class="dish-item">
-                    <img th:src="@{/images/menu/dish-2.jpg}"
-                        onerror="this.src='https://placehold.co/400x300?text=Signature+2'">
+                    <img th:src="@{/images/menu/dish-2.jpg}" alt="Dish 2">
                     <div class="dish-info">
-                        <h4>Bò Úc Sốt Vang</h4>
-                        <p>Thịt bò mềm tan, sốt rượu vang đậm đà</p>
+                        <h4>Tôm Hùm Alaska</h4>
+                        <p>Chế biến theo phong cách Âu tinh tế</p>
                     </div>
                 </div>
+                <!-- Dish 3 -->
                 <div class="dish-item">
-                    <img th:src="@{/images/menu/dish-3.jpg}"
-                        onerror="this.src='https://placehold.co/400x300?text=Signature+3'">
+                    <img th:src="@{/images/menu/dish-3.jpg}" alt="Dish 3">
                     <div class="dish-info">
-                        <h4>Súp Vi Cá</h4>
-                        <p>Bổ dưỡng, thanh mát, khởi đầu hoàn hảo</p>
+                        <h4>Sashimi Tổng Hợp</h4>
+                        <p>Hải sản tươi sống nhập khẩu trực tiếp</p>
                     </div>
                 </div>
+                <!-- Dish 4 -->
                 <div class="dish-item">
-                    <img th:src="@{/images/menu/dish-4.jpg}"
-                        onerror="this.src='https://placehold.co/400x300?text=Signature+4'">
+                    <img th:src="@{/images/menu/dish-4.jpg}" alt="Dish 4">
                     <div class="dish-info">
-                        <h4>Sashimi Thượng Hạng</h4>
-                        <p>Tươi ngon, chuẩn vị Nhật Bản</p>
+                        <h4>Súp Vi Cá Thượng Hạng</h4>
+                        <p>Món khai vị đẳng cấp hoàng gia</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Food Tasting CTA -->
-    <section class="section cta-section">
-        <div class="container text-center">
-            <h2 style="color: #fff; margin-bottom: 20px;">Trải Nghiệm Thực Tế?</h2>
-            <p style="color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto 40px; font-size: 1.1rem;">
-                Đăng ký nếm thử thực đơn (Food Tasting) ngay hôm nay để an tâm tuyệt đối về chất lượng ẩm thực cho ngày
-                vui của bạn.
-            </p>
-            <a href="/contact" class="btn btn-primary" style="padding: 15px 40px;">Đăng Ký Nếm Thử</a>
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Trải Nghiệm Ẩm Thực Đỉnh Cao</h2>
+            <p style="margin-bottom: 30px;">Đăng ký nếm thử thực đơn ngay hôm nay để có lựa chọn hoàn hảo nhất cho ngày
+                trọng đại</p>
+            <a href="/contact" class="btn btn-primary" style="background: transparent; border: 2px solid #fff;">Đăng Ký
+                Nếm Thử</a>
         </div>
     </section>
 
-    <div th:replace="~{fragments/footer :: footer}"></div>
-    <script th:src="@{/js/main.js}"></script>
 
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script th:src="@{/js/main.js}"></script>
     <script>
         function switchMenu(menuId) {
             // Update buttons
@@ -238,6 +236,79 @@
                 }
             });
         }
+
+        // Search Logic
+        const searchInput = document.getElementById('menuSearch');
+
+        function performSearch(query) {
+            query = query.toLowerCase();
+            // Filter Menu List
+            document.querySelectorAll('.menu-list li').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'block' : 'none';
+            });
+
+            // Filter Signature Dishes
+            document.querySelectorAll('.dish-item').forEach(item => {
+                const title = item.querySelector('h4').textContent.toLowerCase();
+                item.style.display = title.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', function (e) {
+            performSearch(e.target.value);
+        });
+
+        // Speech Recognition Setup
+        const micBtn = document.getElementById('menuMicBtn');
+        const speechStatus = document.getElementById('speechStatus');
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            // Show mic button if supported
+            micBtn.style.display = 'block';
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            recognition.continuous = false;
+            recognition.lang = 'vi-VN';
+            recognition.interimResults = false;
+
+            micBtn.addEventListener('click', () => {
+                if (micBtn.classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+
+            recognition.onstart = () => {
+                micBtn.classList.add('listening');
+                speechStatus.textContent = "Đang lắng nghe...";
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('listening');
+                speechStatus.textContent = "";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                searchInput.value = transcript;
+                performSearch(transcript);
+                speechStatus.textContent = `Đã tìm: "${transcript}"`;
+                setTimeout(() => speechStatus.textContent = "", 3000);
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error', event.error);
+                micBtn.classList.remove('listening');
+                speechStatus.textContent = "Không nghe rõ, vui lòng thử lại.";
+            };
+        } else {
+            console.log('Web Speech API not supported in this browser.');
+        }
+
     </script>
 </body>
 

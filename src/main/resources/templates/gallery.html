@@ -32,92 +32,113 @@
         </div>
     </section>
 
+    <!-- Search Section -->
+    <div class="container" style="position: relative; z-index: 10;">
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" id="gallerySearch" class="search-input"
+                    placeholder="Tìm kiếm phong cách... (hoặc nói 'Cổ điển'...)">
+                <button id="galleryMicBtn" class="search-mic" title="Tìm kiếm bằng giọng nói" style="display: none;">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+            <button class="search-btn" onclick="performSearch(document.getElementById('gallerySearch').value)">
+                <i class="fas fa-search"></i> Tìm Kiếm
+            </button>
+        </div>
+        <p id="speechStatus" class="text-center"
+            style="margin-top: 5px; font-size: 0.9rem; min-height: 20px; color: var(--color-gold);"></p>
+    </div>
+
     <!-- Concept Introduction -->
     <section class="section text-center">
         <div class="container">
-            <h2 class="text-teal">Đa Dạng Phong Cách</h2>
-            <p style="max-width: 700px; margin: 0 auto; color: var(--color-text-light);">
-                Mỗi câu chuyện tình yêu đều mang một màu sắc riêng. Tại Tràng An Palace, chúng tôi lắng nghe và
-                kiến tạo nên không gian tiệc cưới mang đậm dấu ấn cá nhân của bạn, từ sang trọng cổ điển đến hiện đại
-                tinh tế.
-            </p>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2 class="text-teal">Không Gian Tiệc Cưới Đẳng Cấp</h2>
+                <div class="divider-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <p>Mỗi sảnh tiệc tại Tràng An Palace là một tác phẩm nghệ thuật, được thiết kế tỉ mỉ để tôn vinh câu
+                    chuyện tình yêu của bạn. Từ phong cách cổ điển sang trọng đến hiện đại tinh tế, chúng tôi hiện thực
+                    hóa mọi ý tưởng về đám cưới trong mơ.</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="gallery-filter" style="margin-top: 40px;">
+                <button class="filter-btn active" onclick="filterGallery('all')">Tất Cả</button>
+                <button class="filter-btn" onclick="filterGallery('luxury')">Sang Trọng (Luxury)</button>
+                <button class="filter-btn" onclick="filterGallery('classic')">Cổ Điển (Classic)</button>
+                <button class="filter-btn" onclick="filterGallery('modern')">Hiện Đại (Modern)</button>
+                <button class="filter-btn" onclick="filterGallery('rustic')">Rustic</button>
+            </div>
         </div>
     </section>
 
-    <!-- Gallery Filter -->
-    <section class="section pt-0">
-        <div class="container">
-            <div class="gallery-filter">
-                <button class="filter-btn active" onclick="filterGallery('all')">Tất Cả</button>
-                <button class="filter-btn" onclick="filterGallery('luxury')">Luxury</button>
-                <button class="filter-btn" onclick="filterGallery('classic')">Classic</button>
-                <button class="filter-btn" onclick="filterGallery('modern')">Modern</button>
-                <button class="filter-btn" onclick="filterGallery('rustic')">Rustic</button>
-            </div>
-
-            <div class="gallery-grid" id="gallery-grid">
-                <!-- Luxury Items -->
+    <!-- Gallery Grid -->
+    <section class="section">
+        <div class="container-fluid">
+            <div class="gallery-grid">
+                <!-- Luxury Item 1 -->
                 <div class="gallery-item luxury">
-                    <a th:href="@{/images/gallery/luxury-1.jpg}" data-lightbox="wedding-gallery"
-                        data-title="Luxury Wedding Concept">
-                        <img th:src="@{/images/gallery/luxury-1.jpg}"
-                            onerror="this.src='https://placehold.co/400x400?text=Luxury+1'">
+                    <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
+                        data-lightbox="gallery" data-title="Sảnh Luxury - Giấc Mơ Cổ Tích">
+                        <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
+                            alt="Luxury Wedding 1">
                         <div class="gallery-overlay">
                             <i class="fas fa-search-plus"></i>
                         </div>
                     </a>
                 </div>
-                <div class="gallery-item luxury">
-                    <a th:href="@{/images/gallery/luxury-2.jpg}" data-lightbox="wedding-gallery"
-                        data-title="Luxury Decor Detail">
-                        <img th:src="@{/images/gallery/luxury-2.jpg}"
-                            onerror="this.src='https://placehold.co/400x500?text=Luxury+2'">
-                        <div class="gallery-overlay">
-                            <i class="fas fa-search-plus"></i>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Classic Items -->
+                <!-- Classic Item 1 -->
                 <div class="gallery-item classic">
-                    <a th:href="@{/images/gallery/classic-1.jpg}" data-lightbox="wedding-gallery"
-                        data-title="Classic Wedding Hall">
-                        <img th:src="@{/images/gallery/classic-1.jpg}"
-                            onerror="this.src='https://placehold.co/400x500?text=Classic+1'">
+                    <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
+                        data-lightbox="gallery" data-title="Phong Cách Classic - Thanh Lịch & Tinh Tế">
+                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
+                            alt="Classic Wedding 1">
                         <div class="gallery-overlay">
                             <i class="fas fa-search-plus"></i>
                         </div>
                     </a>
                 </div>
-
-                <!-- Modern Items -->
+                <!-- Modern Item 1 -->
                 <div class="gallery-item modern">
-                    <a th:href="@{/images/gallery/modern-1.jpg}" data-lightbox="wedding-gallery"
-                        data-title="Modern Floral Arch">
-                        <img th:src="@{/images/gallery/modern-1.jpg}"
-                            onerror="this.src='https://placehold.co/400x400?text=Modern+1'">
+                    <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
+                        data-lightbox="gallery" data-title="Phong Cách Modern - Trẻ Trung & Phá Cách">
+                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
+                            alt="Modern Wedding 1">
                         <div class="gallery-overlay">
                             <i class="fas fa-search-plus"></i>
                         </div>
                     </a>
                 </div>
-                <div class="gallery-item modern">
-                    <a th:href="@{/images/gallery/modern-2.jpg}" data-lightbox="wedding-gallery"
-                        data-title="Modern Table Setup">
-                        <img th:src="@{/images/gallery/modern-2.jpg}"
-                            onerror="this.src='https://placehold.co/400x500?text=Modern+2'">
-                        <div class="gallery-overlay">
-                            <i class="fas fa-search-plus"></i>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Rustic Items -->
+                <!-- Rustic Item 1 -->
                 <div class="gallery-item rustic">
-                    <a th:href="@{/images/gallery/rustic-1.jpg}" data-lightbox="wedding-gallery"
-                        data-title="Rustic Garden Theme">
-                        <img th:src="@{/images/gallery/rustic-1.jpg}"
-                            onerror="this.src='https://placehold.co/400x400?text=Rustic+1'">
+                    <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
+                        data-lightbox="gallery" data-title="Phong Cách Rustic - Gần Gũi Thiên Nhiên">
+                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
+                            alt="Rustic Wedding 1">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+                <!-- Luxury Item 2 -->
+                <div class="gallery-item luxury">
+                    <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
+                        data-lightbox="gallery" data-title="Sảnh Luxury - Hạnh Phúc Thăng Hoa">
+                        <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
+                            alt="Luxury Wedding 2">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+                <!-- Modern Item 2 -->
+                <div class="gallery-item modern">
+                    <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
+                        data-lightbox="gallery" data-title="Phong Cách Modern - Ánh Sáng Lung Linh">
+                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
+                            alt="Modern Wedding 2">
                         <div class="gallery-overlay">
                             <i class="fas fa-search-plus"></i>
                         </div>
@@ -128,63 +149,80 @@
     </section>
 
     <!-- Video Tour -->
-    <section class="section bg-dark text-center"
-        style="background-image: url('/images/gallery/video-bg.jpg'); background-size: cover; background-attachment: fixed; position: relative;">
-        <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6);"></div>
-        <div class="container" style="position: relative; z-index: 2; padding: 60px 0;">
-            <div style="width: 80px; height: 80px; border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; cursor: pointer; transition: transform 0.3s;"
-                onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                <i class="fas fa-play" style="color: #fff; font-size: 2rem; margin-left: 5px;"></i>
+    <section class="section bg-dark text-white"
+        style="background-image: url('https://tranganpalace.vn/wp-content/uploads/2020/02/IMG_0396.jpg.webp'); background-size: cover; background-attachment: fixed; position: relative;">
+        <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7);"></div>
+        <div class="container text-center" style="position: relative; z-index: 2;">
+            <div class="divider-icon">
+                <i class="fas fa-video"></i>
             </div>
-            <h2 style="color: #fff; margin-bottom: 10px;">Tham Quan Trực Tuyến</h2>
-            <p style="color: rgba(255,255,255,0.8);">Trải nghiệm không gian sảnh tiệc 360 độ</p>
+            <h2>Video Tour 360°</h2>
+            <p class="mb-5">Khám phá toàn cảnh không gian tiệc cưới lộng lẫy tại Tràng An Palace</p>
+
+            <a href="https://www.youtube.com/watch?v=SomeVideoID" class="btn btn-outline"
+                style="color: #fff; border-color: #fff; border-radius: 50%; width: 80px; height: 80px; display: inline-flex; align-items: center; justify-content: center; font-size: 2rem;">
+                <i class="fas fa-play" style="margin-left: 5px;"></i>
+            </a>
         </div>
     </section>
 
     <!-- Real Weddings -->
     <section class="section">
         <div class="container">
-            <h2 class="text-teal text-center" style="margin-bottom: 50px;">Khoảnh Khắc Hạnh Phúc</h2>
+            <div class="section-header text-center">
+                <h2>Chuyện Tình Yêu (Real Weddings)</h2>
+                <p>Những khoảnh khắc hạnh phúc có thật tại Tràng An Palace</p>
+            </div>
 
-            <div class="grid-col-3" style="gap: 30px;">
+            <div class="grid-col-3">
                 <div class="real-wedding-card">
-                    <img th:src="@{/images/gallery/real-1.jpg}"
-                        onerror="this.src='https://placehold.co/400x300?text=Minh+&+Lan'">
+                    <img src="https://tranganpalace.vn/wp-content/uploads/2021/01/Dam-cuoi-Van-Hau-Mai-Linh-1-768x512.jpg"
+                        alt="Wedding 1">
                     <div class="real-wedding-info">
-                        <h4>Minh & Lan</h4>
-                        <p>20.10.2024 - Diamond Hall</p>
+                        <h4>Văn Hậu & Mai Linh</h4>
+                        <p>Ngày 15/10/2023</p>
+                        <a href="#" style="color: var(--color-gold); font-size: 0.9rem;">Xem Album <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="real-wedding-card">
-                    <img th:src="@{/images/gallery/real-2.jpg}"
-                        onerror="this.src='https://placehold.co/400x300?text=Hung+&+Mai'">
+                    <img src="https://tranganpalace.vn/wp-content/uploads/2020/12/Dam-cuoi-Tuan-Anh-Huyen-My-2-768x512.jpg"
+                        alt="Wedding 2">
                     <div class="real-wedding-info">
-                        <h4>Hùng & Mai</h4>
-                        <p>15.11.2024 - Royal Hall</p>
+                        <h4>Tuấn Anh & Huyền My</h4>
+                        <p>Ngày 22/09/2023</p>
+                        <a href="#" style="color: var(--color-gold); font-size: 0.9rem;">Xem Album <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="real-wedding-card">
-                    <img th:src="@{/images/gallery/real-3.jpg}"
-                        onerror="this.src='https://placehold.co/400x300?text=Tuan+&+Huong'">
+                    <img src="https://tranganpalace.vn/wp-content/uploads/2020/12/Dam-cuoi-Minh-Hieu-Thuy-Duong-2-768x512.jpg"
+                        alt="Wedding 3">
                     <div class="real-wedding-info">
-                        <h4>Tuấn & Hương</h4>
-                        <p>05.12.2024 - Crystal Hall</p>
+                        <h4>Minh Hiếu & Thùy Dương</h4>
+                        <p>Ngày 05/09/2023</p>
+                        <a href="#" style="color: var(--color-gold); font-size: 0.9rem;">Xem Album <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+
     <div th:replace="~{fragments/footer :: footer}"></div>
 
+    <!-- Lightbox2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
     <script th:src="@{/js/main.js}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-
     <script>
         function filterGallery(category) {
             // Update buttons
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+
+            // Clear search
+            document.getElementById('gallerySearch').value = '';
 
             // Filter items
             const items = document.querySelectorAll('.gallery-item');
@@ -203,6 +241,82 @@
                 }
             });
         }
+
+        // Search Logic
+        const searchInput = document.getElementById('gallerySearch');
+
+        function performSearch(query) {
+            query = query.toLowerCase();
+
+            if (query.length > 0) {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            }
+
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                const title = item.querySelector('a').getAttribute('data-title').toLowerCase();
+                if (title.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', function (e) {
+            performSearch(e.target.value);
+        });
+
+        // Speech Recognition Setup
+        const micBtn = document.getElementById('galleryMicBtn');
+        const speechStatus = document.getElementById('speechStatus');
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            // Show mic button if supported
+            micBtn.style.display = 'block';
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+
+            recognition.continuous = false;
+            recognition.lang = 'vi-VN';
+            recognition.interimResults = false;
+
+            micBtn.addEventListener('click', () => {
+                if (micBtn.classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    recognition.start();
+                }
+            });
+
+            recognition.onstart = () => {
+                micBtn.classList.add('listening');
+                speechStatus.textContent = "Đang lắng nghe...";
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('listening');
+                speechStatus.textContent = "";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                searchInput.value = transcript;
+                performSearch(transcript);
+                speechStatus.textContent = `Đã tìm: "${transcript}"`;
+                setTimeout(() => speechStatus.textContent = "", 3000);
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error', event.error);
+                micBtn.classList.remove('listening');
+                speechStatus.textContent = "Không nghe rõ, vui lòng thử lại.";
+            };
+        } else {
+            console.log('Web Speech API not supported in this browser.');
+        }
+
     </script>
 </body>
 
