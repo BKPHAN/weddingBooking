@@ -185,26 +185,16 @@ function attachProfileModalHandlers() {
         const normalizedPermissions = Array.isArray(profile.permissions)
             ? profile.permissions
             : profile.permissions
-            ? Array.from(profile.permissions)
-            : [];
+                ? Array.from(profile.permissions)
+                : [];
         renderChipCollection(permissionsContainer, normalizedPermissions, 'profile-modal__chip--permission');
     };
 
     const fetchProfile = async () => {
         resetStates();
         openModal();
-        const accessToken = window.localStorage.getItem('accessToken');
-        if (!accessToken) {
-            showError('Vui lòng đăng nhập lại để xem thông tin.');
-            return;
-        }
-
         try {
-            const response = await fetch('/api/v1/admin/profile/me', {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
+            const response = await fetch('/api/v1/admin/profile/me');
 
             if (!response.ok) {
                 if (response.status === 401 || response.status === 403) {

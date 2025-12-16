@@ -8,19 +8,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         upcomingBookings: []
     };
 
-    const accessToken = window.localStorage.getItem('accessToken');
-
-    if (!accessToken) {
-        showError(errorBanner, 'Vui lòng đăng nhập lại để truy cập bảng điều khiển.');
-        return;
-    }
-
     try {
-        const response = await fetch('/api/v1/admin/dashboard/overview', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
+        const response = await fetch('/api/v1/admin/dashboard/overview');
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
                 throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');

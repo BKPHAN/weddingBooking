@@ -81,14 +81,18 @@ class ContactServiceTest {
         when(contactRepository.save(any(Contact.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         User staff = new User();
-        staff.setFullName("Nguyễn Nhân Viên");
+        com.demo.web.model.Employee employee = new com.demo.web.model.Employee();
+        employee.setFullName("Nguyễn Nhân Viên");
+        employee.setUser(staff);
+        staff.setEmployee(employee);
+
         when(userRepository.findFirstByPrimaryRoleOrderByIdAsc(UserRole.ADMIN))
                 .thenReturn(Optional.of(staff));
 
         Contact saved = contactService.saveContact(contact);
 
         assertThat(saved.getAssignedTo()).isNotNull();
-        assertThat(saved.getAssignedTo().getFullName()).isEqualTo("Nguyễn Nhân Viên");
+        assertThat(saved.getAssignedTo().getEmployee().getFullName()).isEqualTo("Nguyễn Nhân Viên");
         verify(notificationService).notifyContactReceived(saved);
     }
 }

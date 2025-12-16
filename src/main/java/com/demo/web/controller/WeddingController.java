@@ -29,23 +29,28 @@ public class WeddingController {
     private final ContactMapper contactMapper;
 
     public WeddingController(BookingService bookingService,
-                             ContactService contactService,
-                             BookingMapper bookingMapper,
-                             ContactMapper contactMapper) {
+            ContactService contactService,
+            BookingMapper bookingMapper,
+            ContactMapper contactMapper) {
         this.bookingService = bookingService;
         this.contactService = contactService;
         this.bookingMapper = bookingMapper;
         this.contactMapper = contactMapper;
     }
 
-    @GetMapping({"/", "/login"})
-    public String login() {
-        return "login";
+    @GetMapping("/")
+    public String index() {
+        return "home";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "redirect:/?login=true";
     }
 
     @GetMapping("/wedding")
     public String homePage() {
-        return "home";
+        return "redirect:/";
     }
 
     @GetMapping("/booking")
@@ -79,8 +84,7 @@ public class WeddingController {
         return ResponseEntity.ok(new ApiResponse<>(
                 true,
                 "Đặt tiệc thành công! Chúng tôi sẽ liên hệ để xác nhận chi tiết.",
-                bookingMapper.toResponse(saved)
-        ));
+                bookingMapper.toResponse(saved)));
     }
 
     @PostMapping("/api/feedbacks")
@@ -90,8 +94,7 @@ public class WeddingController {
         return ResponseEntity.ok(new ApiResponse<>(
                 true,
                 "Cảm ơn bạn đã liên hệ! Đội ngũ tư vấn sẽ phản hồi trong thời gian sớm nhất.",
-                contactMapper.toResponse(saved)
-        ));
+                contactMapper.toResponse(saved)));
     }
 
     @GetMapping("/api/feedbacks")

@@ -1,6 +1,5 @@
 package com.demo.web.security;
 
-import com.demo.web.model.Role;
 import com.demo.web.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
 
@@ -21,12 +19,12 @@ public class UserPrincipal implements UserDetails {
     private final boolean active;
 
     public UserPrincipal(Long id,
-                         String username,
-                         String fullName,
-                         String email,
-                         String password,
-                         Collection<? extends GrantedAuthority> authorities,
-                         boolean active) {
+            String username,
+            String fullName,
+            String email,
+            String password,
+            Collection<? extends GrantedAuthority> authorities,
+            boolean active) {
         this.id = id;
         this.username = username;
         this.fullName = fullName;
@@ -37,22 +35,23 @@ public class UserPrincipal implements UserDetails {
     }
 
     public static UserPrincipal fromUser(User user) {
-        Set<GrantedAuthority> authorities = user.getRoles()
-                .stream()
-                .map(Role::getCode)
-                .map(code -> code.startsWith("ROLE_") ? code : "ROLE_" + code)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toSet());
+        Set<GrantedAuthority> authorities = new java.util.HashSet<>();
+
+        if (user.getPrimaryRole() != null) {
+            String primaryRoleCode = "ROLE_" + user.getPrimaryRole().name();
+            authorities.add(new SimpleGrantedAuthority(primaryRoleCode));
+        }
+
+        String fullName = user.getEmployee() != null ? user.getEmployee().getFullName() : user.getUsername();
 
         return new UserPrincipal(
                 user.getId(),
                 user.getUsername(),
-                user.getFullName(),
+                fullName,
                 user.getEmail(),
                 user.getPasswordHash(),
                 authorities,
-                user.getStatus() == User.UserStatus.ACTIVE
-        );
+                user.getStatus() == User.UserStatus.ACTIVE);
     }
 
     public Long getId() {

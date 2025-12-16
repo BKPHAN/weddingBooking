@@ -20,16 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mediaUploadBtn = document.getElementById('media-upload-btn');
     const mediaFileInput = document.getElementById('media-file');
 
-    const accessToken = window.localStorage.getItem('accessToken');
-
-    if (!accessToken) {
-        showError(errorBanner, 'Vui lòng đăng nhập lại để truy cập trang quản trị.');
-        disableInteractions();
-        return;
-    }
-
     const authHeaders = (extra = {}) => ({
-        'Authorization': `Bearer ${accessToken}`,
         ...extra
     });
 
@@ -103,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             hallTableBody.innerHTML = '';
             (result.data || []).forEach(hall => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+                const row = document.createElement('tr');
+                row.innerHTML = `
                 <td>${hall.code}</td>
                 <td>${hall.name}</td>
                 <td>${hall.capacity}</td>
@@ -115,12 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button data-action="delete-hall" data-id="${hall.id}" style="margin-left:8px;">Delete</button>
                 </td>
             `;
-            row.dataset.description = hall.description || '';
-            row.dataset.amenities = hall.amenities || '';
-            row.dataset.imageUrl = hall.imageUrl || '';
-            row.dataset.displayOrder = hall.displayOrder ?? '';
-            hallTableBody.appendChild(row);
-        });
+                row.dataset.description = hall.description || '';
+                row.dataset.amenities = hall.amenities || '';
+                row.dataset.imageUrl = hall.imageUrl || '';
+                row.dataset.displayOrder = hall.displayOrder ?? '';
+                hallTableBody.appendChild(row);
+            });
         } catch (error) {
             showError(errorBanner, error.message);
         }
@@ -138,8 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             menuTableBody.innerHTML = '';
             (result.data || []).forEach(menu => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+                const row = document.createElement('tr');
+                row.innerHTML = `
                 <td>${menu.name}</td>
                 <td>${menu.category}</td>
                 <td data-raw="${menu.price ?? ''}">${formatCurrency(menu.price)}</td>
@@ -149,11 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button data-action="delete-menu" data-id="${menu.id}" style="margin-left:8px;">Delete</button>
                 </td>
             `;
-            row.dataset.description = menu.description || '';
-            row.dataset.imageUrl = menu.imageUrl || '';
-            row.dataset.featured = menu.featured ? 'true' : 'false';
-            menuTableBody.appendChild(row);
-        });
+                row.dataset.description = menu.description || '';
+                row.dataset.imageUrl = menu.imageUrl || '';
+                row.dataset.featured = menu.featured ? 'true' : 'false';
+                menuTableBody.appendChild(row);
+            });
         } catch (error) {
             showError(errorBanner, error.message);
         }
@@ -265,14 +256,14 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const formData = new FormData();
             formData.append('file', file);
-        const response = await fetch('/api/v1/admin/media/upload', {
+            const response = await fetch('/api/v1/admin/media/upload', {
                 method: 'POST',
-            headers: authHeaders(),
-            body: formData
+                headers: authHeaders(),
+                body: formData
             });
             const result = await response.json();
             if (!response.ok || !result.success) {
-            handleAuthError(response.status, result.message || 'Tải tệp thất bại');
+                handleAuthError(response.status, result.message || 'Tải tệp thất bại');
             }
             document.getElementById('media-url').value = result.data.url;
             showSuccess(errorBanner, 'Upload successful. URL has been populated.');
@@ -381,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(url, {
                 method,
-                headers: authHeaders({'Content-Type': 'application/json'}),
+                headers: authHeaders({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify(payload)
             });
             const result = await response.json();

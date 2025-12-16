@@ -1,13 +1,6 @@
-CREATE TABLE IF NOT EXISTS roles (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    code VARCHAR(50) NOT NULL UNIQUE,
-    description VARCHAR(200)
-);
-
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
-    full_name VARCHAR(150) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     status VARCHAR(20) NOT NULL,
@@ -16,18 +9,19 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at DATETIME NULL
 );
 
-CREATE TABLE IF NOT EXISTS user_roles (
-    user_id BIGINT NOT NULL,
-    role_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, role_id),
-    CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users (id),
-    CONSTRAINT fk_user_roles_role FOREIGN KEY (role_id) REFERENCES roles (id)
-);
-
-CREATE TABLE IF NOT EXISTS user_permissions (
-    user_id BIGINT NOT NULL,
-    permission VARCHAR(100) NOT NULL,
-    CONSTRAINT fk_user_permissions_user FOREIGN KEY (user_id) REFERENCES users (id)
+CREATE TABLE IF NOT EXISTS employees (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE,
+    full_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(30),
+    email VARCHAR(150),
+    address VARCHAR(255),
+    position VARCHAR(100),
+    department VARCHAR(100),
+    hire_date DATE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL,
+    CONSTRAINT fk_employees_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS halls (
@@ -53,6 +47,7 @@ CREATE TABLE IF NOT EXISTS menus (
     category VARCHAR(100),
     image_url VARCHAR(255),
     is_featured TINYINT(1) DEFAULT 0,
+    type VARCHAR(50) DEFAULT 'MENU',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL
 );

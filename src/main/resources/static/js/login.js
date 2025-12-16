@@ -10,6 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
 
+    // Helper function to set cookie
+    function setCookie(name, value, days) {
+        let expires = '';
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = '; expires=' + date.toUTCString();
+        }
+        document.cookie = name + '=' + encodeURIComponent(value) + expires + '; path=/';
+    }
+
     if (formPopup) {
         document.body.classList.add('show-popup');
     }
@@ -75,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const auth = await response.json();
             if (auth.accessToken) {
                 localStorage.setItem('accessToken', auth.accessToken);
+                // Set cookie for JWT filter to read on page redirects
+                setCookie('access_token', auth.accessToken, 7);
             }
             if (auth.refreshToken) {
                 localStorage.setItem('refreshToken', auth.refreshToken);

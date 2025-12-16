@@ -1,110 +1,126 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liên hệ | Wedding Center</title>
+    <title>Liên Hệ - Tràng An Palace</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/contacts.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Aquarelle&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Great+Vibes&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-<header>
-    <nav>
-        <div class="logo">
-            <img th:src="@{https://tranganpalace.vn/wp-content/uploads/2020/02/logo-trang-an-palace.png.webp}"
-                 alt="Trang An Palace">
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="section" style="background-color: var(--color-teal); color: #fff; padding: 60px 0; text-align: center;">
+        <div class="container">
+            <h1>Liên Hệ Với Chúng Tôi</h1>
+            <p>Chúng tôi luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc của bạn</p>
         </div>
-        <ul class="nav-links">
-            <li><a href="/wedding">Trang chủ</a></li>
-            <li><a href="/about">Giới thiệu</a></li>
-            <li><a href="/services">Dịch vụ</a></li>
-            <li><a class="active" href="/contact">Liên hệ</a></li>
-            <li><a href="/booking">Đặt tiệc</a></li>
-        
-        
-            <li sec:authorize="hasRole('ADMIN')"><a href="/admin/dashboard">Quay lại quản lý</a></li>
-        </ul>
-    </nav>
-</header>
-
-<main class="contacts">
-    <section class="contact-info">
-        <h2>Liên hệ với đội ngũ Wedding Center</h2>
-        <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn trong mọi yêu cầu về đặt tiệc, thiết kế dịch vụ và chăm sóc khách hàng.</p>
-
-        <div class="branches">
-            <article>
-                <h3>Hà Nội</h3>
-                <p>Địa chỉ: Số 1, đường ABC, Quận Ba Đình</p>
-                <p>Điện thoại: (024) 123 456 789</p>
-                <p>Email: contacts@weddingcenter.vn</p>
-            </article>
-            <article>
-                <h3>Đà Nẵng</h3>
-                <p>Địa chỉ: Số 25, đường biển Võ Nguyên Giáp</p>
-                <p>Điện thoại: (0236) 987 654</p>
-                <p>Email: danang@weddingcenter.vn</p>
-            </article>
-            <article>
-                <h3>TP. Hồ Chí Minh</h3>
-                <p>Địa chỉ: Số 88, Nguyễn Huệ, Quận 1</p>
-                <p>Điện thoại: (028) 888 6868</p>
-                <p>Email: hcm@weddingcenter.vn</p>
-            </article>
-        </div>
-    </section>
-
-    <section class="message-area">
-        <div class="message-wrapper">
-            <h3>Gửi lời nhắn cho chúng tôi</h3>
-            <form id="feedbackForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="fullName">Họ và tên</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="Nguyễn Văn A" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="email@domain.com" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" name="phone" placeholder="09xx xxx xxx" pattern="[0-9]*" maxlength="15" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Chủ đề</label>
-                        <input type="text" id="subject" name="subject" placeholder="Ví dụ: Tư vấn gói tiệc cưới">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Thông điệp</label>
-                    <textarea id="message" name="message" rows="5" placeholder="Chia sẻ nhu cầu hoặc thắc mắc của bạn..." required></textarea>
-                </div>
-
-                <div class="button-summit">
-                    <button type="submit">Gửi thông tin</button>
-                </div>
-            </form>
-        </div>
-
-        <aside class="feedback">
-            <h3>Khách hàng nói gì</h3>
-            <div class="slider" id="feedback-slider"></div>
-        </aside>
-    </section>
-</main>
-
-<footer>
-    <div class="footer-content">
-        <p>© 2025 Wedding Center. Đồng hành trọn vẹn cùng ngày hạnh phúc của bạn.</p>
     </div>
-</footer>
 
-<script th:src="@{/js/contacts.js}" defer></script>
+    <div class="section">
+        <div class="container">
+            <div class="grid-col-2">
+                <!-- Contact Info -->
+                <div>
+                    <h2 class="text-teal" style="margin-bottom: 30px;">Thông Tin Liên Hệ</h2>
+
+                    <div class="card" style="margin-bottom: 20px;">
+                        <h3>📍 Tràng An Palace - Cơ Sở 1</h3>
+                        <p>Tòa nhà Hei, Số 1 Ngụy Như Kon Tum, Thanh Xuân, Hà Nội</p>
+                        <p><strong>Hotline:</strong> (024) 37.666.555</p>
+                    </div>
+
+                    <div class="card" style="margin-bottom: 20px;">
+                        <h3>📍 Tràng An Palace - Cơ Sở 2</h3>
+                        <p>461 Nguyễn Khang, Cầu Giấy, Hà Nội</p>
+                        <p><strong>Hotline:</strong> (024) 33.734.555</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>📧 Email & Website</h3>
+                        <p>Email: infotranganpalace@gmail.com</p>
+                        <p>Website: www.tranganpalace.vn</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div>
+                    <div class="card" style="width: 100%;">
+                        <h2 class="text-teal" style="text-align: center; margin-bottom: 20px;">Gửi Tin Nhắn</h2>
+                        <form id="contactForm">
+                            <div style="margin-bottom: 15px;">
+                                <label for="fullName" style="display: block; margin-bottom: 5px;">Họ và Tên</label>
+                                <input type="text" id="fullName" name="fullName" required class="form-control"
+                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="phone" style="display: block; margin-bottom: 5px;">Số Điện Thoại</label>
+                                <input type="tel" id="phone" name="phone" required class="form-control"
+                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="email" style="display: block; margin-bottom: 5px;">Email</label>
+                                <input type="email" id="email" name="email" required class="form-control"
+                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="subject" style="display: block; margin-bottom: 5px;">Tiêu đề</label>
+                                <input type="text" id="subject" name="subject" class="form-control"
+                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label for="message" style="display: block; margin-bottom: 5px;">Nội Dung</label>
+                                <textarea id="message" name="message" rows="5" required class="form-control"
+                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Gửi Liên Hệ</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div class="section" style="padding: 0;">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.630006730034!2d105.8016!3d21.0076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135aca6871a3619%3A0x5011929949970c06!2sTrang%20An%20Palace%20Wedding%20%26%20Convention!5e0!3m2!1sen!2s!4v1600000000000!5m2!1sen!2s"
+            width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+            tabindex="0"></iframe>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script th:src="@{/js/main.js}"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/feedbacks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.');
+                    this.reset();
+                } else {
+                    const err = await response.json();
+                    alert('Có lỗi xảy ra: ' + (err.message || 'Vui lòng thử lại.'));
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Lỗi kết nối.');
+            }
+        });
+    </script>
 </body>
+
 </html>

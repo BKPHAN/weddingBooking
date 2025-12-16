@@ -1,27 +1,64 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng điều khiển người dùng</title>
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <title>Trang An Palace - Trang Cá Nhân</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <style>
+        .user-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--color-gold);
+        }
+    </style>
 </head>
-<body>
-<header class="admin-header">
-    <h1>Xin chào!</h1>
-    <nav>
-        <a href="/wedding">Trang chủ</a>
-        <a href="/booking">Đặt tiệc</a>
-        <a href="/services">Dịch vụ</a>
-        <a href="/contact">Liên hệ</a>
-    </nav>
-</header>
 
-<main class="admin-container">
-    <section class="card" style="max-width:640px;margin:0 auto;">
-        <h2>Chào mừng bạn đến với trung tâm tiệc cưới</h2>
-        <p>Hãy khám phá các dịch vụ nổi bật, chương trình ưu đãi và quản lý các yêu cầu đặt tiệc của bạn.</p>
-    </section>
-</main>
+<body>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="section" style="background-color: var(--color-cream); min-height: 60vh;">
+        <div class="container text-center">
+            <h2 class="text-teal">Xin chào, <span th:text="${#authentication.name}"
+                    sec:authorize="isAuthenticated()">Người dùng</span>!</h2>
+            <p style="margin-bottom: 50px; opacity: 0.8;">Chào mừng bạn quay trở lại. Quản lý tài khoản và đặt tiệc dễ
+                dàng hơn bao giờ hết.</p>
+
+            <div class="grid-col-3">
+                <!-- Action 1 -->
+                <div class="card">
+                    <div class="user-icon">📅</div>
+                    <h3>Đặt Tiệc</h3>
+                    <p style="margin-bottom: 20px;">Lên kế hoạch cho sự kiện trọng đại của bạn ngay hôm nay.</p>
+                    <a href="/booking" class="btn btn-primary">Đặt Ngay</a>
+                </div>
+
+                <!-- Action 2 -->
+                <div class="card">
+                    <div class="user-icon">🍽️</div>
+                    <h3>Thực Đơn & Decor</h3>
+                    <p style="margin-bottom: 20px;">Khám phá các mẫu trang trí và thực đơn đa dạng.</p>
+                    <a href="/catalog" class="btn btn-outline">Xem Catalog</a>
+                </div>
+
+                <!-- Action 3 -->
+                <div class="card">
+                    <div class="user-icon">🔧</div>
+                    <h3>Hỗ Trợ</h3>
+                    <p style="margin-bottom: 20px;">Bạn cần tư vấn hoặc gặp vấn đề? Hãy liên hệ với chúng tôi.</p>
+                    <a href="/contact" class="btn btn-outline">Liên Hệ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script th:src="@{/js/main.js}"></script>
 </body>
+
 </html>

@@ -1,30 +1,26 @@
 package com.demo.web.service;
 
-import com.demo.web.model.Role;
 import com.demo.web.model.User;
 import com.demo.web.model.enums.UserRole;
-import com.demo.web.repository.RoleRepository;
 import com.demo.web.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final com.demo.web.repository.EmployeeRepository employeeRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder) {
+            com.demo.web.repository.EmployeeRepository employeeRepository,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -50,24 +46,21 @@ public class UserService {
 
         User user = new User();
         user.setUsername(username);
-        user.setFullName(fullName);
         user.setEmail(email);
         user.setPasswordHash(passwordEncoder.encode(rawPassword));
         user.setPrimaryRole(primaryRole);
-        user.setPermissions(new HashSet<>());
+        user.setStatus(User.UserStatus.ACTIVE);
 
-        Set<Role> roles = new HashSet<>();
-        Role baseRole = roleRepository.findByCode(primaryRole.name())
-                .orElseGet(() -> {
-                    Role newRole = new Role();
-                    newRole.setCode(primaryRole.name());
-                    newRole.setDescription(primaryRole.name() + " role");
-                    return roleRepository.save(newRole);
-                });
-        roles.add(baseRole);
-        user.setRoles(roles);
+        User savedUser = userRepository.save(user);
 
-        return userRepository.save(user);
+        com.demo.web.model.Employee employee = new com.demo.web.model.Employee();
+        employee.setUser(savedUser);
+        employee.setFullName(fullName);
+        employee.setEmail(email);
+        // Can add more info if available in request but here minimal
+        employeeRepository.save(employee);
+
+        return savedUser;
     }
 
 }

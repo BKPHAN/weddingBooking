@@ -31,10 +31,10 @@ public class AuthService {
     private final JwtProperties jwtProperties;
 
     public AuthService(AuthenticationManager authenticationManager,
-                       JwtTokenProvider jwtTokenProvider,
-                       RefreshTokenRepository refreshTokenRepository,
-                       UserRepository userRepository,
-                       JwtProperties jwtProperties) {
+            JwtTokenProvider jwtTokenProvider,
+            RefreshTokenRepository refreshTokenRepository,
+            UserRepository userRepository,
+            JwtProperties jwtProperties) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -46,8 +46,7 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         String identifier = request.getUsernameOrEmail();
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(identifier, request.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(identifier, request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtTokenProvider.generateAccessToken(authentication);
@@ -69,14 +68,16 @@ public class AuthService {
         RefreshToken existingToken = refreshTokenRepository.findByToken(context.refreshToken())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid refresh token"));
 
-        if (Boolean.TRUE.equals(existingToken.getRevoked()) || existingToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+        if (Boolean.TRUE.equals(existingToken.getRevoked())
+                || existingToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Refresh token expired or revoked");
         }
 
         User user = existingToken.getUser();
         UserPrincipal principal = UserPrincipal.fromUser(user);
 
-        String newAccessToken = jwtTokenProvider.generateAccessToken(principal);
+        String newAccessToken = jwtTokenProvider.generateAccessToken(
+                new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities()));
         RefreshToken newRefreshToken = rotateRefreshToken(existingToken);
         UserRole role = user.getPrimaryRole();
         return new AuthResponse(newAccessToken,

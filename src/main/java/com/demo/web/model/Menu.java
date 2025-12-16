@@ -37,6 +37,9 @@ public class Menu extends BaseEntity {
     @Column(name = "is_featured")
     private Boolean featured = false;
 
+    @Column(name = "type", length = 50)
+    private String type;
+
     public String getName() {
         return name;
     }
@@ -83,5 +86,13 @@ public class Menu extends BaseEntity {
 
     public void setFeatured(Boolean featured) {
         this.featured = featured;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

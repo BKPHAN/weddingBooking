@@ -31,8 +31,8 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          JwtAuthenticationEntryPoint authenticationEntryPoint,
-                          UserDetailsService userDetailsService) {
+            JwtAuthenticationEntryPoint authenticationEntryPoint,
+            UserDetailsService userDetailsService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.userDetailsService = userDetailsService;
@@ -46,7 +46,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/wedding", "/about", "/services", "/contact", "/booking").permitAll()
+                        .requestMatchers("/", "/login", "/logout", "/wedding", "/about", "/services", "/contact",
+                                "/booking",
+                                "/catalog")
+                        .permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/booking", "/api/feedbacks").permitAll()
@@ -54,10 +57,18 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers("/admin/**", "/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**", "/api/v1/user/**").hasRole("USER")
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .authenticationProvider(daoAuthenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout
+                        .logoutRequestMatcher(
+                                new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/logout")) // Allow
+                                                                                                                    // GET
+                                                                                                                    // logout
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "access_token", "refresh_token")
+                        .permitAll());
 
         return http.build();
     }
