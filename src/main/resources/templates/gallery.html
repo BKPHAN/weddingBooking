@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phong Cách Tiệc Cưới - Tràng An Palace</title>
+    <meta name="description"
+        content="Chiêm ngưỡng các phong cách trang trí tiệc cưới đẳng cấp tại Tràng An Palace: Luxury, Classic, Modern, Rustic.">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lightbox for Gallery -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+</head>
+
+<body>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- Hero Banner -->
+    <section class="gallery-hero">
+        <div class="gallery-hero-overlay"></div>
+        <img th:src="@{/images/gallery/gallery-hero.jpg}" alt="Phong Cách Tiệc Cưới" class="gallery-hero-bg"
+            onerror="this.src='https://placehold.co/1920x600?text=Wedding+Concepts'">
+        <div class="gallery-hero-content">
+            <p style="font-family: var(--font-accent); font-size: 2.5rem; color: var(--color-gold);">Bộ Sưu Tập</p>
+            <h1>Phong Cách Tiệc Cưới</h1>
+            <p>Nơi hiện thực hóa giấc mơ cổ tích của bạn</p>
+        </div>
+    </section>
+
+    <!-- Concept Introduction -->
+    <section class="section text-center">
+        <div class="container">
+            <h2 class="text-teal">Đa Dạng Phong Cách</h2>
+            <p style="max-width: 700px; margin: 0 auto; color: var(--color-text-light);">
+                Mỗi câu chuyện tình yêu đều mang một màu sắc riêng. Tại Tràng An Palace, chúng tôi lắng nghe và
+                kiến tạo nên không gian tiệc cưới mang đậm dấu ấn cá nhân của bạn, từ sang trọng cổ điển đến hiện đại
+                tinh tế.
+            </p>
+        </div>
+    </section>
+
+    <!-- Gallery Filter -->
+    <section class="section pt-0">
+        <div class="container">
+            <div class="gallery-filter">
+                <button class="filter-btn active" onclick="filterGallery('all')">Tất Cả</button>
+                <button class="filter-btn" onclick="filterGallery('luxury')">Luxury</button>
+                <button class="filter-btn" onclick="filterGallery('classic')">Classic</button>
+                <button class="filter-btn" onclick="filterGallery('modern')">Modern</button>
+                <button class="filter-btn" onclick="filterGallery('rustic')">Rustic</button>
+            </div>
+
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Luxury Items -->
+                <div class="gallery-item luxury">
+                    <a th:href="@{/images/gallery/luxury-1.jpg}" data-lightbox="wedding-gallery"
+                        data-title="Luxury Wedding Concept">
+                        <img th:src="@{/images/gallery/luxury-1.jpg}"
+                            onerror="this.src='https://placehold.co/400x400?text=Luxury+1'">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="gallery-item luxury">
+                    <a th:href="@{/images/gallery/luxury-2.jpg}" data-lightbox="wedding-gallery"
+                        data-title="Luxury Decor Detail">
+                        <img th:src="@{/images/gallery/luxury-2.jpg}"
+                            onerror="this.src='https://placehold.co/400x500?text=Luxury+2'">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Classic Items -->
+                <div class="gallery-item classic">
+                    <a th:href="@{/images/gallery/classic-1.jpg}" data-lightbox="wedding-gallery"
+                        data-title="Classic Wedding Hall">
+                        <img th:src="@{/images/gallery/classic-1.jpg}"
+                            onerror="this.src='https://placehold.co/400x500?text=Classic+1'">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Modern Items -->
+                <div class="gallery-item modern">
+                    <a th:href="@{/images/gallery/modern-1.jpg}" data-lightbox="wedding-gallery"
+                        data-title="Modern Floral Arch">
+                        <img th:src="@{/images/gallery/modern-1.jpg}"
+                            onerror="this.src='https://placehold.co/400x400?text=Modern+1'">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="gallery-item modern">
+                    <a th:href="@{/images/gallery/modern-2.jpg}" data-lightbox="wedding-gallery"
+                        data-title="Modern Table Setup">
+                        <img th:src="@{/images/gallery/modern-2.jpg}"
+                            onerror="this.src='https://placehold.co/400x500?text=Modern+2'">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Rustic Items -->
+                <div class="gallery-item rustic">
+                    <a th:href="@{/images/gallery/rustic-1.jpg}" data-lightbox="wedding-gallery"
+                        data-title="Rustic Garden Theme">
+                        <img th:src="@{/images/gallery/rustic-1.jpg}"
+                            onerror="this.src='https://placehold.co/400x400?text=Rustic+1'">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Tour -->
+    <section class="section bg-dark text-center"
+        style="background-image: url('/images/gallery/video-bg.jpg'); background-size: cover; background-attachment: fixed; position: relative;">
+        <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6);"></div>
+        <div class="container" style="position: relative; z-index: 2; padding: 60px 0;">
+            <div style="width: 80px; height: 80px; border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; cursor: pointer; transition: transform 0.3s;"
+                onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <i class="fas fa-play" style="color: #fff; font-size: 2rem; margin-left: 5px;"></i>
+            </div>
+            <h2 style="color: #fff; margin-bottom: 10px;">Tham Quan Trực Tuyến</h2>
+            <p style="color: rgba(255,255,255,0.8);">Trải nghiệm không gian sảnh tiệc 360 độ</p>
+        </div>
+    </section>
+
+    <!-- Real Weddings -->
+    <section class="section">
+        <div class="container">
+            <h2 class="text-teal text-center" style="margin-bottom: 50px;">Khoảnh Khắc Hạnh Phúc</h2>
+
+            <div class="grid-col-3" style="gap: 30px;">
+                <div class="real-wedding-card">
+                    <img th:src="@{/images/gallery/real-1.jpg}"
+                        onerror="this.src='https://placehold.co/400x300?text=Minh+&+Lan'">
+                    <div class="real-wedding-info">
+                        <h4>Minh & Lan</h4>
+                        <p>20.10.2024 - Diamond Hall</p>
+                    </div>
+                </div>
+                <div class="real-wedding-card">
+                    <img th:src="@{/images/gallery/real-2.jpg}"
+                        onerror="this.src='https://placehold.co/400x300?text=Hung+&+Mai'">
+                    <div class="real-wedding-info">
+                        <h4>Hùng & Mai</h4>
+                        <p>15.11.2024 - Royal Hall</p>
+                    </div>
+                </div>
+                <div class="real-wedding-card">
+                    <img th:src="@{/images/gallery/real-3.jpg}"
+                        onerror="this.src='https://placehold.co/400x300?text=Tuan+&+Huong'">
+                    <div class="real-wedding-info">
+                        <h4>Tuấn & Hương</h4>
+                        <p>05.12.2024 - Crystal Hall</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+    <script>
+        function filterGallery(category) {
+            // Update buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter items
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                    // Animation
+                    item.style.opacity = '0';
+                    item.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực Đơn - Tràng An Palace</title>
+    <meta name="description"
+        content="Khám phá thực đơn tiệc cưới đẳng cấp với hơn 200 món ăn Á - Âu tinh tế tại Tràng An Palace.">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- Hero Banner -->
+    <section class="menu-hero">
+        <div class="menu-hero-overlay"></div>
+        <img th:src="@{/images/menu/menu-hero.jpg}" alt="Thực Đơn Tràng An Palace" class="menu-hero-bg"
+            onerror="this.src='https://placehold.co/1920x600?text=Culinary+Art'">
+        <div class="menu-hero-content">
+            <p style="font-family: var(--font-accent); font-size: 2.5rem; color: var(--color-gold);">Tinh Hoa Ẩm Thực
+            </p>
+            <h1>Hương Vị Hạnh Phúc</h1>
+            <p>Sự kết hợp hoàn hảo giữa ẩm thực Á Đông truyền thống và phong cách Âu Châu hiện đại</p>
+        </div>
+    </section>
+
+    <!-- Chef Introduction -->
+    <section class="section">
+        <div class="container">
+            <div class="d-flex align-center gap-40 mobile-col-rev">
+                <div style="flex: 1;">
+                    <p style="font-family: var(--font-accent); font-size: 1.5rem; color: var(--color-gold);">Lời Ngỏ</p>
+                    <h2 class="text-teal" style="margin-bottom: 20px;">Từ Bếp Trưởng</h2>
+                    <p style="margin-bottom: 20px; line-height: 1.8; color: var(--color-text-light);">
+                        "Tại Tràng An Palace, mỗi món ăn không chỉ là sự kết hợp của nguyên liệu thượng hạng,
+                        mà còn là tác phẩm nghệ thuật chứa đựng tâm huyết của người đầu bếp.
+                        Chúng tôi mong muốn mang đến cho quý khách một hành trình vị giác đầy cảm xúc."
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img th:src="@{/images/menu/chef-sig.png}" alt="Chữ ký" style="height: 50px;"
+                            onerror="this.style.display='none'">
+                        <div>
+                            <h4 style="margin: 0; color: var(--color-teal);">Lê Minh Châu</h4>
+                            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">Executive Chef</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1; position: relative;">
+                    <img th:src="@{/images/menu/chef.jpg}" alt="Executive Chef"
+                        style="width: 100%; border-radius: var(--border-radius); box-shadow: var(--shadow-card);"
+                        onerror="this.src='https://placehold.co/600x400?text=Executive+Chef'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Tabs -->
+    <section class="section bg-light" id="menu-content">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 50px;">
+                <h2 class="text-teal">Khám Phá Thực Đơn</h2>
+                <div class="menu-tabs">
+                    <button class="menu-tab active" onclick="switchMenu('set-menu')">Set Menu Cưới</button>
+                    <button class="menu-tab" onclick="switchMenu('alacarte')">Thực Đơn Tự Chọn</button>
+                    <button class="menu-tab" onclick="switchMenu('vegetarian')">Thực Đơn Chay</button>
+                    <button class="menu-tab" onclick="switchMenu('drinks')">Đồ Uống</button>
+                </div>
+            </div>
+
+            <!-- Set Menu Content -->
+            <div id="set-menu" class="menu-panel active">
+                <div class="grid-col-3" style="gap: 30px;">
+                    <!-- Menu Ruby -->
+                    <div class="menu-card">
+                        <div class="menu-header">
+                            <h3>Thực Đơn Ruby</h3>
+                            <p class="price">4.500.000đ/bàn</p>
+                        </div>
+                        <ul class="menu-list">
+                            <li>Súp Hải Sản Bào Ngư</li>
+                            <li>Gà Hấp Hành Gừng</li>
+                            <li>Tôm Chiên Hoàng Bào</li>
+                            <li>Bò Sốt Tiêu Đen + Bánh Bao</li>
+                            <li>Cá Lăng Nướng Riềng Mẻ</li>
+                            <li>Rau Củ Quả Luộc Kho Quẹt</li>
+                            <li>Xôi Chim Câu</li>
+                            <li>Canh Bóng Thả Cẩm</li>
+                            <li>Chè Hạt Sen Long Nhãn</li>
+                        </ul>
+                    </div>
+                    <!-- Menu Sapphire -->
+                    <div class="menu-card featured">
+                        <div class="popular-badge">Được Chọn Nhiều</div>
+                        <div class="menu-header">
+                            <h3>Thực Đơn Sapphire</h3>
+                            <p class="price">5.500.000đ/bàn</p>
+                        </div>
+                        <ul class="menu-list">
+                            <li>Gỏi Tiến Vua Tôm Thịt</li>
+                            <li>Súp Vi Cá Yến Sào</li>
+                            <li>Tôm Hùm Bỏ Lò Phô Mai</li>
+                            <li>Chim Câu Quay Mật Ong</li>
+                            <li>Thăn Bò Úc Sốt Rượu Vang</li>
+                            <li>Cải Chíp Xào Nấm Đông Cô</li>
+                            <li>Cơm Tám Thái Lan</li>
+                            <li>Canh Cua Bể Măng Tây</li>
+                            <li>Caramel Pudding</li>
+                        </ul>
+                    </div>
+                    <!-- Menu Diamond -->
+                    <div class="menu-card">
+                        <div class="menu-header">
+                            <h3>Thực Đơn Diamond</h3>
+                            <p class="price">7.500.000đ/bàn</p>
+                        </div>
+                        <ul class="menu-list">
+                            <li>Salad Cá Hồi Xông Khói</li>
+                            <li>Súp Yến Cua Bể</li>
+                            <li>Tu Hài Nướng Mỡ Hành</li>
+                            <li>Cua Hoàng Đế Hấp Bia</li>
+                            <li>Bò Kobe Áp Chảo</li>
+                            <li>Măng Tây Xào Tỏi</li>
+                            <li>Xôi Vò Hạt Sen</li>
+                            <li>Lẩu Thái Hải Sản</li>
+                            <li>Trái Cây Nhiệt Đới Theo Mùa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alacarte Content (Placeholder) -->
+            <div id="alacarte" class="menu-panel">
+                <div class="text-center">
+                    <img src="https://placehold.co/800x400?text=Alacarte+Menu+Loading..." alt="Alacarte"
+                        style="max-width: 100%; border-radius: 10px;">
+                    <p style="margin-top: 20px;">Đang cập nhật danh sách món tự chọn...</p>
+                </div>
+            </div>
+
+            <!-- Vegetarian Content -->
+            <div id="vegetarian" class="menu-panel">
+                <div class="text-center">
+                    <img src="https://placehold.co/800x400?text=Vegetarian+Menu+Loading..." alt="Vegetarian"
+                        style="max-width: 100%; border-radius: 10px;">
+                    <p style="margin-top: 20px;">Đang cập nhật thực đơn chay...</p>
+                </div>
+            </div>
+
+            <!-- Drinks Content -->
+            <div id="drinks" class="menu-panel">
+                <div class="text-center">
+                    <img src="https://placehold.co/800x400?text=Drinks+Menu+Loading..." alt="Drinks"
+                        style="max-width: 100%; border-radius: 10px;">
+                    <p style="margin-top: 20px;">Đang cập nhật danh sách đồ uống...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signature Dishes Slider -->
+    <section class="section">
+        <div class="container">
+            <h2 class="text-teal text-center" style="margin-bottom: 40px;">Món Ngon Đặc Sắc</h2>
+
+            <div class="dish-grid">
+                <div class="dish-item">
+                    <img th:src="@{/images/menu/dish-1.jpg}"
+                        onerror="this.src='https://placehold.co/400x300?text=Signature+1'">
+                    <div class="dish-info">
+                        <h4>Tôm Hùm Bỏ Lò</h4>
+                        <p>Hương vị biển cả hòa quyện cùng phô mai béo ngậy</p>
+                    </div>
+                </div>
+                <div class="dish-item">
+                    <img th:src="@{/images/menu/dish-2.jpg}"
+                        onerror="this.src='https://placehold.co/400x300?text=Signature+2'">
+                    <div class="dish-info">
+                        <h4>Bò Úc Sốt Vang</h4>
+                        <p>Thịt bò mềm tan, sốt rượu vang đậm đà</p>
+                    </div>
+                </div>
+                <div class="dish-item">
+                    <img th:src="@{/images/menu/dish-3.jpg}"
+                        onerror="this.src='https://placehold.co/400x300?text=Signature+3'">
+                    <div class="dish-info">
+                        <h4>Súp Vi Cá</h4>
+                        <p>Bổ dưỡng, thanh mát, khởi đầu hoàn hảo</p>
+                    </div>
+                </div>
+                <div class="dish-item">
+                    <img th:src="@{/images/menu/dish-4.jpg}"
+                        onerror="this.src='https://placehold.co/400x300?text=Signature+4'">
+                    <div class="dish-info">
+                        <h4>Sashimi Thượng Hạng</h4>
+                        <p>Tươi ngon, chuẩn vị Nhật Bản</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Food Tasting CTA -->
+    <section class="section cta-section">
+        <div class="container text-center">
+            <h2 style="color: #fff; margin-bottom: 20px;">Trải Nghiệm Thực Tế?</h2>
+            <p style="color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto 40px; font-size: 1.1rem;">
+                Đăng ký nếm thử thực đơn (Food Tasting) ngay hôm nay để an tâm tuyệt đối về chất lượng ẩm thực cho ngày
+                vui của bạn.
+            </p>
+            <a href="/contact" class="btn btn-primary" style="padding: 15px 40px;">Đăng Ký Nếm Thử</a>
+        </div>
+    </section>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script th:src="@{/js/main.js}"></script>
+
+    <script>
+        function switchMenu(menuId) {
+            // Update buttons
+            document.querySelectorAll('.menu-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show content
+            document.querySelectorAll('.menu-panel').forEach(panel => {
+                panel.classList.remove('active');
+                if (panel.id === menuId) {
+                    panel.classList.add('active');
+                    // Add animation class
+                    panel.style.opacity = 0;
+                    setTimeout(() => panel.style.opacity = 1, 50);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
