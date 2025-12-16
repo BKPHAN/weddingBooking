@@ -1,5 +1,8 @@
 package com.demo.web.controller;
 
+import com.demo.web.service.BookingService;
+import com.demo.web.service.ContactService;
+
 import com.demo.web.dto.ApiResponse;
 import com.demo.web.dto.BookingRequest;
 import com.demo.web.dto.BookingResponse;
@@ -7,8 +10,7 @@ import com.demo.web.dto.ContactRequest;
 import com.demo.web.dto.ContactResponse;
 import com.demo.web.mapper.BookingMapper;
 import com.demo.web.mapper.ContactMapper;
-import com.demo.web.service.BookingService;
-import com.demo.web.service.ContactService;
+import com.demo.web.service.HallService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,21 +27,25 @@ public class WeddingController {
 
     private final BookingService bookingService;
     private final ContactService contactService;
+    private final HallService hallService;
     private final BookingMapper bookingMapper;
     private final ContactMapper contactMapper;
 
     public WeddingController(BookingService bookingService,
             ContactService contactService,
+            HallService hallService,
             BookingMapper bookingMapper,
             ContactMapper contactMapper) {
         this.bookingService = bookingService;
         this.contactService = contactService;
+        this.hallService = hallService;
         this.bookingMapper = bookingMapper;
         this.contactMapper = contactMapper;
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("featuredHalls", hallService.findFeaturedHalls());
         return "home";
     }
 
@@ -54,8 +60,38 @@ public class WeddingController {
     }
 
     @GetMapping("/booking")
-    public String showBookingForm(Model model) {
-        model.addAttribute("bookingRequest", new BookingRequest());
+    public String showBookingForm(@org.springframework.web.bind.annotation.RequestParam(required = false) Long hallId,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) java.time.LocalDate date,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String guests,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String type,
+            Model model) {
+        BookingRequest request = new BookingRequest();
+        if (hallId != null) {
+            request.setHallId(hallId);
+        }
+        if (date != null) {
+            request.setEventDate(date);
+        }
+        if (guests != null && !guests.isEmpty()) {
+            try {
+                // Extract first number from string like "100-300" or "500+"
+                String numberOnly = guests.replaceAll("[^0-9]", " ").trim().split("\\s+")[0];
+                request.setGuestCount(Integer.parseInt(numberOnly));
+            } catch (Exception e) {
+                // Ignore parse error
+            }
+        }
+        if (type != null && !type.isEmpty()) {
+            String typeLabel = switch (type) {
+                case "wedding" -> "Tiệc Cưới";
+                case "event" -> "Sự Kiện";
+                case "conference" -> "Hội Nghị";
+                default -> type;
+            };
+            request.setNotes("Loại hình: " + typeLabel);
+        }
+
+        model.addAttribute("bookingRequest", request);
         return "booking";
     }
 

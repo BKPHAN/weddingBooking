@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface HallRepository extends JpaRepository<Hall, Long> {
     Optional<Hall> findByCode(String code);
+
+    java.util.List<Hall> findByActiveTrue();
 }

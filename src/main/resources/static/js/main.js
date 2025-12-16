@@ -40,12 +40,97 @@ function showToast(type, message) {
     }, 3000);
 }
 
-// Check for Session Messages on Load
+// =======================
+// CAROUSEL LOGIC
+// =======================
+function initCarousels() {
+    const carousels = document.querySelectorAll('.carousel-container');
+
+    carousels.forEach(carousel => {
+        const track = carousel.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextBtn = carousel.querySelector('.carousel-btn.next');
+        const prevBtn = carousel.querySelector('.carousel-btn.prev');
+        const intervalTime = parseInt(carousel.dataset.interval) || 5000;
+
+        let currentIndex = 0;
+        let slideWidth = slides[0].getBoundingClientRect().width;
+        let slidesPerView = Math.round(carousel.offsetWidth / slideWidth);
+        let maxIndex = Math.max(0, slides.length - slidesPerView);
+        let autoSlideTimer;
+
+        // Update dimensions on resize
+        const updateDimensions = () => {
+            slideWidth = slides[0].getBoundingClientRect().width;
+            slidesPerView = Math.round(carousel.offsetWidth / slideWidth);
+            maxIndex = Math.max(0, slides.length - slidesPerView);
+            // Re-align track
+            moveToSlide(currentIndex);
+        };
+
+        window.addEventListener('resize', updateDimensions);
+
+        const moveToSlide = (index) => {
+            // BOUNDARY CHECKS
+            if (index < 0) index = maxIndex;
+            if (index > maxIndex) index = 0;
+
+            currentIndex = index;
+            const amountToMove = -(slideWidth * currentIndex);
+            track.style.transform = `translateX(${amountToMove}px)`;
+        };
+
+        // Navigation
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                moveToSlide(currentIndex + 1);
+                resetTimer();
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                moveToSlide(currentIndex - 1);
+                resetTimer();
+            });
+        }
+
+        // Auto Slide
+        const startTimer = () => {
+            autoSlideTimer = setInterval(() => {
+                moveToSlide(currentIndex + 1);
+            }, intervalTime);
+        };
+
+        const resetTimer = () => {
+            clearInterval(autoSlideTimer);
+            startTimer();
+        };
+
+        // Pause on hover
+        carousel.addEventListener('mouseenter', () => clearInterval(autoSlideTimer));
+        carousel.addEventListener('mouseleave', startTimer);
+
+        // Init
+        // Wait a bit for layout to settle
+        requestAnimationFrame(() => {
+            updateDimensions();
+            startTimer();
+        });
+    });
+}
+
+// Initialize on Load
 document.addEventListener('DOMContentLoaded', () => {
+    // ... existing init code if any
+
+    // Check for Session Messages
     if (sessionStorage.getItem('loginSuccess')) {
         showToast('success', 'Đăng nhập thành công!');
         sessionStorage.removeItem('loginSuccess');
     }
+
+    initCarousels();
 });
 
 async function handleLogin(event) {
