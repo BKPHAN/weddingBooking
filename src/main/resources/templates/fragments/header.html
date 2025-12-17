@@ -23,7 +23,10 @@
                 </nav>
 
                 <!-- User Actions -->
-                <div class="user-actions">
+                <div class="user-actions" style="display: flex; align-items: center;">
+                    <button class="theme-toggle-btn" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối">
+                        <i class="fas fa-moon"></i>
+                    </button>
                     <!-- Guest State -->
                     <div sec:authorize="!isAuthenticated()">
                         <button onclick="openAuthModal()" class="btn btn-outline">Đăng Nhập</button>

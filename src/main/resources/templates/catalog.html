@@ -282,7 +282,7 @@
 
             recognition.continuous = false;
             recognition.lang = 'vi-VN';
-            recognition.interimResults = false;
+            recognition.interimResults = true; // Enable streaming
 
             micBtn.addEventListener('click', () => {
                 if (micBtn.classList.contains('listening')) {
@@ -300,24 +300,42 @@
 
             recognition.onend = () => {
                 micBtn.classList.remove('listening');
-                speechStatus.textContent = "";
+                if (!searchInput.value) {
+                    speechStatus.textContent = "";
+                }
             };
 
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                searchInput.value = transcript;
-                speechStatus.textContent = `Đã nhận diện: "${transcript}"`;
-                speechStatus.style.color = "var(--color-success)";
-                filterItems(transcript);
+                let interimTranscript = '';
+                let finalTranscript = '';
 
-                // Auto switch tab if needed? 
-                // For simplicity, just filter current tab. 
-                // Or we could check if transcript contains "trang trí" or "món" to switch tabs.
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                // Show both final and interim results
+                searchInput.value = finalTranscript + interimTranscript;
+                speechStatus.textContent = interimTranscript ? `Đang nghe: "${interimTranscript}"` : `Đã nhận diện: "${finalTranscript}"`;
+                speechStatus.style.color = interimTranscript ? "var(--color-gold)" : "var(--color-success)";
+
+                // Perform filter with current text
+                filterItems(searchInput.value);
+
+                // Clear status after final result
+                if (finalTranscript && !interimTranscript) {
+                    setTimeout(() => speechStatus.textContent = "", 3000);
+                }
             };
 
             recognition.onerror = (event) => {
                 micBtn.classList.remove('listening');
                 speechStatus.textContent = "Lỗi nhận diện giọng nói: " + event.error;
+                speechStatus.style.color = "var(--color-danger)";
             };
 
         } else {

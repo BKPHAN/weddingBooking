@@ -280,7 +280,7 @@
 
             recognition.continuous = false;
             recognition.lang = 'vi-VN';
-            recognition.interimResults = false;
+            recognition.interimResults = true; // Enable streaming
 
             micBtn.addEventListener('click', () => {
                 if (micBtn.classList.contains('listening')) {
@@ -297,21 +297,43 @@
 
             recognition.onend = () => {
                 micBtn.classList.remove('listening');
-                speechStatus.textContent = "";
+                if (!searchInput.value) {
+                    speechStatus.textContent = "";
+                }
             };
 
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                searchInput.value = transcript;
-                performSearch(transcript);
-                speechStatus.textContent = `Đã tìm: "${transcript}"`;
-                setTimeout(() => speechStatus.textContent = "", 3000);
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                // Show both final and interim results
+                searchInput.value = finalTranscript + interimTranscript;
+                speechStatus.textContent = interimTranscript ? `Đang nghe: "${interimTranscript}"` : `Đã tìm: "${finalTranscript}"`;
+                speechStatus.style.color = interimTranscript ? "var(--color-gold)" : "var(--color-success, #28a745)";
+
+                // Perform search with current text
+                performSearch(searchInput.value);
+
+                // Clear status after final result
+                if (finalTranscript && !interimTranscript) {
+                    setTimeout(() => speechStatus.textContent = "", 3000);
+                }
             };
 
             recognition.onerror = (event) => {
                 console.error('Speech recognition error', event.error);
                 micBtn.classList.remove('listening');
                 speechStatus.textContent = "Không nghe rõ, vui lòng thử lại.";
+                speechStatus.style.color = "var(--color-danger)";
             };
         } else {
             console.log('Web Speech API not supported in this browser.');

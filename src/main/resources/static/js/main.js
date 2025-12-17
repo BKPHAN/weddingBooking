@@ -224,7 +224,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initCarousels();
     initHeroSlider(); // Hero Banner Slideshow
+
+    // Initialize Snowfall
+    createSnowflakes();
+
+    // Initialize Theme
+    const savedTheme = localStorage.getItem('theme');
+    const themeBtnIcon = document.querySelector('.theme-toggle-btn i');
+    if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeBtnIcon) {
+            themeBtnIcon.classList.remove('fa-moon');
+            themeBtnIcon.classList.add('fa-sun');
+        }
+    }
 });
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const themeBtnIcon = document.querySelector('.theme-toggle-btn i');
+    let newTheme = 'light';
+
+    if (currentTheme === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        if (themeBtnIcon) {
+            themeBtnIcon.classList.remove('fa-sun');
+            themeBtnIcon.classList.add('fa-moon');
+        }
+    } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        newTheme = 'dark';
+        if (themeBtnIcon) {
+            themeBtnIcon.classList.remove('fa-moon');
+            themeBtnIcon.classList.add('fa-sun');
+        }
+    }
+}
+
+function createSnowflakes() {
+    const container = document.createElement('div');
+    container.id = 'snow-container';
+    document.body.prepend(container);
+
+    const characters = ['❄', '❅', '❆', '•'];
+
+    // Create snowflakes periodically
+    setInterval(() => {
+        // Limit max flakes to prevent performance issues
+        if (container.childElementCount > 50) return;
+
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.innerText = characters[Math.floor(Math.random() * characters.length)];
+
+        snowflake.style.left = Math.random() * 100 + 'vw';
+        snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+        snowflake.style.fontSize = (Math.random() * 15 + 10) + 'px';
+
+        const duration = Math.random() * 5 + 5; // 5-10 seconds
+        snowflake.style.animationDuration = duration + 's';
+
+        container.appendChild(snowflake);
+
+        // Remove after animation
+        setTimeout(() => {
+            snowflake.remove();
+        }, duration * 1000);
+    }, 400); // Slower creation rate
+}
 
 async function handleLogin(event) {
     event.preventDefault();
