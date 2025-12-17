@@ -278,12 +278,25 @@
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
 
-            recognition.continuous = false;
+            recognition.continuous = true; // Keep listening until silence
             recognition.lang = 'vi-VN';
             recognition.interimResults = true; // Enable streaming
 
+            let silenceTimeout = null;
+            const SILENCE_DELAY = 3000; // 3 seconds
+
+            function resetSilenceTimeout() {
+                if (silenceTimeout) {
+                    clearTimeout(silenceTimeout);
+                }
+                silenceTimeout = setTimeout(() => {
+                    recognition.stop();
+                }, SILENCE_DELAY);
+            }
+
             micBtn.addEventListener('click', () => {
                 if (micBtn.classList.contains('listening')) {
+                    if (silenceTimeout) clearTimeout(silenceTimeout);
                     recognition.stop();
                 } else {
                     recognition.start();
@@ -293,16 +306,20 @@
             recognition.onstart = () => {
                 micBtn.classList.add('listening');
                 speechStatus.textContent = "Đang lắng nghe...";
+                resetSilenceTimeout(); // Start timeout on begin
             };
 
             recognition.onend = () => {
                 micBtn.classList.remove('listening');
+                if (silenceTimeout) clearTimeout(silenceTimeout);
                 if (!searchInput.value) {
                     speechStatus.textContent = "";
                 }
             };
 
             recognition.onresult = (event) => {
+                resetSilenceTimeout(); // Reset timeout on speech detected
+
                 let interimTranscript = '';
                 let finalTranscript = '';
 
@@ -332,6 +349,7 @@
             recognition.onerror = (event) => {
                 console.error('Speech recognition error', event.error);
                 micBtn.classList.remove('listening');
+                if (silenceTimeout) clearTimeout(silenceTimeout);
                 speechStatus.textContent = "Không nghe rõ, vui lòng thử lại.";
                 speechStatus.style.color = "var(--color-danger)";
             };
