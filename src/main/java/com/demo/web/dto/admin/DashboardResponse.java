@@ -63,4 +63,14 @@ public class DashboardResponse {
     public void setUpcomingBookings(List<BookingResponse> upcomingBookings) {
         this.upcomingBookings = upcomingBookings;
     }
+
+    private Map<Integer, Long> monthlyBookings;
+
+    public Map<Integer, Long> getMonthlyBookings() {
+        return monthlyBookings;
+    }
+
+    public void setMonthlyBookings(Map<Integer, Long> monthlyBookings) {
+        this.monthlyBookings = monthlyBookings;
+    }
 }

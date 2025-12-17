@@ -34,9 +34,10 @@
                         <!-- <a href="/booking" class="btn btn-primary">Đặt Tiệc Ngay</a> -->
                     </div>
 
-                    <!-- Logged In State -->
                     <!-- Logged In State (Dropdown) -->
-                    <div sec:authorize="isAuthenticated()" class="user-dropdown">
+                    <div sec:authorize="isAuthenticated()" class="user-dropdown"
+                        style="display: flex; align-items: center; gap: 15px;">
+
                         <div class="dropdown-toggle" onclick="toggleDropdown()">
                             <!-- Avatar Icon -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"

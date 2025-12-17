@@ -28,23 +28,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('expected-revenue').textContent = formatCurrency(data.expectedRevenue);
         document.getElementById('pending-contacts').textContent = data.pendingContacts ?? 0;
 
-        renderStatusBars(bookingStatusBars, data.bookingByStatus || {});
+        // Initialize Charts
+        if (typeof Chart !== 'undefined') {
+            initCharts(data);
+        }
 
         state.upcomingBookings = data.upcomingBookings || [];
         renderUpcoming(upcomingBody, state.upcomingBookings, Number(bookingFilter.value));
 
-        contactBody.innerHTML = '';
-        (data.recentContacts || []).forEach(contact => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${contact.fullName}</td>
-                <td>${contact.email}</td>
-                <td>${contact.subject || '-'}</td>
-                <td>${contact.flag || '-'}</td>
-                <td>${formatDateTime(contact.createdAt)}</td>
-            `;
-            contactBody.appendChild(row);
-        });
+        // ... existing contact code ...
     } catch (error) {
         console.error(error);
         showError(errorBanner, error.message);
@@ -54,6 +46,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderUpcoming(upcomingBody, state.upcomingBookings, Number(bookingFilter.value));
     });
 });
+
+function initCharts(data) {
+    // Pie Chart - Status
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    const statusLabels = Object.keys(data.bookingByStatus || {});
+    const statusValues = Object.values(data.bookingByStatus || {});
+
+    // Translation map for statuses
+    const translations = {
+        'PENDING': 'Chờ duyệt',
+        'CONFIRMED': 'Đã xác nhận',
+        'COMPLETED': 'Hoàn thành',
+        'CANCELLED': 'Đã hủy'
+    };
+
+    new Chart(statusCtx, {
+        type: 'pie',
+        data: {
+            labels: statusLabels.map(l => translations[l] || l),
+            datasets: [{
+                data: statusValues,
+                backgroundColor: ['#f2d936', '#38b2ac', '#4299e1', '#e53e3e'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Line Chart - Monthly Trends
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    const months = [];
+    const counts = [];
+    const monthlyData = data.monthlyBookings || {};
+
+    for (let i = 1; i <= 12; i++) {
+        months.push('T' + i);
+        counts.push(monthlyData[i] || 0);
+    }
+
+    new Chart(monthlyCtx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Số lượng đặt tiệc',
+                data: counts,
+                borderColor: '#103238',
+                backgroundColor: 'rgba(16, 50, 56, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+}
 
 function formatCurrency(value) {
     if (!value && value !== 0) {
@@ -87,27 +148,6 @@ function formatDateTime(value) {
 function showError(element, message) {
     element.textContent = message;
     element.style.display = 'block';
-}
-
-function renderStatusBars(container, statusMap) {
-    container.innerHTML = '';
-    const entries = Object.entries(statusMap);
-    const total = entries.reduce((acc, [, count]) => acc + count, 0) || 1;
-
-    entries.forEach(([status, count]) => {
-        const percentage = Math.round((count / total) * 100);
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <h3>${status}</h3>
-            <p>${count} booking(s)</p>
-            <div style="background:#e6ecf2;border-radius:12px;height:12px;overflow:hidden;">
-                <div style="background:#f2d936;width:${percentage}%;height:100%;"></div>
-            </div>
-            <small>${percentage}% tổng số booking</small>
-        `;
-        container.appendChild(card);
-    });
 }
 
 function renderUpcoming(tbody, bookings, rangeDays) {

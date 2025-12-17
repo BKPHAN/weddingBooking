@@ -14,13 +14,16 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByEventDateBetween(LocalDate start, LocalDate end);
 
     boolean existsByHallIdAndEventDateAndTimeSlotAndStatusIn(Long hallId,
-                                                             LocalDate eventDate,
-                                                             String timeSlot,
-                                                             Collection<BookingStatus> statuses);
+            LocalDate eventDate,
+            String timeSlot,
+            Collection<BookingStatus> statuses);
 
     boolean existsByEmailIgnoreCaseAndEventDate(String email, LocalDate eventDate);
 
     long countByStatus(BookingStatus status);
 
     List<Booking> findTop5ByEventDateGreaterThanEqualOrderByEventDateAsc(LocalDate date);
+
+    @org.springframework.data.jpa.repository.Query("SELECT FUNCTION('MONTH', b.eventDate), COUNT(b) FROM Booking b WHERE FUNCTION('YEAR', b.eventDate) = :year GROUP BY FUNCTION('MONTH', b.eventDate)")
+    List<Object[]> countBookingsByYear(@org.springframework.data.repository.query.Param("year") int year);
 }
