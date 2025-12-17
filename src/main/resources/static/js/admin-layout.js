@@ -280,3 +280,90 @@ function setProfileHidden(element, shouldHide) {
         element.style.display = '';
     }
 }
+
+// =======================
+// TOAST NOTIFICATIONS
+// =======================
+function showToast(type, message) {
+    let container = document.querySelector('.toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        <div class="toast-content">
+            ${type === 'success' ?
+            '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>' :
+            '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>'}
+            <span>${message}</span>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+    `;
+
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        toast.addEventListener('animationend', () => toast.remove());
+    }, 3000);
+}
+
+// Image Upload Helper
+function uploadImage(fileInput, targetInputId, type) {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    // Show loading state if needed
+    const targetInput = document.getElementById(targetInputId);
+    const originalPlaceholder = targetInput.placeholder;
+    targetInput.value = "Đang tải lên...";
+    targetInput.disabled = true;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("type", type);
+
+    // Get CSRF token if enabled (Spring Security usually requires it for POST)
+    // Assuming cookie or meta tag. For simplicity/freelance, trying standard fetch.
+    // Ideally we should grab X-CSRF-TOKEN from meta.
+
+    fetch('/admin/upload/image', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                targetInput.value = data.url;
+                // Trigger change for preview
+                if (typeof previewImage === "function") previewImage();
+                showToast('success', 'Tải ảnh thành công!');
+            } else {
+                targetInput.value = '';
+                showToast('error', 'Lỗi tải ảnh: ' + (data.error || 'Unknown'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            targetInput.value = '';
+            showToast('error', 'Lỗi kết nối server');
+        })
+        .finally(() => {
+            targetInput.disabled = false;
+            targetInput.placeholder = originalPlaceholder;
+        });
+}
+// Check Session Message on Load
+document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('loginSuccess')) {
+        showToast('success', 'Đăng nhập trang quản trị thành công!');
+        sessionStorage.removeItem('loginSuccess');
+    }
+});

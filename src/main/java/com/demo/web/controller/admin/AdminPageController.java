@@ -16,8 +16,15 @@ public class AdminPageController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard() {
+    public String dashboard(org.springframework.ui.Model model) {
+        model.addAttribute("currentPage", "dashboard");
         return "admin/dashboard";
+    }
+
+    @GetMapping("/home")
+    public String homeConfig(org.springframework.ui.Model model) {
+        model.addAttribute("currentPage", "home");
+        return "admin/home";
     }
 
     @GetMapping("/content")

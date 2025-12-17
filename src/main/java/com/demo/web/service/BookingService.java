@@ -27,8 +27,8 @@ public class BookingService {
     private final NotificationService notificationService;
 
     public BookingService(BookingRepository bookingRepository,
-                          HallRepository hallRepository,
-                          NotificationService notificationService) {
+            HallRepository hallRepository,
+            NotificationService notificationService) {
         this.bookingRepository = bookingRepository;
         this.hallRepository = hallRepository;
         this.notificationService = notificationService;
@@ -39,7 +39,8 @@ public class BookingService {
         validateBookingRequest(booking);
 
         if (bookingRepository.existsByEmailIgnoreCaseAndEventDate(booking.getEmail(), booking.getEventDate())) {
-            throw new InvalidRequestException("Bạn đã gửi yêu cầu đặt tiệc cho ngày này. Vui lòng chờ phản hồi hoặc liên hệ trực tiếp.");
+            throw new InvalidRequestException(
+                    "Bạn đã gửi yêu cầu đặt tiệc cho ngày này. Vui lòng chờ phản hồi hoặc liên hệ trực tiếp.");
         }
 
         if (hallId != null) {
@@ -51,11 +52,11 @@ public class BookingService {
                     hall.getId(),
                     booking.getEventDate(),
                     booking.getTimeSlot(),
-                    EnumSet.of(BookingStatus.PENDING, BookingStatus.CONFIRMED)
-            );
+                    EnumSet.of(BookingStatus.PENDING, BookingStatus.CONFIRMED));
 
             if (hallTaken) {
-                throw new BookingConflictException("Khung giờ này của sảnh đã có khách khác đặt. Vui lòng chọn sảnh hoặc thời gian khác.");
+                throw new BookingConflictException(
+                        "Khung giờ này của sảnh đã có khách khác đặt. Vui lòng chọn sảnh hoặc thời gian khác.");
             }
         }
 
@@ -78,6 +79,19 @@ public class BookingService {
     @Transactional(readOnly = true)
     public List<Booking> getBookingsBetween(LocalDate from, LocalDate to) {
         return bookingRepository.findByEventDateBetween(from, to);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
+    @Transactional
+    public void updateBookingStatus(Long id, BookingStatus status) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found: " + id));
+        booking.setStatus(status);
+        bookingRepository.save(booking);
     }
 
     private void validateBookingRequest(Booking booking) {

@@ -25,8 +25,8 @@ public class ContactService {
     private final NotificationService notificationService;
 
     public ContactService(ContactRepository contactRepository,
-                          UserRepository userRepository,
-                          NotificationService notificationService) {
+            UserRepository userRepository,
+            NotificationService notificationService) {
         this.contactRepository = contactRepository;
         this.userRepository = userRepository;
         this.notificationService = notificationService;
@@ -69,6 +69,11 @@ public class ContactService {
     @Transactional(readOnly = true)
     public List<Contact> getLatestContacts() {
         return contactRepository.findTop10ByOrderByCreatedAtDesc();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Contact> getAllContacts() {
+        return contactRepository.findAll();
     }
 
     private String determineFlag(Contact contact) {

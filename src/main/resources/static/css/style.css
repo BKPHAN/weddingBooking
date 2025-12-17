@@ -2268,3 +2268,18 @@ img {
         width: 100%;
     }
 }
+
+/* ======================================================================
+   ACTIVE MENU HIGHLIGHT
+====================================================================== */
+.nav-link.active {
+    color: #fff !important;
+    background-color: var(--color-gold);
+    border-radius: 4px;
+    padding: 8px 15px;
+}
+
+.nav-link {
+    padding: 8px 15px;
+    transition: all 0.3s ease;
+}

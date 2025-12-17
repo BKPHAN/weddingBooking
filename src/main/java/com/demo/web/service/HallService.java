@@ -28,4 +28,22 @@ public class HallService {
         List<Hall> active = hallRepository.findByActiveTrue();
         return active.size() > 3 ? active.subList(0, 3) : active;
     }
+
+    public List<Hall> findAll() {
+        return hallRepository.findAll();
+    }
+
+    public Hall findById(Long id) {
+        return hallRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public Hall saveHall(Hall hall) {
+        return hallRepository.save(hall);
+    }
+
+    @Transactional
+    public void deleteHall(Long id) {
+        hallRepository.deleteById(id);
+    }
 }

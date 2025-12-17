@@ -250,30 +250,90 @@
         const speechStatus = document.getElementById('speechStatus');
 
         // Filter Logic
+        // Filter Logic
         function filterItems(query) {
             query = query.toLowerCase();
-            const activeGrid = document.querySelector('.item-grid.active');
-            const items = activeGrid.querySelectorAll('.item-card');
-            let hasResults = false;
+            let totalResults = 0;
+            let currentTabResults = 0;
+            let resultsByTab = {};
 
-            items.forEach(item => {
-                const name = item.getAttribute('data-name');
-                const category = item.getAttribute('data-cat');
-                if (name.includes(query) || category.includes(query)) {
-                    item.style.display = 'block';
-                    hasResults = true;
-                } else {
-                    item.style.display = 'none';
+            // Search across ALL item grids
+            document.querySelectorAll('.item-grid').forEach(grid => {
+                const gridId = grid.id;
+                let gridResults = 0;
+                const items = grid.querySelectorAll('.item-card');
+
+                items.forEach(item => {
+                    const name = item.getAttribute('data-name');
+                    const category = item.getAttribute('data-cat');
+                    if (name.includes(query) || category.includes(query)) {
+                        item.style.display = 'block';
+                        gridResults++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                resultsByTab[gridId] = gridResults;
+                totalResults += gridResults;
+
+                // Check if this is the active grid
+                if (grid.classList.contains('active')) {
+                    currentTabResults = gridResults;
+                }
+
+                // Update no-results message for this grid
+                const noResultsMsg = grid.querySelector('.no-results');
+                if (noResultsMsg) {
+                    noResultsMsg.style.display = gridResults > 0 ? 'none' : 'block';
                 }
             });
 
-            const noResultsMsg = activeGrid.querySelector('.no-results');
-            if (noResultsMsg) {
-                noResultsMsg.style.display = hasResults ? 'none' : 'block';
+            // Auto-switch tab logic
+            if (query.length > 0 && currentTabResults === 0 && totalResults > 0) {
+                // Find a grid with results
+                const targetGridId = Object.keys(resultsByTab).find(id => resultsByTab[id] > 0);
+                if (targetGridId) {
+                    // Switch tab UI
+                    document.querySelectorAll('.item-grid').forEach(g => g.classList.remove('active'));
+                    document.getElementById(targetGridId).classList.add('active');
+
+                    // Update tab buttons
+                    const tabName = targetGridId.replace('-grid', ''); // menu-grid -> menu
+                    document.querySelectorAll('.catalog-tab').forEach(btn => {
+                        if (btn.getAttribute('data-tab') === tabName) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+            }
+
+            // Show result notification
+            if (query.length > 0) {
+                if (totalResults > 0) {
+                    speechStatus.textContent = `Tìm thấy ${totalResults} kết quả`;
+                    speechStatus.style.color = "var(--color-success)";
+                } else {
+                    speechStatus.textContent = `Không tìm thấy kết quả cho "${query}"`;
+                    speechStatus.style.color = "var(--color-danger)";
+                }
+                setTimeout(() => speechStatus.textContent = "", 4000);
+            } else {
+                speechStatus.textContent = "";
             }
         }
 
-        searchInput.addEventListener('input', (e) => filterItems(e.target.value));
+        // Trigger search on Enter key
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                filterItems(searchInput.value);
+            }
+        });
+
+        // Remove input event listener (search only on button click or Enter)
+        // searchInput.addEventListener('input', (e) => filterItems(e.target.value));
 
         // Web Speech API
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -341,7 +401,7 @@
                 speechStatus.style.color = interimTranscript ? "var(--color-gold)" : "var(--color-success)";
 
                 // Perform filter with current text
-                filterItems(searchInput.value);
+                // filterItems(searchInput.value); // DISABLED: Auto-search removed
 
                 // Clear status after final result
                 if (finalTranscript && !interimTranscript) {

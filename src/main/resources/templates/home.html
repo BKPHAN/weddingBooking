@@ -91,7 +91,7 @@
             <div class="grid-col-2" style="align-items: center;">
                 <!-- Image Side -->
                 <div class="about-image">
-                    <img th:src="@{/images/about/about-main.jpg}" alt="Tràng An Palace"
+                    <img th:src="@{/images/about/slider1.jpg}" alt="Tràng An Palace"
                         style="width: 100%; border-radius: var(--border-radius); box-shadow: 0 20px 50px rgba(0,0,0,0.15);"
                         onerror="this.src='https://placehold.co/600x400?text=About+Us'">
                     <!-- Decorative Badge -->
@@ -202,7 +202,7 @@
         <div class="container">
             <div class="d-flex justify-between align-center" style="margin-bottom: 50px;">
                 <h2 class="text-teal" style="margin-bottom: 0;">Sảnh Tiệc Nổi Bật</h2>
-                <a href="/catalog" class="btn btn-outline">Xem Tất Cả Sảnh <i class="fas fa-arrow-right"></i></a>
+                <a href="/gallery" class="btn btn-outline">Xem Tất Cả Sảnh <i class="fas fa-arrow-right"></i></a>
             </div>
 
             <div th:if="${not #lists.isEmpty(featuredHalls)}" class="carousel-container carousel-col-3"

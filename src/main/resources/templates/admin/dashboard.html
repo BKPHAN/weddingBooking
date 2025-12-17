@@ -1,136 +1,121 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bảng điều khiển Quản trị</title>
     <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
-<body>
-<div class="admin-layout">
-    <aside class="admin-sidebar">
-        <div class="sidebar-header">
-            <span class="sidebar-logo">Wedding Admin</span>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="/admin/dashboard" class="sidebar-link active">
-                <span class="sidebar-icon" aria-hidden="true">🏠</span>
-                <span class="sidebar-label">Tổng quan</span>
-            </a>
-            <a href="/admin/content" class="sidebar-link">
-                <span class="sidebar-icon" aria-hidden="true">🗂</span>
-                <span class="sidebar-label">Nội dung</span>
-            </a>
-        </nav>
-        <div class="sidebar-footer">
-            <a href="/wedding" class="sidebar-link sidebar-public">
-                <span class="sidebar-icon" aria-hidden="true">↗</span>
-                <span class="sidebar-label">Trang công khai</span>
-            </a>
-        </div>
-    </aside>
 
-    <div class="admin-main">
-        <header class="admin-topbar">
-            <div class="topbar-left">
-                <button class="hamburger" id="sidebar-toggle" type="button" aria-label="Thu gọn menu" aria-expanded="true">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <div>
-                    <h1>Trung Tâm Tiệc Cưới - Quản trị</h1>
-                    <p class="admin-subtitle">Theo dõi số liệu đặt tiệc và liên hệ</p>
-                </div>
-            </div>
-            <div class="topbar-right">
-                <div class="user-menu">
-                    <button class="user-menu-toggle" id="user-menu-toggle" type="button" aria-expanded="false">
-                        <span class="user-menu-name" th:text="${currentUserDisplayName}">Quản trị viên</span>
-                        <span class="user-menu-caret" aria-hidden="true">▾</span>
+<body>
+    <div class="admin-layout">
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="hamburger" id="sidebar-toggle" type="button" aria-label="Thu gọn menu"
+                        aria-expanded="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </button>
-                    <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
-                        <a href="#" role="menuitem" data-profile-trigger>Xem thông tin</a>
-                        <form th:action="@{/logout}" method="post" class="user-menu-logout">
-                            <button type="submit" role="menuitem">Đăng xuất</button>
-                        </form>
+                    <div>
+                        <h1>Trung Tâm Tiệc Cưới - Quản trị</h1>
+                        <p class="admin-subtitle">Theo dõi số liệu đặt tiệc và liên hệ</p>
                     </div>
                 </div>
-            </div>
-        </header>
+                <div class="topbar-right">
+                    <div class="user-menu">
+                        <button class="user-menu-toggle" id="user-menu-toggle" type="button" aria-expanded="false">
+                            <span class="user-menu-name" th:text="${currentUserDisplayName}">Quản trị viên</span>
+                            <span class="user-menu-caret" aria-hidden="true">▾</span>
+                        </button>
+                        <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
+                            <a href="#" role="menuitem" data-profile-trigger>Xem thông tin</a>
+                            <form th:action="@{/logout}" method="post" class="user-menu-logout">
+                                <button type="submit" role="menuitem">Đăng xuất</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-        <main class="admin-container">
-    <div id="dashboard-error" class="error-banner"></div>
+            <main class="admin-container">
+                <div id="dashboard-error" class="error-banner"></div>
 
-    <section class="cards">
-        <div class="card">
-            <h3>Tổng số đặt tiệc</h3>
-            <p id="total-bookings">--</p>
+                <section class="cards">
+                    <div class="card">
+                        <h3>Tổng số đặt tiệc</h3>
+                        <p id="total-bookings">--</p>
+                    </div>
+                    <div class="card">
+                        <h3>Doanh thu dự kiến</h3>
+                        <p id="expected-revenue">--</p>
+                    </div>
+                    <div class="card">
+                        <h3>Liên hệ chưa xử lý</h3>
+                        <p id="pending-contacts">--</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="section-title">Đặt tiệc theo trạng thái</h2>
+                    <div id="booking-status-bars" class="cards"
+                        style="grid-template-columns: repeat(auto-fit,minmax(280px,1fr));"></div>
+                </section>
+
+                <section>
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <h2 class="section-title" style="margin-bottom:0;">Lịch đặt sắp diễn ra</h2>
+                        <div>
+                            <label for="booking-filter" style="margin-right:8px;">Khoảng thời gian</label>
+                            <select id="booking-filter">
+                                <option value="7">7 ngày</option>
+                                <option value="30" selected>30 ngày</option>
+                                <option value="90">90 ngày</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cô dâu &amp; Chú rể</th>
+                                <th>Ngày</th>
+                                <th>Khung giờ</th>
+                                <th>Sảnh</th>
+                                <th>Khách</th>
+                            </tr>
+                        </thead>
+                        <tbody id="upcoming-bookings-body">
+                        </tbody>
+                    </table>
+                </section>
+
+                <section>
+                    <h2 class="section-title">Liên hệ gần nhất</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Chủ đề</th>
+                                <th>Gắn cờ</th>
+                                <th>Thời gian tạo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-contacts-body">
+                        </tbody>
+                    </table>
+                </section>
+            </main>
         </div>
-        <div class="card">
-            <h3>Doanh thu dự kiến</h3>
-            <p id="expected-revenue">--</p>
-        </div>
-        <div class="card">
-            <h3>Liên hệ chưa xử lý</h3>
-            <p id="pending-contacts">--</p>
-        </div>
-    </section>
-
-    <section>
-        <h2 class="section-title">Đặt tiệc theo trạng thái</h2>
-        <div id="booking-status-bars" class="cards" style="grid-template-columns: repeat(auto-fit,minmax(280px,1fr));"></div>
-    </section>
-
-    <section>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-            <h2 class="section-title" style="margin-bottom:0;">Lịch đặt sắp diễn ra</h2>
-            <div>
-                <label for="booking-filter" style="margin-right:8px;">Khoảng thời gian</label>
-                <select id="booking-filter">
-                    <option value="7">7 ngày</option>
-                    <option value="30" selected>30 ngày</option>
-                    <option value="90">90 ngày</option>
-                </select>
-            </div>
-        </div>
-        <table>
-            <thead>
-            <tr>
-                <th>Cô dâu &amp; Chú rể</th>
-                <th>Ngày</th>
-                <th>Khung giờ</th>
-                <th>Sảnh</th>
-                <th>Khách</th>
-            </tr>
-            </thead>
-            <tbody id="upcoming-bookings-body">
-            </tbody>
-        </table>
-    </section>
-
-    <section>
-        <h2 class="section-title">Liên hệ gần nhất</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Tên</th>
-                <th>Email</th>
-                <th>Chủ đề</th>
-                <th>Gắn cờ</th>
-                <th>Thời gian tạo</th>
-            </tr>
-            </thead>
-            <tbody id="recent-contacts-body">
-            </tbody>
-        </table>
-    </section>
-        </main>
     </div>
-</div>
 
-<script th:src="@{/js/admin-layout.js}" defer></script>
-<script th:src="@{/js/admin-dashboard.js}" defer></script>
-<div th:replace="~{admin/fragments/profile-modal :: profile-modal}"></div>
+    <script th:src="@{/js/admin-layout.js}" defer></script>
+    <script th:src="@{/js/admin-dashboard.js}" defer></script>
+    <div th:replace="~{admin/fragments/profile-modal :: profile-modal}"></div>
 </body>
+
 </html>

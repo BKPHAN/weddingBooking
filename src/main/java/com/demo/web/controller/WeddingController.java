@@ -115,6 +115,11 @@ public class WeddingController {
         return "gallery";
     }
 
+    @GetMapping("/collection")
+    public String collection() {
+        return "collection";
+    }
+
     @GetMapping("/contact")
     public String contactPage(Model model) {
         model.addAttribute("contactRequest", new ContactRequest());
