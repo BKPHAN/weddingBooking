@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Tiệc & Liên Hệ</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .tabs {
+            display: flex;
+            gap: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--color-gold);
+            border-bottom-color: var(--color-gold);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* PENDING, CONFIRMED, CANCELLED, COMPLETED */
+        .status-PENDING {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .status-CONFIRMED {
+            background: #ecfccb;
+            color: #4d7c0f;
+        }
+
+        .status-CANCELLED {
+            background: #fef2f2;
+            color: #b91c1c;
+        }
+
+        .status-COMPLETED {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+        .action-form {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .btn-confirm {
+            background: #22c55e;
+        }
+
+        .btn-cancel {
+            background: #ef4444;
+        }
+
+        .btn-resolve {
+            background: #3b82f6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="hamburger" id="sidebar-toggle" type="button" aria-label="Thu gọn menu"
+                        aria-expanded="true">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div>
+                        <h1>Quản lý Yêu Cầu</h1>
+                        <p class="admin-subtitle">Danh sách đặt tiệc và liên hệ từ khách hàng</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-menu">
+                        <button class="user-menu-toggle" id="user-menu-toggle" type="button" aria-expanded="false">
+                            <span class="user-menu-name" th:text="${currentUserDisplayName}">Quản trị viên</span>
+                            <span class="user-menu-caret" aria-hidden="true">▾</span>
+                        </button>
+                        <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
+                            <a href="#" role="menuitem" data-profile-trigger>Xem thông tin</a>
+                            <form th:action="@{/logout}" method="post" class="user-menu-logout">
+                                <button type="submit" role="menuitem">Đăng xuất</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="admin-container">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('bookingTab', this)">Danh sách Đặt tiệc</button>
+                    <button class="tab-btn" onclick="switchTab('contactTab', this)">Liên hệ & Góp ý</button>
+                </div>
+
+                <!-- Booking Tab -->
+                <div id="bookingTab" class="tab-content active">
+                    <div class="card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Khách hàng</th>
+                                    <th>Ngày tiệc</th>
+                                    <th>Sảnh</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ghi chú</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="booking : ${bookings}">
+                                    <td>
+                                        <div style="font-weight: bold;"
+                                            th:text="${booking.groomName + ' & ' + booking.brideName}">Tên</div>
+                                        <div style="font-size: 0.85rem; color: #666;" th:text="${booking.phone}">0909...
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div th:text="${booking.eventDate}">2023-10-10</div>
+                                        <div style="font-size: 0.85rem; color: #666;" th:text="${booking.timeSlot}">Sáng
+                                        </div>
+                                    </td>
+                                    <td th:text="${booking.hall != null ? booking.hall.name : 'Chưa chọn'}">Sảnh A</td>
+                                    <td>
+                                        <span class="status-badge" th:classappend="'status-' + ${booking.status}"
+                                            th:text="${booking.status}">PENDING</span>
+                                    </td>
+                                    <td th:text="${#strings.abbreviate(booking.notes, 30)}">Note...</td>
+                                    <td>
+                                        <div th:if="${booking.status.name() == 'PENDING'}" style="display:flex;">
+                                            <form th:action="@{/admin/bookings/booking/status/{id}(id=${booking.id})}"
+                                                method="post" class="action-form">
+                                                <input type="hidden" name="status" value="CONFIRMED">
+                                                <button type="submit" class="btn-sm btn-confirm" title="Xác nhận"
+                                                    onclick="return confirm('Xác nhận đơn đặt tiệc này?');"><i
+                                                        class="fas fa-check"></i></button>
+                                            </form>
+                                            <form th:action="@{/admin/bookings/booking/status/{id}(id=${booking.id})}"
+                                                method="post" class="action-form">
+                                                <input type="hidden" name="status" value="CANCELLED">
+                                                <button type="submit" class="btn-sm btn-cancel" title="Từ chối"
+                                                    onclick="return confirm('Từ chối đơn đặt tiệc này?');"><i
+                                                        class="fas fa-times"></i></button>
+                                            </form>
+                                        </div>
+                                        <span th:unless="${booking.status.name() == 'PENDING'}"
+                                            style="font-size: 0.9rem; color: #999;">-</span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(bookings)}">
+                                    <td colspan="6" class="text-center" style="padding: 20px;">Chưa có yêu cầu đặt tiệc
+                                        nào.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Contact Tab -->
+                <div id="contactTab" class="tab-content">
+                    <div class="card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Người gửi</th>
+                                    <th>Tiêu đề</th>
+                                    <th>Nội dung</th>
+                                    <th>Ngày gửi</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="contact : ${contacts}">
+                                    <td>
+                                        <div style="font-weight: bold;" th:text="${contact.fullName}">Name</div>
+                                        <div style="font-size: 0.85rem; color: #666;" th:text="${contact.email}">
+                                            email@example.com</div>
+                                    </td>
+                                    <td th:text="${contact.subject}">Subject</td>
+                                    <td th:text="${#strings.abbreviate(contact.message, 50)}">Message...</td>
+                                    <td th:text="${#temporals.format(contact.createdAt, 'dd/MM/yyyy HH:mm')}">Date</td>
+                                    <td>
+                                        <span class="status-badge"
+                                            th:style="${contact.resolvedAt != null ? 'background:#ecfccb; color:#4d7c0f;' : 'background:#fee2e2; color:#b91c1c;'}"
+                                            th:text="${contact.resolvedAt != null ? 'Đã xử lý' : 'Chưa xử lý'}">Status</span>
+                                    </td>
+                                    <td>
+                                        <form th:if="${contact.resolvedAt == null}"
+                                            th:action="@{/admin/bookings/contact/resolve/{id}(id=${contact.id})}"
+                                            method="post">
+                                            <button type="submit" class="btn-sm btn-resolve" title="Đánh dấu đã xử lý"
+                                                onclick="return confirm('Đánh dấu đã xử lý liên hệ này?');"><i
+                                                    class="fas fa-check-double"></i> Xử lý</button>
+                                        </form>
+                                        <span th:if="${contact.resolvedAt != null}"
+                                            style="font-size: 0.9rem; color: #999;">-</span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(contacts)}">
+                                    <td colspan="6" class="text-center" style="padding: 20px;">Chưa có liên hệ nào.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script th:src="@{/js/admin-layout.js}" defer></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const successMsg = /*[[${successMessage}]]*/ null;
+        const errorMsg = /*[[${errorMessage}]]*/ null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (successMsg) showToast('success', successMsg);
+            if (errorMsg) showToast('error', errorMsg);
+        });
+
+        function switchTab(tabId, btn) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Deactivate buttons
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            // Show target tab
+            document.getElementById(tabId).classList.add('active');
+            // Activate button
+            btn.classList.add('active');
+        }
+        /*]]>*/
+    </script>
+    <div th:replace="~{admin/fragments/profile-modal :: profile-modal}"></div>
+</body>
+
+</html>

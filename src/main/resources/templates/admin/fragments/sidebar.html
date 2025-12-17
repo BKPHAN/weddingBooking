@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <aside class="admin-sidebar" th:fragment="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">Wedding Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/admin/dashboard" class="sidebar-link"
+                th:classappend="${currentPage == 'dashboard' ? 'active' : ''}">
+                <span class="sidebar-icon">🏠</span>
+                <span class="sidebar-label">Tổng quan</span>
+            </a>
+            <a href="/admin/home" class="sidebar-link" th:classappend="${currentPage == 'home' ? 'active' : ''}">
+                <span class="sidebar-icon">🖼️</span>
+                <span class="sidebar-label">Trang Chủ</span>
+            </a>
+            <a href="/admin/halls" class="sidebar-link" th:classappend="${currentPage == 'halls' ? 'active' : ''}">
+                <span class="sidebar-icon">🏛️</span>
+                <span class="sidebar-label">Sảnh Tiệc</span>
+            </a>
+            <a href="/admin/menus" class="sidebar-link" th:classappend="${currentPage == 'menus' ? 'active' : ''}">
+                <span class="sidebar-icon">🍽️</span>
+                <span class="sidebar-label">Thực Đơn</span>
+            </a>
+            <a href="/admin/gallery" class="sidebar-link" th:classappend="${currentPage == 'gallery' ? 'active' : ''}">
+                <span class="sidebar-icon">📷</span>
+                <span class="sidebar-label">Bộ Sưu Tập</span>
+            </a>
+            <a href="/admin/services" class="sidebar-link"
+                th:classappend="${currentPage == 'services' ? 'active' : ''}">
+                <span class="sidebar-icon">✨</span>
+                <span class="sidebar-label">Dịch Vụ</span>
+            </a>
+            <a href="/admin/bookings" class="sidebar-link"
+                th:classappend="${currentPage == 'bookings' ? 'active' : ''}">
+                <span class="sidebar-icon">📅</span>
+                <span class="sidebar-label">Đặt Tiệc & Liên Hệ</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/" class="sidebar-link sidebar-public" target="_blank">
+                <span class="sidebar-icon">↗</span>
+                <span class="sidebar-label">Trang công khai</span>
+            </a>
+        </div>
+    </aside>
+</body>
+
+</html>

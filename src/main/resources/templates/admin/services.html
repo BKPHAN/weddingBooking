@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Dịch Vụ - Ưu Đãi</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="hamburger" id="sidebar-toggle" type="button" aria-label="Thu gọn menu"
+                        aria-expanded="true">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div>
+                        <h1>Quản lý Dịch Vụ & Ưu Đãi</h1>
+                        <p class="admin-subtitle">Danh sách các gói dịch vụ và chương trình khuyến mãi</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-menu">
+                        <button class="user-menu-toggle" id="user-menu-toggle" type="button" aria-expanded="false">
+                            <span class="user-menu-name" th:text="${currentUserDisplayName}">Quản trị viên</span>
+                            <span class="user-menu-caret" aria-hidden="true">▾</span>
+                        </button>
+                        <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
+                            <a href="#" role="menuitem" data-profile-trigger>Xem thông tin</a>
+                            <form th:action="@{/logout}" method="post" class="user-menu-logout">
+                                <button type="submit" role="menuitem">Đăng xuất</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="admin-container">
+                <button class="btn-add" onclick="openModal()">+ Tạo Dịch Vụ / Ưu Đãi</button>
+
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tiêu đề</th>
+                                <th>Slug</th>
+                                <th>Thời gian</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="service : ${services}" th:data-id="${service.id}"
+                                th:data-title="${service.title}" th:data-slug="${service.slug}"
+                                th:data-desc="${service.description}" th:data-start="${service.startDate}"
+                                th:data-end="${service.endDate}" th:data-terms="${service.terms}">
+                                <td th:text="${service.title}">Mùa cưới 2023</td>
+                                <td th:text="${service.slug}">mua-cuoi-2023</td>
+                                <td>
+                                    <span th:text="${service.startDate}">2023-01-01</span>
+                                    <span> - </span>
+                                    <span th:text="${service.endDate}">2023-12-31</span>
+                                </td>
+                                <td>
+                                    <button class="action-btn text-primary" onclick="editService(this)" title="Sửa"><i
+                                            class="fas fa-edit"></i></button>
+                                    <form th:action="@{/admin/services/delete/{id}(id=${service.id})}" method="post"
+                                        style="display:inline;"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                        <button type="submit" class="action-btn text-danger" title="Xóa"><i
+                                                class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(services)}">
+                                <td colspan="4" class="text-center" style="padding: 20px;">Chưa có dịch vụ nào.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="serviceModal" class="profile-modal" aria-hidden="true" style="z-index: 10000;">
+        <div class="profile-modal__backdrop" onclick="closeModal()"></div>
+        <div class="profile-modal__dialog" style="max-width: 600px;">
+            <div class="profile-modal__header">
+                <h2 id="modalTitle">Thêm Dịch Vụ / Ưu Đãi</h2>
+                <button class="profile-modal__close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="profile-modal__body">
+                <form id="serviceForm" th:action="@{/admin/services/save}" method="post">
+                    <input type="hidden" id="serviceId" name="id">
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="title">Tiêu đề *</label>
+                        <input type="text" id="title" name="title" required placeholder="VD: Giảm 20% Mùa Hè"
+                            style="width: 100%; padding: 10px; border: 1px solid #c9d6de; border-radius: 8px;">
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="slug">Đường dẫn (Slug)</label>
+                        <input type="text" id="slug" name="slug" placeholder="Để trống sẽ tự tạo"
+                            style="width: 100%; padding: 10px; border: 1px solid #c9d6de; border-radius: 8px;">
+                    </div>
+
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label for="startDate">Ngày bắt đầu</label>
+                            <input type="date" id="startDate" name="startDate"
+                                style="width: 100%; padding: 10px; border: 1px solid #c9d6de; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label for="endDate">Ngày kết thúc</label>
+                            <input type="date" id="endDate" name="endDate"
+                                style="width: 100%; padding: 10px; border: 1px solid #c9d6de; border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="description">Mô tả</label>
+                        <textarea id="description" name="description" rows="3"
+                            style="width: 100%; border: 1px solid #c9d6de; border-radius: 8px; padding: 10px;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="terms">Điều khoản</label>
+                        <textarea id="terms" name="terms" rows="2"
+                            style="width: 100%; border: 1px solid #c9d6de; border-radius: 8px; padding: 10px;"></textarea>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <button type="button" onclick="closeModal()"
+                            style="background: #e2e8f0; color: #333; margin-right: 10px;">Hủy</button>
+                        <button type="submit">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/admin-layout.js}" defer></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const successMsg = /*[[${successMessage}]]*/ null;
+        const errorMsg = /*[[${errorMessage}]]*/ null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (successMsg) showToast('success', successMsg);
+            if (errorMsg) showToast('error', errorMsg);
+        });
+
+        function openModal() {
+            document.getElementById('serviceForm').reset();
+            document.getElementById('serviceId').value = '';
+            document.getElementById('modalTitle').textContent = 'Thêm Dịch Vụ';
+            document.getElementById('serviceModal').classList.add('is-open');
+            document.getElementById('serviceModal').setAttribute('aria-hidden', 'false');
+        }
+
+        function closeModal() {
+            document.getElementById('serviceModal').classList.remove('is-open');
+            document.getElementById('serviceModal').setAttribute('aria-hidden', 'true');
+        }
+
+        function editService(btn) {
+            const row = btn.closest('tr');
+            const d = row.dataset;
+
+            document.getElementById('serviceId').value = d.id;
+            document.getElementById('title').value = d.title;
+            document.getElementById('slug').value = d.slug;
+            document.getElementById('description').value = d.desc;
+            document.getElementById('startDate').value = d.start;
+            document.getElementById('endDate').value = d.end;
+            document.getElementById('terms').value = d.terms;
+
+            document.getElementById('modalTitle').textContent = 'Cập nhật Dịch Vụ';
+            document.getElementById('serviceModal').classList.add('is-open');
+            document.getElementById('serviceModal').setAttribute('aria-hidden', 'false');
+        }
+        /*]]>*/
+    </script>
+    <div th:replace="~{admin/fragments/profile-modal :: profile-modal}"></div>
+</body>
+
+</html>

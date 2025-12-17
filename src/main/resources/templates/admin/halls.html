@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sảnh Tiệc</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.inactive {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside th:replace="~{admin/fragments/sidebar :: sidebar}"></aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="hamburger" id="sidebar-toggle" type="button" aria-label="Thu gọn menu"
+                        aria-expanded="true">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div>
+                        <h1>Quản lý Sảnh Tiệc</h1>
+                        <p class="admin-subtitle">Danh sách các sảnh tiệc hiện có</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-menu">
+                        <button class="user-menu-toggle" id="user-menu-toggle" type="button" aria-expanded="false">
+                            <span class="user-menu-name" th:text="${currentUserDisplayName}">Quản trị viên</span>
+                            <span class="user-menu-caret" aria-hidden="true">▾</span>
+                        </button>
+                        <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu">
+                            <a href="#" role="menuitem" data-profile-trigger>Xem thông tin</a>
+                            <form th:action="@{/logout}" method="post" class="user-menu-logout">
+                                <button type="submit" role="menuitem">Đăng xuất</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="admin-container">
+                <button class="btn-add" onclick="openModal()">+ Thêm Sảnh Mới</button>
+
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã</th>
+                                <th>Hình ảnh</th>
+                                <th>Tên Sảnh</th>
+                                <th>Sức chứa</th>
+                                <th>Giá bàn (VND)</th>
+                                <th>TT</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="hall : ${halls}" th:data-id="${hall.id}" th:data-code="${hall.code}"
+                                th:data-name="${hall.name}" th:data-capacity="${hall.capacity}"
+                                th:data-price="${hall.basePrice}" th:data-image="${hall.imageUrl}"
+                                th:data-desc="${hall.description}" th:data-active="${hall.active}">
+                                <td th:text="${hall.code}">CODE</td>
+                                <td><img th:src="${hall.imageUrl}" alt=""
+                                        style="width: 60px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
+                                <td th:text="${hall.name}">Grand Hall</td>
+                                <td th:text="${hall.capacity}">500</td>
+                                <td th:text="${#numbers.formatDecimal(hall.basePrice, 0, 'COMMA', 0, 'POINT')}">
+                                    5,000,000</td>
+                                <td>
+                                    <span class="status-badge" th:classappend="${hall.active ? 'active' : 'inactive'}"
+                                        th:text="${hall.active ? 'Hiện' : 'Ẩn'}">Hiện</span>
+                                </td>
+                                <td>
+                                    <button class="action-btn text-primary" onclick="editHall(this)" title="Sửa"><i
+                                            class="fas fa-edit"></i></button>
+                                    <form th:action="@{/admin/halls/delete/{id}(id=${hall.id})}" method="post"
+                                        style="display:inline;"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa sảnh này?');">
+                                        <button type="submit" class="action-btn text-danger" title="Xóa"><i
+                                                class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(halls)}">
+                                <td colspan="7" class="text-center" style="padding: 20px;">Chưa có sảnh tiệc nào.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="hallModal" class="profile-modal" aria-hidden="true" style="z-index: 10000;">
+        <div class="profile-modal__backdrop" onclick="closeModal()"></div>
+        <div class="profile-modal__dialog" style="max-width: 600px;">
+            <div class="profile-modal__header">
+                <h2 id="modalTitle">Thêm Sảnh Tiệc</h2>
+                <button class="profile-modal__close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="profile-modal__body">
+                <form id="hallForm" th:action="@{/admin/halls/save}" method="post">
+                    <input type="hidden" id="hallId" name="id">
+
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label for="code">Mã Sảnh *</label>
+                            <input type="text" id="code" name="code" required placeholder="VD: S01">
+                        </div>
+                        <div>
+                            <label for="name">Tên Sảnh *</label>
+                            <input type="text" id="name" name="name" required placeholder="VD: Sảnh Luxury">
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label for="capacity">Sức chứa (khách) *</label>
+                            <input type="number" id="capacity" name="capacity" required placeholder="VD: 500">
+                        </div>
+                        <div>
+                            <label for="basePrice">Giá bàn thấp nhất *</label>
+                            <input type="number" id="basePrice" name="basePrice" required placeholder="VD: 5000000">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="imageUrl">Hình ảnh</label>
+                        <div style="position: relative;">
+                            <input type="text" id="imageUrl" name="imageUrl" placeholder="Nhấn để chọn ảnh..." readonly
+                                onclick="document.getElementById('hallFileInput').click()"
+                                style="cursor: pointer; background-color: #fff; padding-right: 30px;">
+                            <input type="file" id="hallFileInput" style="display: none;" accept="image/*"
+                                onchange="uploadImage(this, 'imageUrl', 'halls')">
+                            <i class="fas fa-camera"
+                                style="position: absolute; right: 10px; top: 12px; color: #64748b; pointer-events: none;"></i>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="description">Mô tả</label>
+                        <textarea id="description" name="description" rows="3"
+                            style="width: 100%; border: 1px solid #c9d6de; border-radius: 8px; padding: 10px;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label>Trạng thái</label>
+                        <label style="display: inline-flex; align-items: center; cursor: pointer; margin-top: 5px;">
+                            <input type="checkbox" id="active" name="active" value="true" checked>
+                            <span style="margin-left: 8px; font-weight: normal;">Đang hoạt động</span>
+                        </label>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <button type="button" onclick="closeModal()"
+                            style="background: #e2e8f0; color: #333; margin-right: 10px;">Hủy</button>
+                        <button type="submit">Lưu Sảnh</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/admin-layout.js}" defer></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const successMsg = /*[[${successMessage}]]*/ null;
+        const errorMsg = /*[[${errorMessage}]]*/ null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (successMsg) showToast('success', successMsg);
+            if (errorMsg) showToast('error', errorMsg);
+        });
+
+        function openModal() {
+            document.getElementById('hallForm').reset();
+            document.getElementById('hallId').value = '';
+            document.getElementById('modalTitle').textContent = 'Thêm Sảnh Tiệc';
+            document.getElementById('hallModal').classList.add('is-open');
+            document.getElementById('hallModal').setAttribute('aria-hidden', 'false');
+        }
+
+        function closeModal() {
+            document.getElementById('hallModal').classList.remove('is-open');
+            document.getElementById('hallModal').setAttribute('aria-hidden', 'true');
+        }
+
+        function editHall(btn) {
+            const row = btn.closest('tr');
+            const d = row.dataset;
+
+            document.getElementById('hallId').value = d.id;
+            document.getElementById('code').value = d.code;
+            document.getElementById('name').value = d.name;
+            document.getElementById('capacity').value = d.capacity;
+            document.getElementById('basePrice').value = d.price;
+            document.getElementById('imageUrl').value = d.image;
+            document.getElementById('description').value = d.desc;
+            document.getElementById('active').checked = (d.active === 'true');
+
+            document.getElementById('modalTitle').textContent = 'Cập nhật Sảnh Tiệc';
+            document.getElementById('hallModal').classList.add('is-open');
+            document.getElementById('hallModal').setAttribute('aria-hidden', 'false');
+        }
+        /*]]>*/
+    </script>
+    <div th:replace="~{admin/fragments/profile-modal :: profile-modal}"></div>
+</body>
+
+</html>
