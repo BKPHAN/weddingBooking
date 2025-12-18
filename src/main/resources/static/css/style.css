@@ -529,26 +529,47 @@ img {
 /* ======================================================================
    RESPONSIVE
 ====================================================================== */
-/* Laptop Screens (1366px and below) */
+/* Laptop Screens (1400px and below) - Stack Menu */
 @media (max-width: 1400px) {
     .container-fluid {
-        padding: 0 15px;
-        /* Reduce padding to save space */
+        padding: 0 20px;
     }
 
+    .header .header-inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        height: auto;
+        padding: 10px 0;
+    }
+
+    .logo {
+        order: 1;
+    }
+
+    .user-actions {
+        order: 2;
+    }
+
+    /* Move Navigation to 2nd row */
     .nav-menu {
-        gap: 15px;
-        /* Reduce gap between links */
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+        gap: 20px;
+        /* Restore comfortable gap */
     }
 
     .nav-link {
-        font-size: 0.95rem;
-        /* Slightly smaller font */
+        font-size: 1rem;
+        /* Restore readable size */
     }
 
     .logo img {
-        height: 50px !important;
-        /* Smaller logo */
+        height: 55px;
+        /* Restore reasonable logo size */
     }
 }
 
