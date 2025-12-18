@@ -529,16 +529,50 @@ img {
 /* ======================================================================
    RESPONSIVE
 ====================================================================== */
+/* Laptop Screens (1366px and below) */
+@media (max-width: 1400px) {
+    .container-fluid {
+        padding: 0 15px;
+        /* Reduce padding to save space */
+    }
+
+    .nav-menu {
+        gap: 15px;
+        /* Reduce gap between links */
+    }
+
+    .nav-link {
+        font-size: 0.95rem;
+        /* Slightly smaller font */
+    }
+
+    .logo img {
+        height: 50px !important;
+        /* Smaller logo */
+    }
+}
+
+/* Small Laptops (1200px) */
 @media (max-width: 1200px) {
     h1 {
         font-size: 3rem;
     }
 
     .section {
-        padding: 60px 0;
+        padding: 50px 0;
+    }
+
+    .nav-menu {
+        gap: 10px;
+    }
+
+    .nav-link {
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
     }
 }
 
+/* Tablets (992px) - Switch Header to Stacked or Compact */
 @media (max-width: 992px) {
     h1 {
         font-size: 2.8rem;
@@ -559,6 +593,25 @@ img {
     .carousel-col-3 .carousel-slide {
         flex: 0 0 50%;
         max-width: 50%;
+    }
+
+    /* Stack Header on Tablet to prevent overflow */
+    .header .header-inner {
+        height: auto;
+        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-menu {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .user-actions {
+        margin-left: 0;
     }
 }
 
