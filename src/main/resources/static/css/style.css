@@ -38,6 +38,19 @@
     --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+/* Response Overrides for Laptops */
+@media (max-width: 1400px) {
+    :root {
+        --container-width: 1140px;
+    }
+}
+
+@media (max-width: 1200px) {
+    :root {
+        --container-width: 960px;
+    }
+}
+
 /* Dark Theme Overrides */
 [data-theme='dark'] {
     --color-cream: #121212;
@@ -195,6 +208,12 @@ img {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
+}
+
+.grid-col-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
 
 /* ======================================================================
@@ -510,6 +529,16 @@ img {
 /* ======================================================================
    RESPONSIVE
 ====================================================================== */
+@media (max-width: 1200px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+}
+
 @media (max-width: 992px) {
     h1 {
         font-size: 2.8rem;
@@ -522,20 +551,56 @@ img {
     .grid-col-3 {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .grid-col-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .carousel-col-3 .carousel-slide {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
 }
 
 @media (max-width: 768px) {
-    .h1 {
+    h1 {
         font-size: 2.2rem;
     }
 
     .grid-col-3,
-    .grid-col-2 {
+    .grid-col-2,
+    .grid-col-4 {
         grid-template-columns: 1fr;
+    }
+
+    .carousel-col-3 .carousel-slide {
+        flex: 0 0 100%;
+        max-width: 100%;
     }
 
     .section {
         padding: 50px 0;
+    }
+
+    .header .header-inner {
+        height: auto;
+        padding: 15px 0;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .header .header-inner {
+        display: flex;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .user-actions {
+        margin-left: 0;
     }
 }
 
@@ -660,7 +725,7 @@ img {
     }
 }
 
-/* Tablet (2 slides) */
+/* Tablet (2 slides) - Target Range 768px to 991px */
 @media (min-width: 768px) and (max-width: 991px) {
     .carousel-col-3 .carousel-slide {
         flex: 0 0 50%;
