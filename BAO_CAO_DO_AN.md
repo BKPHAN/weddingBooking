@@ -58,6 +58,15 @@ Hệ thống được chia thành 2 nhóm tác nhân chính với các chức n�
     *   **Quản lý kinh doanh:** Duyệt đơn đặt tiệc, quản lý danh sách sảnh, thực đơn.
     *   **Thống kê:** Xem báo cáo doanh thu, hiệu suất hoạt động.
 
+**Giải thích biểu đồ Use Case:**
+| Thành phần | Mô tả |
+|------------|-------|
+| **Actor (Tác nhân)** | Đại diện cho người dùng tương tác với hệ thống: Khách hàng (Guest) và Quản trị viên (Admin/Staff) |
+| **Use Case (Trường hợp sử dụng)** | Các hình elip thể hiện chức năng mà hệ thống cung cấp cho tác nhân |
+| **Association (Liên kết)** | Đường nối giữa tác nhân và use case cho thấy tác nhân có thể thực hiện chức năng đó |
+| **Include** | Quan hệ bao gồm - một use case bắt buộc phải gọi use case khác (VD: Đặt tiệc bao gồm Xem sảnh) |
+| **Extend** | Quan hệ mở rộng - use case có thể được mở rộng tùy điều kiện (VD: Thanh toán mở rộng từ Đặt tiệc) |
+
 ![Biểu đồ Use Case](docs/diagrams/usecase_diagram.png)
 
 #### 2.3.2. Thiết kế Cơ sở dữ liệu (ERD Model)
@@ -108,6 +117,21 @@ erDiagram
     }
 ```
 
+**Giải thích ký hiệu quan hệ trong ERD:**
+| Ký hiệu | Ý nghĩa | Ví dụ trong hệ thống |
+|---------|---------|----------------------|
+| `\|\|--o{` | Một-Nhiều (One-to-Many) | 1 User quản lý nhiều Bookings |
+| `}\|--\|\|` | Nhiều-Một (Many-to-One) | Nhiều Bookings được tổ chức tại 1 Hall |
+| `\|\|--\|{` | Một-Nhiều bắt buộc | 1 Booking phải có ít nhất 1 Booking_Service |
+| **PK** | Primary Key - Khóa chính | Định danh duy nhất cho mỗi bản ghi |
+| **FK** | Foreign Key - Khóa ngoại | Liên kết đến bảng khác (hall_id trong Bookings) |
+
+**Mô tả mối quan hệ:**
+- **USERS → BOOKINGS:** Nhân viên/Admin quản lý và xử lý các đơn đặt tiệc
+- **BOOKINGS → HALLS:** Mỗi đơn đặt tiệc được tổ chức tại một sảnh cụ thể
+- **BOOKINGS → BOOKING_SERVICES:** Đơn đặt tiệc bao gồm nhiều dịch vụ đi kèm
+- **MENUS → BOOKING_MENUS:** Thực đơn được chọn trong các đơn đặt tiệc
+
 ![Biểu đồ ERD](docs/diagrams/erd_diagram.png)
 
 #### 2.3.3. Mô tả các thực thể chính
@@ -115,6 +139,126 @@ erDiagram
 *   **HALLS:** Lưu trữ thông tin cơ sở vật chất (Sảnh cưới), giá sàn, sức chứa tối đa.
 *   **BOOKINGS:** Bảng trung tâm lưu trữ toàn bộ thông tin giao dịch đặt tiệc, liên kết chặt chẽ với Sảnh (Halls) và Dịch vụ đi kèm.
 *   **MENUS & SERVICES:** Danh mục sản phẩm kinh doanh, có thể mở rộng linh hoạt.
+
+#### 2.3.3.1. Sơ đồ Database Schema Chi tiết (Physical Data Model)
+Sơ đồ dưới đây thể hiện cấu trúc vật lý của các bảng trong database với đầy đủ các cột và mối quan hệ khóa ngoại:
+
+```
+┌─────────────────────────────────┐       ┌─────────────────────────────────┐
+│           USERS                 │       │          EMPLOYEES              │
+├─────────────────────────────────┤       ├─────────────────────────────────┤
+│ PK  id            BIGINT        │◄──┐   │ PK  id            BIGINT        │
+│     username      VARCHAR(100)  │   │   │ FK  user_id       BIGINT        │───┐
+│     email         VARCHAR(150)  │   │   │     full_name     VARCHAR(150)  │   │
+│     password_hash VARCHAR(255)  │   │   │     phone         VARCHAR(30)   │   │
+│     status        VARCHAR(20)   │   │   │     email         VARCHAR(150)  │   │
+│     primary_role  VARCHAR(20)   │   │   │     position      VARCHAR(100)  │   │
+│     created_at    DATETIME      │   │   │     department    VARCHAR(100)  │   │
+│     updated_at    DATETIME      │   │   │     hire_date     DATE          │   │
+└─────────────────────────────────┘   │   │     created_at    DATETIME      │   │
+         │                            │   │     updated_at    DATETIME      │   │
+         │                            │   └─────────────────────────────────┘   │
+         │                            └─────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────┐       ┌─────────────────────────────────┐
+│         CONTACTS                │       │       REFRESH_TOKENS            │
+├─────────────────────────────────┤       ├─────────────────────────────────┤
+│ PK  id            BIGINT        │       │ PK  id            BIGINT        │
+│     full_name     VARCHAR(150)  │       │ FK  user_id       BIGINT        │───► USERS
+│     email         VARCHAR(150)  │       │     token         VARCHAR(500)  │
+│     phone         VARCHAR(30)   │       │     expires_at    DATETIME      │
+│     subject       VARCHAR(200)  │       │     revoked       TINYINT       │
+│     message       VARCHAR(1000) │       │     created_at    DATETIME      │
+│     flag          VARCHAR(20)   │       └─────────────────────────────────┘
+│ FK  assigned_to   BIGINT        │───► USERS
+│     resolved_at   DATETIME      │
+│     created_at    DATETIME      │
+└─────────────────────────────────┘
+
+┌─────────────────────────────────┐       ┌─────────────────────────────────┐
+│            HALLS                │       │            MENUS                │
+├─────────────────────────────────┤       ├─────────────────────────────────┤
+│ PK  id            BIGINT        │◄──┐   │ PK  id            BIGINT        │
+│     code          VARCHAR(50)   │   │   │     name          VARCHAR(150)  │
+│     name          VARCHAR(150)  │   │   │     price         DECIMAL(15,2) │
+│     capacity      INT           │   │   │     description   VARCHAR(500)  │
+│     base_price    DECIMAL(15,2) │   │   │     category      VARCHAR(100)  │
+│     description   VARCHAR(500)  │   │   │     image_url     VARCHAR(255)  │
+│     amenities     JSON          │   │   │     is_featured   TINYINT       │
+│     image_url     VARCHAR(255)  │   │   │     type          VARCHAR(50)   │
+│     display_order INT           │   │   │     created_at    DATETIME      │
+│     is_active     TINYINT       │   │   │     updated_at    DATETIME      │
+│     created_at    DATETIME      │   │   └─────────────────────────────────┘
+│     updated_at    DATETIME      │   │
+└─────────────────────────────────┘   │
+                                      │
+┌─────────────────────────────────────┴────────────────────────────────────────┐
+│                                BOOKINGS                                       │
+├──────────────────────────────────────────────────────────────────────────────┤
+│ PK  id            BIGINT                                                      │
+│     bride_name    VARCHAR(150)     groom_name     VARCHAR(150)               │
+│     email         VARCHAR(150)     phone          VARCHAR(30)                │
+│     event_date    DATE             time_slot      VARCHAR(50)                │
+│ FK  hall_id       BIGINT ──────────────────────────────────────────────► HALLS│
+│     guest_count   INT              budget_min     DECIMAL(15,2)              │
+│     budget_max    DECIMAL(15,2)    status         VARCHAR(20)                │
+│     notes         VARCHAR(500)     flag           VARCHAR(20)                │
+│     created_at    DATETIME         updated_at     DATETIME                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+         │
+         │ 1:N
+         ▼
+┌─────────────────────────────────┐       ┌─────────────────────────────────┐
+│      BOOKING_SERVICES           │       │        MEDIA_ALBUMS             │
+├─────────────────────────────────┤       ├─────────────────────────────────┤
+│ PK  booking_id    BIGINT        │───► BOOKINGS  │ PK  id            BIGINT        │◄──┐
+│ PK  service_code  VARCHAR(100)  │       │     title         VARCHAR(200)  │   │
+└─────────────────────────────────┘       │     description   VARCHAR(500)  │   │
+                                          │     created_at    DATETIME      │   │
+┌─────────────────────────────────┐       │     updated_at    DATETIME      │   │
+│        PROMOTIONS               │       └─────────────────────────────────┘   │
+├─────────────────────────────────┤                                             │
+│ PK  id            BIGINT        │       ┌─────────────────────────────────┐   │
+│     title         VARCHAR(200)  │       │        MEDIA_ITEMS              │   │
+│     slug          VARCHAR(200)  │       ├─────────────────────────────────┤   │
+│     description   VARCHAR(1000) │       │ PK  id            BIGINT        │   │
+│     start_date    DATE          │       │     title         VARCHAR(200)  │   │
+│     end_date      DATE          │       │     type          VARCHAR(20)   │   │
+│     terms         VARCHAR(1000) │       │     url           VARCHAR(255)  │   │
+│     created_at    DATETIME      │       │     thumbnail_url VARCHAR(255)  │   │
+│     updated_at    DATETIME      │       │ FK  album_id      BIGINT        │───┘
+└─────────────────────────────────┘       │     display_order INT           │
+                                          │     created_at    DATETIME      │
+                                          │     updated_at    DATETIME      │
+                                          └─────────────────────────────────┘
+```
+
+**Giải thích ký hiệu:**
+| Ký hiệu | Ý nghĩa |
+|---------|---------|
+| `PK` | Primary Key - Khóa chính, định danh duy nhất cho mỗi bản ghi |
+| `FK` | Foreign Key - Khóa ngoại, tham chiếu đến bảng khác |
+| `───►` | Chiều của mối quan hệ khóa ngoại (từ FK đến PK) |
+| `◄──` | Bảng được tham chiếu (bảng cha) |
+| `1:N` | Quan hệ Một-Nhiều |
+
+**Tổng quan 10 bảng trong hệ thống:**
+| STT | Bảng | Chức năng | Quan hệ FK |
+|-----|------|-----------|------------|
+| 1 | `users` | Quản lý tài khoản đăng nhập | - |
+| 2 | `employees` | Thông tin nhân viên | → users |
+| 3 | `halls` | Thông tin sảnh tiệc | - |
+| 4 | `menus` | Thực đơn món ăn | - |
+| 5 | `bookings` | Đơn đặt tiệc | → halls |
+| 6 | `booking_services` | Dịch vụ đi kèm booking | → bookings |
+| 7 | `contacts` | Yêu cầu liên hệ từ khách | → users |
+| 8 | `promotions` | Chương trình khuyến mãi | - |
+| 9 | `media_albums` | Album ảnh/video | - |
+| 10 | `media_items` | Chi tiết ảnh/video | → media_albums |
+| 11 | `refresh_tokens` | Token làm mới phiên đăng nhập | → users |
+
+![Sơ đồ Database Schema](docs/diagrams/database_schema.png)
 
 #### 2.3.4. Kiến trúc Hệ thống Tổng quan (High-Level Architecture)
 Mô hình kiến trúc phân lớp (Layered Architecture) được áp dụng để đảm bảo sự tách biệt rõ ràng giữa các thành phần:
@@ -138,10 +282,31 @@ graph TD
     end
 ```
 
+**Mô tả chi tiết các tầng kiến trúc:**
+| Tầng | Công nghệ | Chức năng | Trách nhiệm |
+|------|-----------|-----------|-------------|
+| **Presentation** | Thymeleaf, JS | Giao diện người dùng | Render HTML, xử lý tương tác UI |
+| **Controller** | Spring MVC | Điều phối request | Nhận request, validate input, trả response |
+| **Service** | Spring Service | Logic nghiệp vụ | Xử lý business rules, orchestration |
+| **Repository** | Spring Data JPA | Truy xuất dữ liệu | CRUD operations, query database |
+| **Database** | MySQL | Lưu trữ | Persistence, ACID transactions |
+
+**Luồng dữ liệu:** Client → Controller (DTO) → Service (Entity) → Repository → Database
+
 ![Kiến trúc hệ thống](docs/diagrams/architecture_diagram.png)
 
 #### 2.3.5. Chi tiết các Quy trình nghiệp vụ (Sequence Diagrams)
-Dưới đây là biểu đồ tuần tự cho các chức năng cốt lõi của hệ thống:
+Biểu đồ tuần tự (Sequence Diagram) mô tả thứ tự tương tác giữa các đối tượng theo thời gian.
+
+**Giải thích ký hiệu Sequence Diagram:**
+| Ký hiệu | Ý nghĩa |
+|---------|--------|
+| `Actor` | Người dùng tương tác với hệ thống |
+| `Participant` | Thành phần hệ thống (Controller, Service, DB) |
+| `->>` | Gửi message đồng bộ (chờ phản hồi) |
+| `-->>` | Phản hồi/Response trả về |
+| `activate/deactivate` | Đánh dấu thời gian xử lý của participant |
+| `alt/else` | Rẽ nhánh điều kiện (if-else) |
 
 **a. Quy trình Đặt tiệc (Booking Process)**
 *(Luồng quan trọng nhất dành cho khách hàng)*
@@ -176,6 +341,14 @@ sequenceDiagram
     Ctrl-->>FE: 200 OK
     deactivate Ctrl
 ```
+
+**Mô tả các bước:**
+1. Khách hàng điền và gửi form đặt tiệc trên giao diện
+2. Frontend gửi request POST đến BookingController
+3. Controller chuyển dữ liệu cho BookingService xử lý
+4. Service validate dữ liệu (kiểm tra ngày, sảnh còn trống)
+5. Nếu hợp lệ: Lưu vào DB và gửi email xác nhận
+6. Nếu lỗi: Trả về thông báo lỗi cho khách
 
 ![Quy trình Đặt tiệc](docs/diagrams/sequence_booking.png)
 
@@ -212,6 +385,8 @@ sequenceDiagram
     deactivate Auth
 ```
 
+**Mô tả quy trình:** Người dùng nhập thông tin → Hệ thống kiểm tra email trùng → Mã hóa mật khẩu (BCrypt) → Lưu vào CSDL → Thông báo thành công.
+
 ![Quy trình Đăng ký](docs/diagrams/sequence_register.png)
 
 *   **Đăng nhập hệ thống (Login Flow):**
@@ -244,6 +419,8 @@ sequenceDiagram
     deactivate Auth
 ```
 
+**Mô tả quy trình:** Người dùng nhập tài khoản/mật khẩu → SecurityConfig xác thực với DB → Tạo JWT Token → Lưu token phía client → Chuyển hướng vào hệ thống.
+
 ![Quy trình Đăng nhập](docs/diagrams/sequence_login.png)
 
 **c. Quy trình Quản lý Nội dung (Admin CRUD Flow)**
@@ -265,6 +442,8 @@ sequenceDiagram
     FE-->>Admin: Cập nhật danh sách hiển thị
 ```
 
+**Mô tả quy trình:** Admin nhập dữ liệu mới → API validate đầu vào → INSERT/UPDATE/DELETE vào DB → Trả về kết quả → Dashboard tự động cập nhật danh sách.
+
 ![Quy trình CRUD Admin](docs/diagrams/sequence_crud.png)
 
 **d. Quy trình Gửi Liên hệ (Contact Flow)**
@@ -283,10 +462,21 @@ sequenceDiagram
     Web-->>Guest: "Cảm ơn bạn đã liên hệ"
 ```
 
+**Mô tả quy trình:** Khách vãng lai điền form liên hệ → API lưu message với trạng thái PENDING → Hiển thị thông báo cảm ơn → Admin sẽ xử lý sau trong Dashboard.
+
 ![Quy trình Liên hệ](docs/diagrams/sequence_contact.png)
 
 #### 2.3.6. Biểu đồ Hoạt động (Activity Diagrams) - Nghiệp vụ Chi tiết
-Mô tả luồng đi của dữ liệu và các điểm ra quyết định trong quy trình:
+Biểu đồ hoạt động mô tả luồng đi của dữ liệu và các điểm ra quyết định trong quy trình.
+
+**Giải thích ký hiệu Activity Diagram:**
+| Ký hiệu | Ý nghĩa |
+|---------|--------|
+| `([...])` | Điểm bắt đầu/kết thúc (Start/End) |
+| `[...]` | Hoạt động/Hành động (Activity) |
+| `{...}` | Điểm quyết định/Rẽ nhánh (Decision) |
+| `[(...)]​` | Lưu trữ dữ liệu (Database) |
+| `-->` | Luồng điều khiển tiếp theo |
 
 **a. Quy trình Đăng ký (User Registration Flow)**
 
@@ -307,6 +497,8 @@ flowchart TD
     Success --> End([Kết thúc])
 ```
 
+**Mô tả các bước:** Người dùng nhập thông tin → Validate format (email, password) → Kiểm tra email trùng trong DB → Mã hóa password bằng BCrypt → Lưu user mới vào CSDL.
+
 ![Quy trình Đăng ký](docs/diagrams/activity_register.png)
 
 **b. Quy trình Đăng nhập (User Login Flow)**
@@ -325,9 +517,33 @@ flowchart TD
     Redirect --> End([Kết thúc])
 ```
 
+**Mô tả các bước:** Người dùng nhập tài khoản/mật khẩu → Hệ thống kiểm tra trong Database → Nếu đúng: Tạo JWT Token và lưu phía client → Chuyển hướng về trang chủ.
+
 ![Quy trình Đăng nhập](docs/diagrams/activity_login.png)
 
 #### 2.3.7. Biểu đồ Trạng thái Booking (State Diagram)
+Biểu đồ trạng thái mô tả vòng đời của một đơn đặt tiệc từ khi tạo đến khi hoàn tất:
+
+```mermaid
+stateDiagram-v2
+    [*] --> PENDING: Khách gửi form đặt tiệc
+    PENDING --> CONFIRMED: Admin duyệt đơn
+    PENDING --> CANCELLED: Admin/Khách hủy
+    CONFIRMED --> DEPOSIT_PAID: Khách đặt cọc
+    DEPOSIT_PAID --> COMPLETED: Tiệc hoàn tất
+    CONFIRMED --> CANCELLED: Hủy trước ngày tổ chức
+    COMPLETED --> [*]
+    CANCELLED --> [*]
+```
+
+**Mô tả các trạng thái:**
+| Trạng thái | Mô tả | Hành động tiếp theo |
+|------------|-------|---------------------|
+| **PENDING** | Đơn mới, chờ Admin xác nhận | Duyệt hoặc Hủy |
+| **CONFIRMED** | Đã xác nhận, chờ đặt cọc | Thanh toán cọc hoặc Hủy |
+| **DEPOSIT_PAID** | Đã nhận cọc, sẵn sàng tổ chức | Hoàn tất sau ngày tiệc |
+| **COMPLETED** | Tiệc đã tổ chức thành công | Kết thúc |
+| **CANCELLED** | Đơn bị hủy | Kết thúc |
 
 ![Trạng thái Booking](docs/diagrams/state_booking.png)
 
