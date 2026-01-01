@@ -1285,12 +1285,10 @@ img {
 .carousel-3d .carousel-nav {
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    max-width: 95%;
     display: flex;
     justify-content: space-between;
     pointer-events: none;
