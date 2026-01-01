@@ -126,7 +126,7 @@ function initCarousels() {
         if (is3D) {
             theta = 360 / slideCount;
             // Radius = (width / 2) / tan(PI / count)
-            // Use 150 for balanced carousel circle
+            // Use 120 for balanced spacing between slides
             radius = Math.round((150 / 2) / Math.tan(Math.PI / slideCount));
 
             // Initial Positioning
