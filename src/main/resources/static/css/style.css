@@ -1281,6 +1281,26 @@ img {
     display: none;
 }
 
+/* Center nav buttons for 3D carousel */
+.carousel-3d .carousel-nav {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.carousel-3d .carousel-btn {
+    pointer-events: auto;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
 /* Tablet/Mobile Adjustments */
 @media (max-width: 991px) {
     .carousel-3d {
