@@ -1215,52 +1215,48 @@ img {
    3D CAROUSEL (CYLINDER LOOP) - OVERRIDE
 ====================================================================== */
 .carousel-3d {
-    perspective: 2000px;
-    /* Increased perspective for larger items */
-    padding-top: 60px;
-    padding-bottom: 60px;
+    perspective: 1000px;
+    /* Reduced perspective for tighter 3D effect */
+    padding-top: 20px;
+    padding-bottom: 20px;
     overflow: visible;
     /* CRITICAL: Allow 3D elements to stick out */
-    height: 600px;
-    /* Increased container height */
-    /* Adjust based on slide height */
+    height: 340px;
+    /* Compact container height */
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    /* Hide overflow-x of body if needed, but here we keep visible */
 }
 
 /* Container for rotation */
 .carousel-3d .carousel-track {
-    width: 600px;
-    /* Large Width */
-    /* Base slide width */
-    height: 400px;
-    /* Large Height */
-    /* Aspect 4:3 */
+    width: 350px;
+    /* Wider slides for full image visibility */
+    height: 240px;
+    /* Landscape aspect ratio */
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
-    /* Ease Out Expo */
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 /* Individual Slide */
 .carousel-3d .carousel-slide {
     position: absolute;
-    width: 600px;
-    height: 400px;
+    width: 350px;
+    height: 240px;
     left: 0;
     top: 0;
     /* Transform handled by JS: rotateY(...) translateZ(...) */
     backface-visibility: hidden;
     /* Hide back face */
-    opacity: 0.85;
-    transition: opacity 0.5s, box-shadow 0.5s, transform 0.5s;
-    /* Reset previous transforms */
+    opacity: 0.9;
+    transition: opacity 0.4s, box-shadow 0.4s, transform 0.4s;
     transform: none;
     transform-origin: center center;
     filter: none;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .carousel-3d .carousel-slide.active {
@@ -1287,14 +1283,20 @@ img {
 
 /* Tablet/Mobile Adjustments */
 @media (max-width: 991px) {
+    .carousel-3d {
+        height: 280px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
     .carousel-3d .carousel-track {
         width: 220px;
-        height: 220px;
+        height: 180px;
     }
 
     .carousel-3d .carousel-slide {
         width: 220px;
-        height: 220px;
+        height: 180px;
     }
 }
 

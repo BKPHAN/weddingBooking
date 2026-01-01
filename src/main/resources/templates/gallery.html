@@ -23,11 +23,12 @@
     <!-- Hero Banner -->
     <section class="gallery-hero">
         <div class="gallery-hero-overlay"></div>
-        <img th:src="@{/images/gallery/slider1.jpg}" alt="Phong Cách Tiệc Cưới" class="gallery-hero-bg"
+        <img th:src="${galleryItems != null and !galleryItems.isEmpty() ? galleryItems[0].imageUrl : '/images/gallery/1.jpg'}"
+            alt="Phong Cách Tiệc Cưới" class="gallery-hero-bg"
             onerror="this.src='https://placehold.co/1920x600?text=Wedding+Concepts'">
         <div class="gallery-hero-content">
             <p style="font-family: var(--font-accent); font-size: 2.5rem; color: var(--color-gold);">Bộ Sưu Tập</p>
-            <h1>Phong Cách Tiệc Cưới</h1>
+            <h1 style="font-family: 'Playfair Display', serif; color: white; font-size: 3.5rem; font-weight: 700; margin: 20px 0;">Phong Cách Tiệc Cưới</h1>
             <p>Nơi hiện thực hóa giấc mơ cổ tích của bạn</p>
         </div>
     </section>
@@ -63,529 +64,35 @@
                     hóa mọi ý tưởng về đám cưới trong mơ.</p>
             </div>
 
-            <!-- Filter Buttons -->
-            <div class="gallery-filter" style="margin-top: 40px;">
-                <button class="filter-btn active" onclick="filterGallery('all')">Tất Cả</button>
-                <button class="filter-btn" onclick="filterGallery('luxury')">Sang Trọng (Luxury)</button>
-                <button class="filter-btn" onclick="filterGallery('classic')">Cổ Điển (Classic)</button>
-                <button class="filter-btn" onclick="filterGallery('modern')">Hiện Đại (Modern)</button>
-                <button class="filter-btn" onclick="filterGallery('rustic')">Rustic</button>
-            </div>
         </div>
     </section>
 
-    <!-- Gallery Grid -->
+    <!-- Gallery Grid - LOADED FROM DATABASE -->
     <section class="section">
         <div class="container">
             <div class="grid-col-3" style="gap: 30px;">
-                <!-- ================= LUXURY ITEMS (6) ================= -->
-                <div class="gallery-item luxury" style="overflow: visible; border-radius: 8px;">
+                <!-- Dynamic Gallery Items from Database -->
+                <div th:each="item : ${galleryItems}"
+                     th:class="'gallery-item ' + ${item.category != null ? item.category.toLowerCase() : 'all'}"
+                     style="overflow: visible; border-radius: 8px;">
                     <div class="menu-card"
                         style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
                         <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
-                                data-lightbox="gallery" data-title="Sảnh Luxury - Giấc Mơ Cổ Tích"
+                            <a th:href="@{${item.imageUrl}}"
+                                data-lightbox="gallery"
+                                th:data-title="${item.name + ' - ' + item.description}"
                                 style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
-                                    alt="Luxury 1"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                                <img th:src="@{${item.imageUrl}}"
+                                    th:alt="${item.name}"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;"
+                                    onerror="this.src='https://placehold.co/600x400?text=Gallery+Image'">
                                 <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
                             </a>
                         </div>
                         <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Sảnh Luxury</h3>
+                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;" th:text="${item.category != null ? 'Phong Cách ' + item.category : item.name}">Gallery Item</h3>
                             <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Giấc Mơ Cổ
-                                Tích</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item luxury" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                                data-lightbox="gallery" data-title="Sảnh Luxury - Hạnh Phúc Thăng Hoa"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                                    alt="Luxury 2"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Sảnh Luxury</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Hạnh Phúc
-                                Thăng Hoa</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item luxury" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
-                                data-lightbox="gallery" data-title="Sảnh Luxury - Hoàng Gia Sang Trọng"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
-                                    alt="Luxury 3"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Sảnh Luxury</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Hoàng Gia
-                                Sang Trọng</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item luxury" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                                data-lightbox="gallery" data-title="Sảnh Luxury - Cung Điện Gấm Hoa"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                                    alt="Luxury 4"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Sảnh Luxury</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Cung Điện
-                                Gấm Hoa</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item luxury" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
-                                data-lightbox="gallery" data-title="Sảnh Luxury - Lộng Lẫy Kiêu Sa"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-1.jpg"
-                                    alt="Luxury 5"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Sảnh Luxury</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Lộng Lẫy
-                                Kiêu Sa</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item luxury" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                                data-lightbox="gallery" data-title="Sảnh Luxury - Đẳng Cấp Quý Tộc"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                                    alt="Luxury 6"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Sảnh Luxury</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Đẳng Cấp
-                                Quý Tộc</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= CLASSIC ITEMS (6) ================= -->
-                <div class="gallery-item classic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Classic - Thanh Lịch & Tinh Tế"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                    alt="Classic 1"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Classic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Thanh Lịch
-                                & Tinh Tế</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item classic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Classic - Vẻ Đẹp Vượt Thời Gian"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                    alt="Classic 2"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Classic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Vẻ Đẹp
-                                Vượt Thời Gian</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item classic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Classic - Dấu Ấn Truyền Thống"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                    alt="Classic 3"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Classic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Dấu Ấn
-                                Truyền Thống</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item classic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Classic - Sang Trọng Cổ Điển"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                    alt="Classic 4"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Classic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Sang Trọng
-                                Cổ Điển</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item classic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Classic - Hoài Niệm Ngọt Ngào"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                    alt="Classic 5"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Classic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Hoài Niệm
-                                Ngọt Ngào</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item classic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Classic - Vintage Lãng Mạn"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                                    alt="Classic 6"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Classic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Vintage
-                                Lãng Mạn</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= MODERN ITEMS (6) ================= -->
-                <div class="gallery-item modern" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Modern - Trẻ Trung & Phá Cách"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                                    alt="Modern 1"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Modern</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Trẻ Trung
-                                & Phá Cách</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item modern" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Modern - Ánh Sáng Lung Linh"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                                    alt="Modern 2"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Modern</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Ánh Sáng
-                                Lung Linh</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item modern" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Modern - Nhịp Đập Thời Đại"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                                    alt="Modern 3"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Modern</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Nhịp Đập
-                                Thời Đại</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item modern" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Modern - Sắc Màu Hạnh Phúc"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                                    alt="Modern 4"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Modern</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Sắc Màu
-                                Hạnh Phúc</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item modern" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Modern - Tinh Tế Đương Đại"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                                    alt="Modern 5"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Modern</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Tinh Tế
-                                Đương Đại</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item modern" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Modern - Giấc Mơ Hiện Đại"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                                    alt="Modern 6"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Modern</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Giấc Mơ
-                                Hiện Đại</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ================= RUSTIC ITEMS (6) ================= -->
-                <div class="gallery-item rustic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Rustic - Gần Gũi Thiên Nhiên"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                    alt="Rustic 1"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Rustic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Gần Gũi
-                                Thiên Nhiên</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item rustic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Rustic - Khu Vườn Tình Yêu"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                    alt="Rustic 2"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Rustic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Khu Vườn
-                                Tình Yêu</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item rustic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Rustic - Mộc Mạc Chân Thành"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                    alt="Rustic 3"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Rustic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Mộc Mạc
-                                Chân Thành</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item rustic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Rustic - Hơi Thở Cỏ Cây"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                    alt="Rustic 4"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Rustic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Hơi Thở Cỏ
-                                Cây</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item rustic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Rustic - Lãng Mạn Đồng Quê"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                    alt="Rustic 5"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Rustic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Lãng Mạn
-                                Đồng Quê</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item rustic" style="overflow: visible; border-radius: 8px;">
-                    <div class="menu-card"
-                        style="padding: 0; overflow: hidden; height: 100%; display: flex; flex-direction: column;">
-                        <div class="img-wrapper" style="height: 250px; overflow: hidden; position: relative;">
-                            <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                data-lightbox="gallery" data-title="Phong Cách Rustic - Bản Tình Ca Xanh"
-                                style="display: block; height: 100%;">
-                                <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                                    alt="Rustic 6"
-                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
-                                <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                            </a>
-                        </div>
-                        <div class="menu-header" style="padding: 20px; margin-bottom: 0; flex-grow: 1;">
-                            <h3 style="font-size: 1.2rem; margin-bottom: 5px;">Phong Cách Rustic</h3>
-                            <div class="price"
-                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;">Bản Tình
-                                Ca Xanh</div>
+                                style="font-size: 1rem; color: var(--color-text-light); font-weight: normal;" th:text="${item.description}">Description</div>
                         </div>
                     </div>
                 </div>
@@ -630,8 +137,7 @@
             <div class="grid-col-3">
                 <a href="/collection" class="real-wedding-card"
                     style="display: block; text-decoration: none; color: inherit;">
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2021/01/Dam-cuoi-Van-Hau-Mai-Linh-1-768x512.jpg"
-                        alt="Wedding 1">
+                    <img th:src="@{/images/collection/real-wedding-1.jpg}" alt="Wedding 1">
                     <div class="real-wedding-info">
                         <h4>Văn Hậu & Mai Linh</h4>
                         <p>Ngày 15/10/2023</p>
@@ -641,8 +147,7 @@
                 </a>
                 <a href="/collection" class="real-wedding-card"
                     style="display: block; text-decoration: none; color: inherit;">
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2020/12/Dam-cuoi-Tuan-Anh-Huyen-My-2-768x512.jpg"
-                        alt="Wedding 2">
+                    <img th:src="@{/images/collection/real-wedding-2.jpg}" alt="Wedding 2">
                     <div class="real-wedding-info">
                         <h4>Tuấn Anh & Huyền My</h4>
                         <p>Ngày 22/09/2023</p>
@@ -652,8 +157,7 @@
                 </a>
                 <a href="/collection" class="real-wedding-card"
                     style="display: block; text-decoration: none; color: inherit;">
-                    <img src="https://tranganpalace.vn/wp-content/uploads/2020/12/Dam-cuoi-Minh-Hieu-Thuy-Duong-2-768x512.jpg"
-                        alt="Wedding 3">
+                    <img th:src="@{/images/collection/real-wedding-3.jpg}" alt="Wedding 3">
                     <div class="real-wedding-info">
                         <h4>Minh Hiếu & Thùy Dương</h4>
                         <p>Ngày 05/09/2023</p>

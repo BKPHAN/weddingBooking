@@ -14,7 +14,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <style>
         .collection-hero {
-            background-image: url('https://tranganpalace.vn/wp-content/uploads/2019/12/trang-an-palace-42.jpg');
             background-size: cover;
             background-position: center;
             height: 400px;
@@ -121,9 +120,12 @@
     <div th:replace="~{fragments/header :: header}"></div>
 
     <!-- Hero Section -->
-    <section class="collection-hero">
+    <section class="collection-hero"
+             th:style="${albumsWithItems != null and !albumsWithItems.isEmpty() and !albumsWithItems[0].items.isEmpty()
+                        ? 'background-image: url(' + albumsWithItems[0].items[0].url + ');'
+                        : 'background-image: url(/images/gallery/1.jpg);'}">
         <div class="collection-hero-content container">
-            <h1 class="display-4">Bộ Sưu Tập Hạnh Phúc</h1>
+            <h1 style="font-family: 'Playfair Display', serif; color: white; font-size: 3.5rem; font-weight: 700; margin: 20px 0;">Bộ Sưu Tập Hạnh Phúc</h1>
             <p class="lead">Lưu giữ những khoảnh khắc tuyệt vời nhất tại Tràng An Palace</p>
         </div>
     </section>
@@ -145,126 +147,42 @@
     <section class="section" style="background-color: #f9f9f9;">
         <div class="container">
             <div class="grid-col-3" style="gap: 30px;">
-
-                <!-- Album 1 -->
-                <div class="album-card">
+                <!-- Dynamic Albums from Database -->
+                <div th:each="albumData, iterStat : ${albumsWithItems}" class="album-card">
                     <div class="album-thumb">
-                        <img src="https://tranganpalace.vn/wp-content/uploads/2023/12/630A8679.jpg" alt="Wedding 1">
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2023/12/630A8679.jpg"
-                            data-lightbox="album-1" data-title="Lễ Thành Hôn Tuấn Anh & Minh Thư" class="album-overlay">
+                        <!-- Use first image from album as thumbnail -->
+                        <img th:src="${!albumData.items.isEmpty() ? albumData.items[0].url : '/images/collection/default-thumb.jpg'}"
+                             th:alt="${albumData.album.title}"
+                             onerror="this.src='https://placehold.co/400x300?text=Album'">
+
+                        <!-- Lightbox trigger -->
+                        <a th:href="${!albumData.items.isEmpty() ? albumData.items[0].url : '#'}"
+                           th:attr="data-lightbox='album-' + ${iterStat.index}"
+                           th:data-title="${albumData.album.title}"
+                           class="album-overlay">
                             <i class="fas fa-images" style="color: #fff; font-size: 2rem;"></i>
                         </a>
-                        <!-- Additional Images for Lightbox -->
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                            data-lightbox="album-1" data-title="Không gian tiệc cưới" style="display: none;"></a>
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                            data-lightbox="album-1" data-title="Khoảnh khắc hạnh phúc" style="display: none;"></a>
+
+                        <!-- Additional images for lightbox (hidden) -->
+                        <th:block th:each="item, itemStat : ${albumData.items}" th:if="${itemStat.index > 0}">
+                            <a th:href="${item.url}"
+                               th:attr="data-lightbox='album-' + ${iterStat.index}"
+                               th:data-title="${item.title}"
+                               style="display: none;"></a>
+                        </th:block>
                     </div>
                     <div class="album-details">
-                        <h3 class="album-title">Tuấn Anh & Minh Thư</h3>
-                        <p class="album-date"><i class="far fa-calendar-alt"></i> 12/12/2023 - Sảnh Luxury</p>
+                        <h3 class="album-title" th:text="${albumData.album.title}">Album Title</h3>
+                        <p class="album-date">
+                            <i class="far fa-calendar-alt"></i>
+                            <span th:text="${albumData.album.description != null ? albumData.album.description : 'Wedding Collection'}">Description</span>
+                        </p>
                         <button class="btn btn-outline btn-sm"
-                            onclick="document.querySelector('[data-lightbox=\'album-1\']').click()">Xem Album</button>
+                                th:onclick="'document.querySelector(\'[data-lightbox=album-' + ${iterStat.index} + ']\').click()'">
+                            Xem Album (<span th:text="${albumData.items.size()}">0</span> ảnh)
+                        </button>
                     </div>
                 </div>
-
-                <!-- Album 2 -->
-                <div class="album-card">
-                    <div class="album-thumb">
-                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                            alt="Wedding 2">
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-3.jpg"
-                            data-lightbox="album-2" data-title="Tiệc Báo Hỷ Thanh Tùng & Ngọc Mai"
-                            class="album-overlay">
-                            <i class="fas fa-images" style="color: #fff; font-size: 2rem;"></i>
-                        </a>
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                            data-lightbox="album-2" style="display: none;"></a>
-                    </div>
-                    <div class="album-details">
-                        <h3 class="album-title">Thanh Tùng & Ngọc Mai</h3>
-                        <p class="album-date"><i class="far fa-calendar-alt"></i> 20/11/2023 - Sảnh Classic</p>
-                        <button class="btn btn-outline btn-sm"
-                            onclick="document.querySelector('[data-lightbox=\'album-2\']').click()">Xem Album</button>
-                    </div>
-                </div>
-
-                <!-- Album 3 -->
-                <div class="album-card">
-                    <div class="album-thumb">
-                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                            alt="Wedding 3">
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-14.jpg"
-                            data-lightbox="album-3" data-title="Wedding Duy & Trang" class="album-overlay">
-                            <i class="fas fa-images" style="color: #fff; font-size: 2rem;"></i>
-                        </a>
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                            data-lightbox="album-3" style="display: none;"></a>
-                    </div>
-                    <div class="album-details">
-                        <h3 class="album-title">Quang Duy & Thu Trang</h3>
-                        <p class="album-date"><i class="far fa-calendar-alt"></i> 10/10/2023 - Sảnh Modern</p>
-                        <button class="btn btn-outline btn-sm"
-                            onclick="document.querySelector('[data-lightbox=\'album-3\']').click()">Xem Album</button>
-                    </div>
-                </div>
-
-                <!-- Album 4 -->
-                <div class="album-card">
-                    <div class="album-thumb">
-                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                            alt="Wedding 4">
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                            data-lightbox="album-4" data-title="Rustic Garden Wedding" class="album-overlay">
-                            <i class="fas fa-images" style="color: #fff; font-size: 2rem;"></i>
-                        </a>
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-9.jpg"
-                            data-lightbox="album-4" style="display: none;"></a>
-                    </div>
-                    <div class="album-details">
-                        <h3 class="album-title">Văn Hùng & Lan Anh</h3>
-                        <p class="album-date"><i class="far fa-calendar-alt"></i> 05/09/2023 - Garden Space</p>
-                        <button class="btn btn-outline btn-sm"
-                            onclick="document.querySelector('[data-lightbox=\'album-4\']').click()">Xem Album</button>
-                    </div>
-                </div>
-
-                <!-- Album 5 -->
-                <div class="album-card">
-                    <div class="album-thumb">
-                        <img src="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                            alt="Wedding 5">
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2019/12/tiec-cuoi-mang-mau-sac-co-tich-tai-trang-an-palace-4.jpg"
-                            data-lightbox="album-5" data-title="Fairy Tale Wedding" class="album-overlay">
-                            <i class="fas fa-images" style="color: #fff; font-size: 2rem;"></i>
-                        </a>
-                    </div>
-                    <div class="album-details">
-                        <h3 class="album-title">Đám Cưới Cổ Tích</h3>
-                        <p class="album-date"><i class="far fa-calendar-alt"></i> 15/08/2023 - Sảnh Prospero</p>
-                        <button class="btn btn-outline btn-sm"
-                            onclick="document.querySelector('[data-lightbox=\'album-5\']').click()">Xem Album</button>
-                    </div>
-                </div>
-
-                <!-- Album 6 -->
-                <div class="album-card">
-                    <div class="album-thumb">
-                        <img src="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                            alt="Wedding 6">
-                        <a href="https://tranganpalace.vn/wp-content/uploads/2020/05/trang-tri-tiec-cuoi-dep-11.jpg"
-                            data-lightbox="album-6" data-title="Golden Anniversary" class="album-overlay">
-                            <i class="fas fa-images" style="color: #fff; font-size: 2rem;"></i>
-                        </a>
-                    </div>
-                    <div class="album-details">
-                        <h3 class="album-title">Kỷ Niệm 10 Năm Ngày Cưới</h3>
-                        <p class="album-date"><i class="far fa-calendar-alt"></i> 01/08/2023 - Sảnh Event</p>
-                        <button class="btn btn-outline btn-sm"
-                            onclick="document.querySelector('[data-lightbox=\'album-6\']').click()">Xem Album</button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>

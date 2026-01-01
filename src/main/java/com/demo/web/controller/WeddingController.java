@@ -11,6 +11,8 @@ import com.demo.web.dto.ContactResponse;
 import com.demo.web.mapper.BookingMapper;
 import com.demo.web.mapper.ContactMapper;
 import com.demo.web.service.HallService;
+import com.demo.web.service.MediaService;
+import com.demo.web.service.MenuService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,17 +30,23 @@ public class WeddingController {
     private final BookingService bookingService;
     private final ContactService contactService;
     private final HallService hallService;
+    private final MediaService mediaService;
+    private final MenuService menuService;
     private final BookingMapper bookingMapper;
     private final ContactMapper contactMapper;
 
     public WeddingController(BookingService bookingService,
             ContactService contactService,
             HallService hallService,
+            MediaService mediaService,
+            MenuService menuService,
             BookingMapper bookingMapper,
             ContactMapper contactMapper) {
         this.bookingService = bookingService;
         this.contactService = contactService;
         this.hallService = hallService;
+        this.mediaService = mediaService;
+        this.menuService = menuService;
         this.bookingMapper = bookingMapper;
         this.contactMapper = contactMapper;
     }
@@ -101,22 +109,50 @@ public class WeddingController {
     }
 
     @GetMapping("/services")
-    public String services() {
+    public String services(Model model) {
+        // Load service items from menus table with type='SERVICE'
+        var serviceItems = menuService.findAll().stream()
+                .filter(menu -> "SERVICE".equals(menu.getType()))
+                .toList();
+
+        model.addAttribute("serviceItems", serviceItems);
         return "services";
     }
 
     @GetMapping("/menu")
-    public String menu() {
+    public String menu(Model model) {
+        model.addAttribute("menuItems", menuService.findAll());
         return "menu";
     }
 
     @GetMapping("/gallery")
-    public String gallery() {
+    public String gallery(Model model) {
+        // Load gallery items from menus table with type='GALLERY'
+        var galleryItems = menuService.findAll().stream()
+                .filter(menu -> "GALLERY".equals(menu.getType()))
+                .toList();
+
+        model.addAttribute("galleryItems", galleryItems);
         return "gallery";
     }
 
     @GetMapping("/collection")
-    public String collection() {
+    public String collection(Model model) {
+        // Load all albums with their media items
+        var albums = mediaService.findAllAlbums();
+
+        // For each album, load its media items
+        var albumsWithItems = albums.stream()
+                .map(album -> {
+                    var items = mediaService.findItemsByAlbumId(album.getId());
+                    var albumData = new java.util.HashMap<String, Object>();
+                    albumData.put("album", album);
+                    albumData.put("items", items);
+                    return albumData;
+                })
+                .toList();
+
+        model.addAttribute("albumsWithItems", albumsWithItems);
         return "collection";
     }
 

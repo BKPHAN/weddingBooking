@@ -126,8 +126,8 @@ function initCarousels() {
         if (is3D) {
             theta = 360 / slideCount;
             // Radius = (width / 2) / tan(PI / count)
-            // Use 560 (less than 600) to bring slides closer (slight overlap/tight fit)
-            radius = Math.round((560 / 2) / Math.tan(Math.PI / slideCount));
+            // Use 150 for balanced carousel circle
+            radius = Math.round((150 / 2) / Math.tan(Math.PI / slideCount));
 
             // Initial Positioning
             slides.forEach((slide, index) => {

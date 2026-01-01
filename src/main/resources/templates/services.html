@@ -24,12 +24,13 @@
     <!-- Hero Banner -->
     <section class="services-hero">
         <div class="services-hero-overlay"></div>
-        <img th:src="@{/images/services/services-hero.jpg}" alt="Dịch Vụ Tràng An Palace" class="services-hero-bg"
+        <img th:src="${serviceItems != null and !serviceItems.isEmpty() ? serviceItems[0].imageUrl : '/images/service/slider1.jpg'}"
+            alt="Dịch Vụ Tràng An Palace" class="services-hero-bg"
             onerror="this.src='https://placehold.co/1920x600?text=Premium+Services'">
         <div class="services-hero-content">
             <p style="font-family: var(--font-accent); font-size: 2.5rem; color: var(--color-gold);">Dịch Vụ Của Chúng
                 Tôi</p>
-            <h1>Trải Nghiệm Đẳng Cấp</h1>
+            <h1 style="font-family: 'Playfair Display', serif; color: white; font-size: 3.5rem; font-weight: 700; margin: 20px 0;">Trải Nghiệm Đẳng Cấp</h1>
             <p>Giải pháp toàn diện cho ngày vui trọn vẹn của bạn</p>
         </div>
     </section>
@@ -43,45 +44,17 @@
             </div>
 
             <div class="grid-col-3" style="gap: 30px;">
-                <!-- Category 1 -->
-                <div class="service-card-v2">
+                <!-- Dynamic Service Items from Database -->
+                <div th:each="service : ${serviceItems}" class="service-card-v2">
                     <div class="service-img-v2">
-                        <img th:src="@{/images/services/wedding.jpg}" alt="Tiệc Cưới Trọn Gói"
-                            onerror="this.src='https://placehold.co/400x300?text=Wedding'">
+                        <img th:src="@{${service.imageUrl}}"
+                             th:alt="${service.name}"
+                            onerror="this.src='https://placehold.co/400x300?text=Service'">
                     </div>
                     <div class="service-content-v2">
-                        <h3>Tiệc Cưới Trọn Gói</h3>
-                        <p>Dịch vụ tổ chức tiệc cưới chuyên nghiệp từ A-Z: trang trí sảnh tiệc, kịch bản chương trình,
-                            MC, ban nhạc, khánh tiết.</p>
-                        <a href="#wedding-packages" class="btn-text">Xem Chi Tiết <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- Category 2 -->
-                <div class="service-card-v2">
-                    <div class="service-img-v2">
-                        <img th:src="@{/images/services/event.jpg}" alt="Sự Kiện & Hội Nghị"
-                            onerror="this.src='https://placehold.co/400x300?text=Events'">
-                    </div>
-                    <div class="service-content-v2">
-                        <h3>Sự Kiện & Hội Nghị</h3>
-                        <p>Không gian hội trường đa năng với hệ thống âm thanh, ánh sáng, màn hình LED hiện đại, phù hợp
-                            mọi loại hình sự kiện.</p>
-                        <a href="/contact" class="btn-text">Liên Hệ Báo Giá <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- Category 3 -->
-                <div class="service-card-v2">
-                    <div class="service-img-v2">
-                        <img th:src="@{/images/services/catering.jpg}" alt="Tiệc Ngoài Trời"
-                            onerror="this.src='https://placehold.co/400x300?text=Catering'">
-                    </div>
-                    <div class="service-content-v2">
-                        <h3>Outside Catering</h3>
-                        <p>Mang hương vị ẩm thực 5 sao đến bất kỳ đâu bạn muốn. Phục vụ chuyên nghiệp, tận tâm tại tư
-                            gia hoặc địa điểm ngoài trời.</p>
-                        <a href="/contact" class="btn-text">Đăng Ký Tư Vấn <i class="fas fa-arrow-right"></i></a>
+                        <h3 th:text="${service.name}">Dịch vụ</h3>
+                        <p th:text="${service.description}">Mô tả dịch vụ</p>
+                        <a href="/contact" class="btn-text">Liên Hệ Tư Vấn <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -124,7 +97,8 @@
                     </div>
                 </div>
                 <div style="position: relative;">
-                    <img th:src="@{/images/services/why-choose.jpg}" alt="Why Choose Us"
+                    <img th:src="${serviceItems != null and serviceItems.size() > 3 ? serviceItems[3].imageUrl : '/images/service/san-khau-dam-cuoi-1.jpg'}"
+                        alt="Why Choose Us"
                         style="width: 100%; border-radius: var(--border-radius); box-shadow: var(--shadow-card);"
                         onerror="this.src='https://placehold.co/600x600?text=Service+Excellence'">
                 </div>
@@ -252,33 +226,33 @@
             </div>
 
             <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Tôi cần đặt lịch trước bao lâu?
-                        <i class="fas fa-plus"></i>
+                <div class="faq-item" style="margin-bottom: 15px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                    <div class="faq-question" style="padding: 20px; cursor: pointer; background: #f8f9fa; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Tôi cần đặt lịch trước bao lâu?</span>
+                        <i class="fas fa-plus" style="color: var(--color-gold);"></i>
                     </div>
-                    <div class="faq-answer">
-                        <p>Để đảm bảo chọn được sảnh tiệc ưng ý và có thời gian chuẩn bị tốt nhất, chúng tôi khuyên bạn
+                    <div class="faq-answer" style="display: none; padding: 0 20px 20px 20px; background: white;">
+                        <p style="margin: 0; padding-top: 10px; line-height: 1.8;">Để đảm bảo chọn được sảnh tiệc ưng ý và có thời gian chuẩn bị tốt nhất, chúng tôi khuyên bạn
                             nên đặt trước từ 6-12 tháng, đặc biệt là vào mùa cưới (tháng 9 - tháng 3 năm sau).</p>
                     </div>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Tràng An Palace có hỗ trợ trang trí theo yêu cầu không?
-                        <i class="fas fa-plus"></i>
+                <div class="faq-item" style="margin-bottom: 15px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                    <div class="faq-question" style="padding: 20px; cursor: pointer; background: #f8f9fa; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Tràng An Palace có hỗ trợ trang trí theo yêu cầu không?</span>
+                        <i class="fas fa-plus" style="color: var(--color-gold);"></i>
                     </div>
-                    <div class="faq-answer">
-                        <p>Có. Ngoài các gói trang trí tiêu chuẩn, chúng tôi có đội ngũ thiết kế riêng sẵn sàng hiện
+                    <div class="faq-answer" style="display: none; padding: 0 20px 20px 20px; background: white;">
+                        <p style="margin: 0; padding-top: 10px; line-height: 1.8;">Có. Ngoài các gói trang trí tiêu chuẩn, chúng tôi có đội ngũ thiết kế riêng sẵn sàng hiện
                             thực hóa mọi ý tưởng concept độc đáo của bạn.</p>
                     </div>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Tôi có thể nếm thử món ăn trước khi đặt tiệc không?
-                        <i class="fas fa-plus"></i>
+                <div class="faq-item" style="margin-bottom: 15px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                    <div class="faq-question" style="padding: 20px; cursor: pointer; background: #f8f9fa; font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Tôi có thể nếm thử món ăn trước khi đặt tiệc không?</span>
+                        <i class="fas fa-plus" style="color: var(--color-gold);"></i>
                     </div>
-                    <div class="faq-answer">
-                        <p>Chắc chắn rồi. Sau khi ký hợp đồng, chúng tôi sẽ mời gia đình đến nếm thử thực đơn (Food
+                    <div class="faq-answer" style="display: none; padding: 0 20px 20px 20px; background: white;">
+                        <p style="margin: 0; padding-top: 10px; line-height: 1.8;">Chắc chắn rồi. Sau khi ký hợp đồng, chúng tôi sẽ mời gia đình đến nếm thử thực đơn (Food
                             Tasting) để điều chỉnh khẩu vị phù hợp nhất.</p>
                     </div>
                 </div>

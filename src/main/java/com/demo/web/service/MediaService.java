@@ -46,6 +46,10 @@ public class MediaService {
         return itemRepository.findByTypeOrderByDisplayOrderAsc(type);
     }
 
+    public List<MediaItem> findItemsByAlbumId(Long albumId) {
+        return itemRepository.findByAlbumIdOrderByDisplayOrderAsc(albumId);
+    }
+
     @Transactional
     public MediaItem saveMediaItem(MediaItem item) {
         return itemRepository.save(item);
